@@ -1,0 +1,35 @@
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500&display=swap');
+
+
+
+
+.label{
+
+    -fx-text-fill: red;
+
+
+    -fx-font-family: 'Montserrat', sans-serif;
+
+}
+
+.btnBarNameLabel{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    font-size: 50px;
+
+}
+
+
+.button{
+    -fx-background-color: black;
+
+
+}
+
+
+.btnBar{
+    -fx-background-color: #A31621;
+
+}
+
