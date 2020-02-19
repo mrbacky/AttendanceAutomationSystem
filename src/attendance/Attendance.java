@@ -20,7 +20,7 @@ public class Attendance extends Application {
     
     private Stage primaryStage;
     private BorderPane rootLayout;
-    
+    // comment
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
