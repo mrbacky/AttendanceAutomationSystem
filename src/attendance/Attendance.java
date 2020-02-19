@@ -20,37 +20,17 @@ public class Attendance extends Application {
     private final String todayScenePath = "/attendance/gui/view/Today.fxml";
     private Stage primaryStage;
     private BorderPane rootLayout;
-    // comment
+    
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         
         initRootLayout();
-        showTodayScene();
     }
     
-    /**
-     * Shows Today scene inside the root layout.
-     */
-    public void showTodayScene(){
-        try {
-            //  Load Today scene.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Attendance.class.getResource(todayScenePath));
-            Parent TodayScene = loader.load();
-            
-             // Set person overview into the center of root layout.
-            rootLayout.setCenter(TodayScene);
-            
-            // Give the controller access to the main app.
-            TodayController controller = loader.getController();
-            controller.setAttendance(this);
-            
-        } catch (Exception e) {
-        }
-        
-    }
+   
     
     /**
      * Initializes the root layout.
