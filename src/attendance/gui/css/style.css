@@ -6,19 +6,12 @@
 
 .label{
 
-    -fx-text-fill: black;
+    -fx-text-fill: red;
 
 
     -fx-font-family: 'Montserrat', sans-serif;
 
 }
-
-.reqL{
-    -fx-padding: 10px;
-    
-    
-}
-
 
 .btnBarNameLabel{
     -fx-background-color: transparent;
@@ -29,7 +22,7 @@
 
 
 .button{
-    -fx-background-color: lightgray;
+    -fx-background-color: black;
 
 
 }
