@@ -19,14 +19,14 @@ import javafx.stage.Stage;
 public class Attendance extends Application {
     private final String todayScenePath = "/attendance/gui/view/Today.fxml";
     private Stage primaryStage;
-    private BorderPane rootLayout;
+    private Parent rootLayout;
     
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
-        
+        // login();
         initRootLayout();
     }
     
@@ -40,7 +40,7 @@ public class Attendance extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Attendance.class.getResource("/attendance/gui/view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
             Scene rootLayoutScene = new Scene(rootLayout);
