@@ -42,7 +42,7 @@ public class RootLayoutController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
-
+    
     private final String TodayModule = "src/attendance/gui/view/Today.fxml";
     private final String DashboardModule = "src/attendance/gui/view/Dashboard.fxml";
     private final String StudentModule = "src/attendance/gui/view/StudentAttendance.fxml";

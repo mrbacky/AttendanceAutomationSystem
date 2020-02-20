@@ -29,9 +29,9 @@
                </HBox.margin>
             </JFXButton>
             <Label styleClass="btnBarNameLabel" text="Hello Jane Doe!">
-               <padding>
+               <HBox.margin>
                   <Insets left="50.0" />
-               </padding>
+               </HBox.margin>
             </Label>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -46,6 +46,6 @@
       </HBox>
    </top>
    <center>
-      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: blue;" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>

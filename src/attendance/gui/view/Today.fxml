@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
+<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" style="-fx-background-color: lightgrey;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
    <children>
-      <Label layoutY="3.0" prefHeight="22.0" prefWidth="74.0" text="Today scene" />
-      <Label layoutY="505.0" prefHeight="22.0" prefWidth="74.0" text="Today scene" />
-      <Label layoutX="726.0" layoutY="3.0" prefHeight="22.0" prefWidth="74.0" text="Today scene" />
-      <Label layoutX="726.0" layoutY="505.0" prefHeight="22.0" prefWidth="74.0" text="Today scene" />
+      <Label layoutX="347.0" layoutY="149.0" text="Hello" />
+      <Label fx:id="lblUsername" layoutX="393.0" layoutY="149.0" text="Jane Doe!" />
+      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="368.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icons8-male-user-96.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lblTodayDate" layoutX="342.0" layoutY="257.0" text="February 19, 2020" />
+      <Label fx:id="lblTime1" layoutX="242.0" layoutY="347.0" text="09:00 - 11:30" />
+      <Label fx:id="lblTime2" layoutX="242.0" layoutY="406.0" text="12:00 - 13:30" />
+      <Label fx:id="lblSubject1" layoutX="373.0" layoutY="348.0" text="SCO2.B.20 " />
+      <Label fx:id="lblSubject2" layoutX="377.0" layoutY="406.0" text="SDE2.B.20" />
+      <JFXToggleButton fx:id="tglBtn1" layoutX="457.0" layoutY="329.0" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
+      <JFXToggleButton fx:id="tglBtn2" layoutX="457.0" layoutY="387.0" text="Present" textAlignment="RIGHT" toggleColor="#b90000" toggleLineColor="RED" />
    </children>
 </AnchorPane>

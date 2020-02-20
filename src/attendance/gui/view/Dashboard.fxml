@@ -1,10 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.DashboardController">
+<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.DashboardController">
    <children>
-      <Label layoutX="286.0" layoutY="86.0" text="Dashboard scene" />
+      <AnchorPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <Label layoutX="57.0" layoutY="14.0" text="Today Status" />
+            <Label layoutX="41.0" layoutY="44.0" text="February 19, 2020" />
+            <Label layoutX="32.0" layoutY="90.0" text="SCO2.B.20" />
+            <Label layoutX="33.0" layoutY="111.0" text="SDE2.B.20" />
+            <Label layoutX="113.0" layoutY="90.0" text="PRESENT" />
+            <Label layoutX="113.0" layoutY="111.0" text="-----" />
+         </children></AnchorPane>
+      <AnchorPane layoutX="221.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="352.0" style="-fx-background-color: lightgrey;" AnchorPane.topAnchor="10.0">
+         <children>
+            <BarChart fx:id="barChartWeeklyStatus" layoutX="1.0" layoutY="46.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="352.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" fx:id="xWeekAxis" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yWeekAxis" side="LEFT" />
+              </yAxis>
+            </BarChart>
+            <Label layoutX="105.0" layoutY="4.0" text="Weekly Status" />
+            <Label layoutX="125.0" layoutY="25.0" text="Week 8" />
+         </children></AnchorPane>
+      <AnchorPane fx:id="pieChartAnchorPane" layoutX="14.0" layoutY="268.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+         <children>
+            <PieChart fx:id="pieChartATT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="93.0" />
+         </children></AnchorPane>
+      <AnchorPane layoutX="579.0" layoutY="14.0" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <children>
+            <TableView layoutY="34.0" prefHeight="216.0" prefWidth="207.0">
+              <columns>
+                <TableColumn text="Subjects" />
+                <TableColumn prefWidth="60.0" text="Overall" />
+                  <TableColumn prefWidth="64.0" text="Details" />
+              </columns>
+            </TableView>
+            <Label layoutX="7.0" layoutY="4.0" text="Weekly Subject Attendance " />
+         </children></AnchorPane>
+      <AnchorPane layoutX="221.0" layoutY="268.0" prefHeight="250.0" prefWidth="352.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="10.0">
+         <children>
+            <BarChart fx:id="barChartSemesterStatus" layoutY="27.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="352.0">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" fx:id="xSemesterAxis" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="ySemesterAxis" side="LEFT" />
+               </yAxis>
+            </BarChart>
+         </children></AnchorPane>
+      <AnchorPane layoutX="580.0" layoutY="268.0" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <children>
+            <TableView layoutY="34.0" prefHeight="216.0" prefWidth="206.0">
+              <columns>
+                <TableColumn prefWidth="78.0" text="Subjects" />
+                <TableColumn prefWidth="58.0" text="Overall" />
+                  <TableColumn prefWidth="67.0" text="Details" />
+              </columns>
+            </TableView>
+            <Label layoutX="7.0" text="Semester Subject Attendance " />
+         </children></AnchorPane>
    </children>
 </AnchorPane>

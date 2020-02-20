@@ -6,9 +6,9 @@
 
 .label{
 
-    -fx-text-fill: red;
+    -fx-text-fill: black;
 
-
+    -fx-font-size: 15px;
     -fx-font-family: 'Montserrat', sans-serif;
 
 }
@@ -22,7 +22,7 @@
 
 
 .button{
-    -fx-background-color: black;
+    -fx-background-color: transparent;
 
 
 }
