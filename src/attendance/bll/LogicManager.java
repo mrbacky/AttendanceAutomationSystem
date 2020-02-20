@@ -1,6 +1,5 @@
-
 package attendance.bll;
 
-public class LogicManager implements LogicFacade{
+public class LogicManager implements LogicFacade {
 
 }

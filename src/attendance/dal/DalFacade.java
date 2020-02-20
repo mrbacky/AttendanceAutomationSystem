@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package attendance.dal;
 
 /**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ *
+ * @author annem
  */
-public class TeacherMockDAO {
-
+public interface DalFacade {
+    
 }
