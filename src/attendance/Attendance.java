@@ -17,48 +17,46 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Attendance extends Application {
-
-    public Stage primaryStage;
-
+    private final String todayScenePath = "/attendance/gui/view/Today.fxml";
+    private Stage primaryStage;
+    private Parent rootLayout;
+    
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
-        showLogin();
+        // login();
+        initRootLayout();
     }
-
+    
+   
+    
     /**
      * Initializes the root layout.
      */
-    public void showLogin() {
+    public void initRootLayout() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Attendance.class.getResource("/attendance/gui/view/Login.fxml"));
-            Parent login = loader.load();
+            loader.setLocation(Attendance.class.getResource("/attendance/gui/view/RootLayout.fxml"));
+            rootLayout = loader.load();
 
             // Show the scene containing the root layout.
-            //Scene rootLayoutScene = new Scene(rootLayout);
-            Scene loginScene = new Scene(login);
-            primaryStage.setScene(loginScene);
+            Scene rootLayoutScene = new Scene(rootLayout);
+            primaryStage.setScene(rootLayoutScene);
             primaryStage.show();
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    public void closeStage() {
-        
-        primaryStage.getScene().getWindow().hide();
-        
-    }
-
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-
+    
 }

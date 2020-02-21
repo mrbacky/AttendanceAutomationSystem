@@ -5,26 +5,35 @@
  */
 package attendance.gui.controller;
 
+import attendance.Attendance;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class RootTeacherController implements Initializable {
+public class RootLayoutController implements Initializable {
 
     @FXML
     private HBox buttonBar;
+    @FXML
+    private JFXButton btnToday;
     @FXML
     private JFXButton btnDashboard;
     @FXML
@@ -33,18 +42,17 @@ public class RootTeacherController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
+    
+    private final String TodayModule = "src/attendance/gui/view/Today.fxml";
+    private final String DashboardModule = "src/attendance/gui/view/Dashboard.fxml";
+    private final String StudentModule = "src/attendance/gui/view/StudentAttendance.fxml";
 
-    
-    private final String DashboardModule = "src/attendance/gui/view/<TeacherDashboard>.fxml";
-    private final String AttendanceModule = "src/attendance/gui/view/<Student Attendance>.fxml";
-    
-    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        showModule(TodayModule);
     }
 
     private void showModule(String urlToShow) {
@@ -60,13 +68,19 @@ public class RootTeacherController implements Initializable {
     }
 
     @FXML
+    private void showToday(ActionEvent event) {
+        showModule(TodayModule);
+
+    }
+
+    @FXML
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }
 
     @FXML
     private void showStudentAttendance(ActionEvent event) {
-        showModule(AttendanceModule);
+        showModule(StudentModule);
 
     }
 

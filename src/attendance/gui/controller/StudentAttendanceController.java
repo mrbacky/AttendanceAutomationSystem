@@ -5,10 +5,14 @@
  */
 package attendance.gui.controller;
 
+import attendance.be.AttendanceRecord;
+import attendance.be.SubjectAttendance;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuButton;
@@ -23,7 +27,7 @@ import javafx.scene.control.TableView;
 public class StudentAttendanceController implements Initializable {
 
     @FXML
-    private TableView<?> StudentAttTable;
+    private TableView<AttendanceRecord> StudentAttTable;
     @FXML
     private TableColumn<?, ?> DayCellTableview;
     @FXML
@@ -50,9 +54,19 @@ public class StudentAttendanceController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
+    ObservableList<AttendanceRecord> StudentAttendance = FXCollections.observableArrayList(
+            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present")
+            );
+            
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        displayAttendance();
     }    
-    
+    public void displayAttendance() {
+        StudentAttTable.setItems(StudentAttendance);
+}
 }
