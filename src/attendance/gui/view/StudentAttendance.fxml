@@ -30,7 +30,7 @@
           <MenuItem mnemonicParsing="false" text="Action 2" />
         </items>
       </MenuButton>
-      <JFXDatePicker defaultColor="BLACK" layoutX="330.0" layoutY="110.0" prefHeight="31.0" prefWidth="138.0" />
+      <JFXDatePicker id="studentdatepicker" defaultColor="BLACK" layoutX="330.0" layoutY="110.0" prefHeight="31.0" prefWidth="138.0" />
       <Label id="studentAttendance" layoutX="135.0" layoutY="50.0" stylesheets="@../css/style.css" text="Student Attendance" />
    </children>
 </AnchorPane>

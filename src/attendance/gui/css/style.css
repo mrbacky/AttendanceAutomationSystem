@@ -34,12 +34,18 @@
 }
 
 
+
 .tablebuttons{
     
   -fx-border-style: solid;
   -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
        -fx-background-color: white;
   
+}
+
+.AnchorPane{
+   -fx-background-color: whitesmoke;
+    
 }
 
 #studentAttendance{
@@ -75,10 +81,7 @@
     
 }
 
-#AnchorPane{
-   -fx-background-color: whitesmoke;
-    
-}
+
 
 #studentdatepicker{
     
