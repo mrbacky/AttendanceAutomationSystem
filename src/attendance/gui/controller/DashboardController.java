@@ -123,7 +123,6 @@ public class DashboardController implements Initializable {
     }
 
     public void displayWeekChart() {
-        //barChartWeeklyStatus.setTitle("Country Summary");
         xWeekAxis.setLabel("Days");
         yWeekAxis.setLabel("Attendance");
 
