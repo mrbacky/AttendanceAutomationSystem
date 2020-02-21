@@ -9,10 +9,15 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootTeacherController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootLayoutController">
    <top>
       <HBox fx:id="buttonBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
          <children>
+            <JFXButton fx:id="btnToday" buttonType="RAISED" onAction="#showToday" ripplerFill="WHITE" text="Today" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="170.0" right="5.0" />
+               </HBox.margin>
+            </JFXButton>
             <JFXButton fx:id="btnDashboard" buttonType="RAISED" onAction="#showDashboard" text="Dashboard" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="5.0" />
@@ -23,7 +28,7 @@
                   <Insets left="10.0" right="5.0" />
                </HBox.margin>
             </JFXButton>
-            <Label styleClass="btnBarNameLabel" text="Hello Jeppe!">
+            <Label styleClass="btnBarNameLabel" text="Hello Jane Doe!">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
@@ -41,6 +46,6 @@
       </HBox>
    </top>
    <center>
-      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" styleClass="AnchorPane" stylesheets="@../css/style.css" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
