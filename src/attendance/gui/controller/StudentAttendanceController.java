@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -28,16 +29,17 @@ public class StudentAttendanceController implements Initializable {
 
     @FXML
     private TableView<AttendanceRecord> StudentAttTable;
+
     @FXML
-    private TableColumn<?, ?> DayCellTableview;
+    private TableColumn<AttendanceRecord, String> DayCellTableview;
     @FXML
-    private TableColumn<?, ?> DateCellTableview;
+    private TableColumn<AttendanceRecord, String> DateCellTableview;
     @FXML
-    private TableColumn<?, ?> TimeCell;
+    private TableColumn<AttendanceRecord, String> TimeCell;
     @FXML
-    private TableColumn<?, ?> SubjectCell;
+    private TableColumn<AttendanceRecord, String> SubjectCell;
     @FXML
-    private TableColumn<?, ?> StatusCell;
+    private TableColumn<AttendanceRecord, String> StatusCell;
     @FXML
     private JFXButton DayBtn;
     @FXML
@@ -54,19 +56,29 @@ public class StudentAttendanceController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    
     ObservableList<AttendanceRecord> StudentAttendance = FXCollections.observableArrayList(
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present")
-            );
-            
+            new AttendanceRecord("Monday", "10-02-2020", "3", "SCO", "Present"),
+            new AttendanceRecord("Monday", "10-02-2020", "3", "SCO", "Present"),
+            new AttendanceRecord("Monday", "10-02-2020", "3", "SCO", "Present"),
+            new AttendanceRecord("Monday", "10-02-2020", "3", "SCO", "Present")
+    );
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         displayAttendance();
-    }    
+        setTableViews();
+    }
+
+    public void setTableViews() {
+        DayCellTableview.setCellValueFactory(new PropertyValueFactory<>("day"));
+        DateCellTableview.setCellValueFactory(new PropertyValueFactory<>("date"));
+        TimeCell.setCellValueFactory(new PropertyValueFactory<>("time"));
+        SubjectCell.setCellValueFactory(new PropertyValueFactory<>("subject"));
+        StatusCell.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
     public void displayAttendance() {
         StudentAttTable.setItems(StudentAttendance);
-}
+
+    }
 }
