@@ -36,59 +36,59 @@
 
 
 .tablebuttons{
-    
-  -fx-border-style: solid;
-  -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
-       -fx-background-color: white;
-  
+
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
+    -fx-background-color: white;
+
 }
 
 .AnchorPane{
-   -fx-background-color: whitesmoke;
-    
+    -fx-background-color: whitesmoke;
+
 }
 
 #studentAttendance{
     -fx-font-size: 20px;
--fx-font-family: 'Montserrat', sans-serif;
-    
+    -fx-font-family: 'Montserrat', sans-serif;
+
 }
 
 #Studentmenubutton{
-    
+
     -fx-border-style: solid;
-  -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
-   -fx-background-color: white;
-   
+    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
+    -fx-background-color: white;
+
 }
 #buttontry{
-       -fx-border-style: solid;
-    
-     
+    -fx-border-style: solid;
+
+
 }
 
 #Tableviewstudentatt{
-     -fx-border-style: solid;
+    -fx-border-style: solid;
     -fx-background-color: white;
-       
-          
+
+
 
 }
 .Tableviewcells{
-     -fx-background-color: lightgrey;
-      -fx-border-style: solid;
-          -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);       
-    
+    -fx-background-color: lightgrey;
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);       
+
 }
 
 
 
 #studentdatepicker{
-    
-   
-   -fx-border-style: solid;
-   -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
-        -fx-background-color: white;
-    
-      color: white;
+
+
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);
+    -fx-background-color: white;
+
+
 }
