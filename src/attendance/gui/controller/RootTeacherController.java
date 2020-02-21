@@ -35,16 +35,16 @@ public class RootTeacherController implements Initializable {
     private AnchorPane attachable;
 
     
-    private final String DashboardModule = "src/attendance/gui/view/<TeacherDashboard>.fxml";
-    private final String AttendanceModule = "src/attendance/gui/view/<Student Attendance>.fxml";
+    private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
+    private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
     
     
     /**
-     * Initializes the controller class.
+     * Initializes the controller class.Jep 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        showModule(DashboardModule);
     }
 
     private void showModule(String urlToShow) {

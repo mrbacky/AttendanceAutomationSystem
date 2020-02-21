@@ -74,7 +74,18 @@ public class LoginController implements Initializable {
 
     }
 
-    public void showTeacherRoot() {
+    public void showTeacherRoot() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Attendance.class.getResource("/attendance/gui/view/RootTeacher.fxml"));
+        Parent user = loader.load();
+
+        // Show the scene containing the root layout.
+        //Scene rootLayoutScene = new Scene(rootLayout);
+        Stage stage = new Stage();
+        Scene scene = new Scene(user);
+        stage.setScene(scene);
+        stage.show();
+
     }
 
     @FXML
@@ -86,7 +97,7 @@ public class LoginController implements Initializable {
                 showTeacherRoot();
             } else {
                 showStudentRoot();
-                attendance.closeStage();
+//                attendance.closeStage();
                 
             }
         } else {
