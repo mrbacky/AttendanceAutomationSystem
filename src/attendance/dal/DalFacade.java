@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package attendance.dal;
 
-/**
- * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
-public class TeacherMockDAO {
+import attendance.be.User;
 
+/**
+ *
+ * @author annem
+ */
+public interface DalFacade {
+    
+    User auth(String insertedUsername, String password);
 }

@@ -6,6 +6,8 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
+import attendance.be.AttendanceRecord;
+import attendance.be.SubjectAttendance;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -18,22 +20,12 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 public class DashboardController implements Initializable {
-
-    final static String monday = "Mon";
-    final static String tuesday = "Tue";
-    final static String wednesday = "Wed";
-    final static String thursday = "Thu";
-    final static String friday = "Fri";
-
-    final static String jan = "Jan";
-    final static String feb = "Feb";
-    final static String mar = "Mar";
-    final static String apr = "Apr";
-    final static String may = "May";
-    final static String jun = "Jun";
 
     @FXML
     private BarChart<String, Number> barChartWeeklyStatus;
@@ -48,27 +40,86 @@ public class DashboardController implements Initializable {
     private NumberAxis ySemesterAxis;
     @FXML
     private CategoryAxis xSemesterAxis;
+
+    @FXML
+    private PieChart pieChartATT;
+    @FXML
+    private AnchorPane pieChartAnchorPane;
+    @FXML
+    private TableView<SubjectAttendance> tbvWeeklySubjectAttendance;
+
+    @FXML
+    private TableColumn<SubjectAttendance, String> colWeeklySubjects;
+    @FXML
+    private TableColumn<SubjectAttendance, Integer> colWeeklyOverall;
+    @FXML
+    private TableColumn<SubjectAttendance, String> colWeeklyDetails;
+
+    @FXML
+    private TableView<SubjectAttendance> tbvSemesterSubjectAttendance;
+    @FXML
+    private TableColumn<SubjectAttendance, String> colSemesterSubjects;
+    @FXML
+    private TableColumn<SubjectAttendance, Integer> colSemesterOverall;
+    @FXML
+    private TableColumn<SubjectAttendance, String> colSemesterDetails;
+
+    final static String monday = "Mon";
+    final static String tuesday = "Tue";
+    final static String wednesday = "Wed";
+    final static String thursday = "Thu";
+    final static String friday = "Fri";
+
+    final static String jan = "Jan";
+    final static String feb = "Feb";
+    final static String mar = "Mar";
+    final static String apr = "Apr";
+    final static String may = "May";
+    final static String jun = "Jun";
+
     // create pie chart data
     ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
             new PieChart.Data("Present", 75),
             new PieChart.Data("Absent", 25)
     );
-    
-    @FXML
-    private PieChart pieChartATT;
-    @FXML
-    private AnchorPane pieChartAnchorPane;
+
+    ObservableList<SubjectAttendance> weeklySubjectAttendances = FXCollections.observableArrayList(
+            new SubjectAttendance("SDE2.B.20", 84, "details"),
+            new SubjectAttendance("SCO2.B.20", 78, "details"),
+            new SubjectAttendance("ITO2.B.20", 69, "details"),
+            new SubjectAttendance("DBOS.B.20", 57, "details")
+    );
+
+    ObservableList<SubjectAttendance> semesterSubjectAttendances = FXCollections.observableArrayList(
+            new SubjectAttendance("SDE2.B.20", 74, "details"),
+            new SubjectAttendance("SCO2.B.20", 62, "details"),
+            new SubjectAttendance("ITO2.B.20", 30, "details"),
+            new SubjectAttendance("DBOS.B.20", 74, "details")
+    );
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        setTableViews();
+
         displayWeekChart();
         displaySemesterChart();
-        
         displayPieChart();
-        
+        displayWeeklyAttendance();
+        displaySemesterAttendances();
+
+    }
+
+    public void setTableViews() {
+        colWeeklySubjects.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colWeeklyOverall.setCellValueFactory(new PropertyValueFactory<>("overall"));
+        colWeeklyDetails.setCellValueFactory(new PropertyValueFactory<>("details"));
+
+        colSemesterSubjects.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colSemesterOverall.setCellValueFactory(new PropertyValueFactory<>("overall"));
+        colSemesterDetails.setCellValueFactory(new PropertyValueFactory<>("details"));
     }
 
     public void displayWeekChart() {
@@ -104,12 +155,20 @@ public class DashboardController implements Initializable {
         barChartSemesterStatus.getData().addAll(semesterSeries);
     }
 
-    public void displayPieChart(){
+    public void displayPieChart() {
         pieChartATT = new PieChart(pieData);
         //pieChartATT.setStyle("-fx-piechart-fill: green;");
         pieChartATT.setMaxSize(100, 100);
         pieChartAnchorPane.getChildren().clear();
         pieChartAnchorPane.getChildren().add(pieChartATT);
-        
+
+    }
+
+    public void displayWeeklyAttendance() {
+        tbvWeeklySubjectAttendance.setItems(weeklySubjectAttendances);
+    }
+
+    public void displaySemesterAttendances() {
+        tbvSemesterSubjectAttendance.setItems(semesterSubjectAttendances);
     }
 }

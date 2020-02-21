@@ -18,8 +18,8 @@ public class AttendanceRecord {
         setSubject(subject);
         setStatus(status);
     }
-    
-    
+
+
 
     public String getSubject() {
         return subject.get();
