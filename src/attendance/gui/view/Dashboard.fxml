@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.DashboardController">
+<AnchorPane prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.DashboardController">
    <children>
       <AnchorPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -39,11 +39,11 @@
          </children></AnchorPane>
       <AnchorPane layoutX="579.0" layoutY="14.0" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-            <TableView layoutY="34.0" prefHeight="216.0" prefWidth="207.0">
+            <TableView fx:id="tbvWeeklySubjectAttendance" layoutY="34.0" prefHeight="216.0" prefWidth="207.0">
               <columns>
-                <TableColumn text="Subjects" />
-                <TableColumn prefWidth="60.0" text="Overall" />
-                  <TableColumn prefWidth="64.0" text="Details" />
+                <TableColumn fx:id="colWeeklySubjects" text="Subjects" />
+                <TableColumn fx:id="colWeeklyOverall" prefWidth="60.0" text="Overall" />
+                  <TableColumn fx:id="colWeeklyDetails" prefWidth="64.0" text="Details" />
               </columns>
             </TableView>
             <Label layoutX="7.0" layoutY="4.0" text="Weekly Subject Attendance " />
@@ -61,11 +61,11 @@
          </children></AnchorPane>
       <AnchorPane layoutX="580.0" layoutY="268.0" prefHeight="250.0" prefWidth="200.0" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <children>
-            <TableView layoutY="34.0" prefHeight="216.0" prefWidth="206.0">
+            <TableView fx:id="tbvSemesterSubjectAttendance" layoutY="34.0" prefHeight="216.0" prefWidth="206.0">
               <columns>
-                <TableColumn prefWidth="78.0" text="Subjects" />
-                <TableColumn prefWidth="58.0" text="Overall" />
-                  <TableColumn prefWidth="67.0" text="Details" />
+                <TableColumn fx:id="colSemesterSubjects" prefWidth="78.0" text="Subjects" />
+                <TableColumn fx:id="colSemesterOverall" prefWidth="58.0" text="Overall" />
+                  <TableColumn fx:id="colSemesterDetails" prefWidth="67.0" text="Details" />
               </columns>
             </TableView>
             <Label layoutX="7.0" text="Semester Subject Attendance " />

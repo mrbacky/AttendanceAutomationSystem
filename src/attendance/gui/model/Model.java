@@ -3,26 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package attendance.dal;
+package attendance.gui.model;
 
 import attendance.be.User;
 import attendance.dal.Mock.MockUserDAO;
 
 /**
  *
- * @author annem
+ * @author Martin
  */
-public class DalManager implements DalFacade {
+public class Model {
 
     private final MockUserDAO UserDAO;
     
+    public Model() {
+         UserDAO = new MockUserDAO();
+    }
     
-    public DalManager(){
-        UserDAO = new MockUserDAO();
-        
-    
-}
     public User auth(String insertedUsername, String password){
     return UserDAO.auth(insertedUsername, password);
     }
-        }
+}
