@@ -5,10 +5,13 @@
  */
 package attendance.dal;
 
+import attendance.be.User;
+
 /**
  *
  * @author annem
  */
 public interface DalFacade {
     
+    User auth(String insertedUsername, String password);
 }

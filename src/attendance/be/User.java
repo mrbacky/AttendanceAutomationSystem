@@ -6,7 +6,38 @@ package attendance.be;
  */
 public class User {
 
-    public User(String username, String password, boolean isTeacher) {
+    private String username;
+    private String password;
+    private boolean isTeacher;
     
+    
+    public User(String username, String password, boolean isTeacher) {
+        this.username = username;
+        this.password = password;
+        this.isTeacher = isTeacher;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean getIsTeacher() {
+        return isTeacher;
+    }
+
+    public void setIsTeacher(boolean isTeacher) {
+        this.isTeacher = isTeacher;
     }
 }
