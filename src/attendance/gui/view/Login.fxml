@@ -15,7 +15,7 @@
       <Button fx:id="loginButton" layoutX="264.0" layoutY="304.0" mnemonicParsing="false" onAction="#BtnPressed" text="Login" />
       <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../Desktop/LARP/EASV%20RGB%20invert.png" />
+            <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
       <Label layoutX="213.0" layoutY="253.0" text="Password" />
