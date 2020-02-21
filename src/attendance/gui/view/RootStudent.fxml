@@ -46,6 +46,6 @@
       </HBox>
    </top>
    <center>
-      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <AnchorPane fx:id="attachable" prefHeight="200.0" prefWidth="200.0" styleClass="AnchorPane" stylesheets="@../css/style.css" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
