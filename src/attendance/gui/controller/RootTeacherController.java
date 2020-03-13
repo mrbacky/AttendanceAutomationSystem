@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package attendance.gui.controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,6 +16,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
+/**
+ * FXML Controller class
+ *
+ * @author Sammy Guergachi <sguergachi at gmail.com>
+ */
 public class RootTeacherController implements Initializable {
 
     @FXML
@@ -31,7 +40,7 @@ public class RootTeacherController implements Initializable {
     
     
     /**
-     * Initializes the controller class
+     * Initializes the controller class.Jep 
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {

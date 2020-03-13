@@ -43,9 +43,9 @@ public class RootStudentController implements Initializable {
     @FXML
     private AnchorPane attachable;
 
-    private final String TODAY_MODULE = "src/attendance/gui/view/Today.fxml";
-    private final String DASHBOARD_MODULE = "src/attendance/gui/view/Dashboard.fxml";
-    private final String STUDENT_MODULE = "src/attendance/gui/view/StudentAttendance.fxml";
+    private final String TodayModule = "src/attendance/gui/view/Today.fxml";
+    private final String DashboardModule = "src/attendance/gui/view/Dashboard.fxml";
+    private final String StudentModule = "src/attendance/gui/view/StudentAttendance.fxml";
     private LoginController loginController;
 
     /**
@@ -53,7 +53,7 @@ public class RootStudentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showModule(TODAY_MODULE);
+        showModule(TodayModule);
 
     }
 
@@ -75,18 +75,18 @@ public class RootStudentController implements Initializable {
 
     @FXML
     private void showToday(ActionEvent event) {
-        showModule(TODAY_MODULE);
+        showModule(TodayModule);
 
     }
 
     @FXML
     private void showDashboard(ActionEvent event) {
-        showModule(DASHBOARD_MODULE);
+        showModule(DashboardModule);
     }
 
     @FXML
     private void showStudentAttendance(ActionEvent event) {
-        showModule(STUDENT_MODULE);
+        showModule(StudentModule);
 
     }
 
