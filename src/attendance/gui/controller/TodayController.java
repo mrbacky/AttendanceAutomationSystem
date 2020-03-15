@@ -52,7 +52,8 @@ public class TodayController implements Initializable {
         
         AttendanceModel attendancerecmodel = new AttendanceModel();
         
-     
+                tglBtn1.setSelected(false);
+                tglBtn2.setSelected(false);
         
         // Toggle Button Present 
         tglBtn1.selectedProperty().addListener(new ChangeListener <Boolean>()
@@ -60,6 +61,8 @@ public class TodayController implements Initializable {
         {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                
+                
 
                 if(tglBtn1.isSelected()==true)
                 {
@@ -68,8 +71,8 @@ public class TodayController implements Initializable {
                 }
                 else 
                 {
-                   tglBtn1.setText("Not Recorded");
-                   tglBtn2.setSelected(false);
+                   tglBtn1.setText("");
+                   
                 }
 
             }
@@ -92,8 +95,8 @@ public class TodayController implements Initializable {
                 }
                 else 
                 {
-                   tglBtn2.setText("Not Recorded");
-                   tglBtn1.setSelected(false);
+                   tglBtn2.setText("");
+                   
 
                 }
 
