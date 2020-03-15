@@ -6,9 +6,12 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
+import attendance.gui.model.AttendanceModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -46,8 +49,65 @@ public class TodayController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        AttendanceModel attendancerecmodel = new AttendanceModel();
+        
+                tglBtn1.setSelected(false);
+                tglBtn2.setSelected(false);
+        
+        // Toggle Button Present 
+        tglBtn1.selectedProperty().addListener(new ChangeListener <Boolean>()
+        
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                
+                
+
+                if(tglBtn1.isSelected()==true)
+                {
+                   tglBtn1.setText("Present");
+                   tglBtn2.setSelected(false);
+                }
+                else 
+                {
+                   tglBtn1.setText("");
+                   
+                }
+
+            }
+            
+        });
+        
+        
+         // Toggle Button Absent 
+        tglBtn2.selectedProperty().addListener(new ChangeListener <Boolean>()
+        
+        {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+                if(tglBtn2.isSelected()==true)
+                {
+                   tglBtn2.setText("Absent");
+                   tglBtn1.setSelected(false);
+
+                }
+                else 
+                {
+                   tglBtn2.setText("");
+                   
+
+                }
+
+            }
+            
+        });
+       
+        
     } 
+    
+     
     
     
     
