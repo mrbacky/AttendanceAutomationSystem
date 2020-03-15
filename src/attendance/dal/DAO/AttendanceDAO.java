@@ -35,8 +35,6 @@ public class AttendanceDAO implements IAttendanceDAO {
             pstmt.setString(5, status);
             pstmt.executeUpdate();
 
-            
-
             AttendanceRecord record = new AttendanceRecord(day, date, time, subject, status);
 
         } catch (Exception e) {
