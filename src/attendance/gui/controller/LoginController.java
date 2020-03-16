@@ -45,6 +45,10 @@ public class LoginController implements Initializable {
     
     public LoginController loginController;
     private Attendance attendance;
+    
+    private User currentUser;
+    
+    
 
     /**
      * Initializes the controller class.
@@ -67,10 +71,14 @@ public class LoginController implements Initializable {
 
         // Show the scene containing the root layout.
         //Scene rootLayoutScene = new Scene(rootLayout);
+        RootStudentController controller = (RootStudentController) loader.getController();
+            
+            controller.setUser(currentUser);
         Stage stage = new Stage();
         Scene scene = new Scene(user);
         stage.setScene(scene);
         stage.show();
+        
 
     }
 
@@ -81,6 +89,7 @@ public class LoginController implements Initializable {
 
         // Show the scene containing the root layout.
         //Scene rootLayoutScene = new Scene(rootLayout);
+        
         Stage stage = new Stage();
         Scene scene = new Scene(user);
         stage.setScene(scene);
@@ -90,10 +99,10 @@ public class LoginController implements Initializable {
 
     @FXML
     private void BtnPressed(ActionEvent event) throws IOException {
-        User user = model.auth(usernameTxt.getText(), passwordTxt.getText());
-        if (user != null) {
+       currentUser = model.auth(usernameTxt.getText(), passwordTxt.getText());
+        if (currentUser != null) {
             //WrongPassword.setVisible(false);
-            if (user.getIsTeacher()) {
+            if (currentUser.getIsTeacher()) {
                 showTeacherRoot();
             } else {
                 showStudentRoot();

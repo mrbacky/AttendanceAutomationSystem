@@ -8,6 +8,7 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.AttendanceRecord;
 import attendance.be.SubjectAttendance;
+import attendance.be.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -169,5 +170,9 @@ public class DashboardController implements Initializable {
 
     public void displaySemesterAttendances() {
         tbvSemesterSubjectAttendance.setItems(semesterSubjectAttendances);
+    }
+
+    void setUser(User usr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

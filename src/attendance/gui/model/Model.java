@@ -15,12 +15,14 @@ import attendance.dal.Mock.MockUserDAO;
 public class Model {
 
     private final MockUserDAO UserDAO;
-    
+
     public Model() {
-         UserDAO = new MockUserDAO();
+        UserDAO = new MockUserDAO();
     }
-    
-    public User auth(String insertedUsername, String password){
-    return UserDAO.auth(insertedUsername, password);
+
+    public User auth(String insertedUsername, String password) {
+        
+        return UserDAO.auth(insertedUsername, password);
+        
     }
 }

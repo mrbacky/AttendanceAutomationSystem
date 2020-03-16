@@ -6,6 +6,7 @@
 package attendance.dal;
 
 import attendance.be.User;
+import java.time.LocalTime;
 
 /**
  *
@@ -14,4 +15,6 @@ import attendance.be.User;
 public interface DalFacade {
     
     User auth(String insertedUsername, String password);
+
+    public void markAttendance(User currentUser, String currentTask, LocalTime loc);
 }

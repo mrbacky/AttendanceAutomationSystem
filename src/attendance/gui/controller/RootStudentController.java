@@ -6,6 +6,7 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
+import attendance.be.User;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -25,6 +27,7 @@ import javafx.stage.Stage;
 
 /**
  * FXML Controller class
+ *
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
@@ -43,30 +46,49 @@ public class RootStudentController implements Initializable {
     @FXML
     private AnchorPane attachable;
 
-    private final String TodayModule = "src/attendance/gui/view/Today.fxml";
-    private final String DashboardModule = "src/attendance/gui/view/Dashboard.fxml";
-    private final String StudentModule = "src/attendance/gui/view/StudentAttendance.fxml";
+    private final String TodayModule = "/attendance/gui/view/Today.fxml";
+    private final String DashboardModule = "/attendance/gui/view/Dashboard.fxml";
+    private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
     private LoginController loginController;
+
+    private User usr;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showModule(TodayModule);
 
     }
 
 //    void setContr(LoginController loginController) {
 //        this.loginController = loginController;
 //    }
-
     private void showModule(String urlToShow) {
         try {
-            File file = new File(urlToShow);
-            URL url = file.toURI().toURL();
+
             attachable.getChildren().clear();
-            attachable.getChildren().add(FXMLLoader.load(url));
+
+            URL url = getClass().getResource(urlToShow);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(url);
+            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
+
+            attachable.getChildren().clear();///name of pane where you want to put the fxml.
+            attachable.getChildren().add(page);
+            
+            if (urlToShow.equals(TodayModule)) {
+                TodayController controller = (TodayController) fxmlLoader.getController();
+                controller.setUser(usr);
+            } else if (urlToShow.equals(DashboardModule)) {
+                DashboardController controller = (DashboardController) fxmlLoader.getController();
+                controller.setUser(usr);
+            } else {
+                StudentAttendanceController controller = (StudentAttendanceController) fxmlLoader.getController();
+                controller.setUser(usr);
+            }
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -92,6 +114,10 @@ public class RootStudentController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) {
+    }
+
+    void setUser(User currentUser) {
+        usr = currentUser;
     }
 
 }
