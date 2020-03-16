@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
+import attendance.bll.LogicManager;
 import attendance.gui.model.AttendanceModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
@@ -48,7 +49,8 @@ public class TodayController implements Initializable {
     private JFXToggleButton tglBtn2;
     
     private User user;
-    
+   
+    private String UsernameLabel;
     /**
      * Initializes the controller class.
      */
@@ -114,14 +116,16 @@ public class TodayController implements Initializable {
         
     } 
 
-    void setUser(User currentUser) {
+     void setUser(User currentUser) {
         System.out.println(currentUser.getUsername());
         user = currentUser;
-
+        
+        UsernameLabel = User.toString(user.getUsername());
+        lblUsername.setText(UsernameLabel);
         
     }
     
-    
+ 
      
     
     
