@@ -6,7 +6,6 @@ package attendance.dal.DAO;
  */
 public class UserDAO implements IUserDAO {
     private final DBConnectionProvider connection;
-
     public UserDAO() {
         connection = new DBConnectionProvider();
     }

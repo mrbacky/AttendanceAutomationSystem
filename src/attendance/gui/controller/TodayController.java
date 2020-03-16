@@ -6,9 +6,12 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
+import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -44,13 +47,14 @@ public class TodayController implements Initializable {
     @FXML
     private JFXToggleButton tglBtn2;
     
+    private User user;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        AttendanceModel attendancerecmodel = new AttendanceModel();
+       
         
                 tglBtn1.setSelected(false);
                 tglBtn2.setSelected(false);
@@ -67,6 +71,9 @@ public class TodayController implements Initializable {
                 if(tglBtn1.isSelected()==true)
                 {
                    tglBtn1.setText("Present");
+                   AttendanceModel x = AttendanceModel.getInstance();
+                   x.markAttendence(user,lblSubject1.getText());
+                   
                    tglBtn2.setSelected(false);
                 }
                 else 
@@ -106,6 +113,14 @@ public class TodayController implements Initializable {
        
         
     } 
+
+    void setUser(User currentUser) {
+        System.out.println(currentUser.getUsername());
+        user = currentUser;
+
+        
+    }
+    
     
      
     

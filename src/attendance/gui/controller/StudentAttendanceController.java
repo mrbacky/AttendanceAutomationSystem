@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.be.AttendanceRecord;
 import attendance.be.SubjectAttendance;
+import attendance.be.User;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
@@ -69,4 +70,8 @@ public class StudentAttendanceController implements Initializable {
     public void displayAttendance() {
         StudentAttTable.setItems(StudentAttendance);
 }
+
+    void setUser(User usr) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
