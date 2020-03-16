@@ -6,6 +6,10 @@ package attendance.be;
  */
 public class User {
 
+    public static String toString(String username) {
+        return username;
+    }
+
     private String username;
     private String password;
     private boolean isTeacher;

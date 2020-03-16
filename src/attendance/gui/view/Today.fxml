@@ -8,19 +8,19 @@
 
 <AnchorPane prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
    <children>
-      <Label layoutX="347.0" layoutY="149.0" text="Hello" />
-      <Label fx:id="lblUsername" layoutX="393.0" layoutY="149.0" text="Jane Doe!" />
-      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="368.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
+      <Label id="todaylbls" layoutX="358.0" layoutY="74.0" stylesheets="@../css/style.css" text="Hello" />
+      <Label id="todaylbls" fx:id="lblUsername" layoutX="406.0" layoutY="74.0" stylesheets="@../css/style.css" text="Jane Doe!" />
+      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="378.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icons8-male-user-96.png" />
          </image>
       </ImageView>
-      <Label fx:id="lblTodayDate" layoutX="342.0" layoutY="257.0" text="February 19, 2020" />
-      <Label fx:id="lblTime1" layoutX="242.0" layoutY="347.0" text="09:00 - 11:30" />
-      <Label fx:id="lblTime2" layoutX="242.0" layoutY="406.0" text="12:00 - 13:30" />
-      <Label fx:id="lblSubject1" layoutX="373.0" layoutY="348.0" text="SCO2.B.20 " />
-      <Label fx:id="lblSubject2" layoutX="377.0" layoutY="406.0" text="SDE2.B.20" />
-      <JFXToggleButton fx:id="tglBtn1" layoutX="457.0" layoutY="329.0" text="Not Recorded" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
-      <JFXToggleButton fx:id="tglBtn2" layoutX="457.0" layoutY="387.0" text="Not Recorded" textAlignment="RIGHT" toggleColor="#b90000" toggleLineColor="RED" />
+      <Label id="todaydatelbls" fx:id="lblTodayDate" layoutX="350.0" layoutY="216.0" stylesheets="@../css/style.css" text="February 19, 2020" />
+      <Label id="todaydatelbls" fx:id="lblTime1" layoutX="241.0" layoutY="328.0" stylesheets="@../css/style.css" text="09:00 - 11:30" />
+      <Label id="todaydatelbls" fx:id="lblTime2" layoutX="242.0" layoutY="386.0" stylesheets="@../css/style.css" text="12:00 - 13:30" />
+      <Label id="todaylbls" fx:id="lblSubject1" layoutX="378.0" layoutY="337.0" stylesheets="@../css/style.css" text="SCO2.B.20 " />
+      <Label id="todaylbls" fx:id="lblSubject2" layoutX="378.0" layoutY="395.0" stylesheets="@../css/style.css" text="SDE2.B.20" />
+      <JFXToggleButton fx:id="tglBtn1" layoutX="486.0" layoutY="318.0" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
+      <JFXToggleButton fx:id="tglBtn2" layoutX="486.0" layoutY="376.0" text="Unregistered" textAlignment="RIGHT" toggleColor="#b90000" toggleLineColor="RED" />
    </children>
 </AnchorPane>
