@@ -1,8 +1,10 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:500&display=swap');
 
+@import url('https://fonts.googleapis.com/css?family=Quattrocento+Sans&display=swap');
 
 
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina+2&display=swap');
 
 .label{
 
@@ -10,7 +12,7 @@
 
     -fx-font-size: 15px;
     -fx-font-family: 'Montserrat', sans-serif;
-
+    
 }
 
 .btnBarNameLabel{
@@ -92,3 +94,23 @@
 
 
 }
+
+#todaylbls{
+    
+   -fx-font-size:18px;
+   -fx-font-family: 'Quattrocento Sans', sans-serif;
+  
+
+   
+    
+}
+
+#todaydatelbls{
+    
+    -fx-font-size:18px;
+    -fx-font-family: 'Baloo Bhaina 2', cursive;
+}
+
+   
+
+ 
