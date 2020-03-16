@@ -22,9 +22,16 @@
 
 
 .button{
-    -fx-background-color: transparent;
+    
+    
+    
 
 
+}
+
+#loginBtn{
+    -fx-background-color: #FBBB2C;
+    -fx-font-size: 15px;
 }
 
 

@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.LoginController">
    <children>
-      <TextField fx:id="usernameTxt" layoutX="213.0" layoutY="227.0" />
-      <TextField fx:id="passwordTxt" layoutX="213.0" layoutY="271.0" />
-      <Button fx:id="loginButton" layoutX="264.0" layoutY="304.0" mnemonicParsing="false" onAction="#BtnPressed" text="Login" />
-      <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="185.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="181.0" AnchorPane.topAnchor="31.0">
          <image>
             <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
-      <Label layoutX="213.0" layoutY="253.0" text="Password" />
-      <Label layoutX="213.0" layoutY="210.0" text="Username" />
-      <Label fx:id="wrongPassword" layoutX="201.0" layoutY="182.0" text="Username or Password incorrect" textFill="RED" visible="false" />
-      <TextArea layoutX="425.0" layoutY="317.0" prefHeight="58.0" prefWidth="157.0" promptText="Hint: student: &quot;chili, chili&quot;  teacher: &quot;Jep, Jeppe&quot;" style="-fx-background-color: yellow;" />
+      <Label fx:id="wrongPassword" layoutX="201.0" layoutY="182.0" text="Username or Password incorrect" textFill="RED" visible="false" AnchorPane.bottomAnchor="95.0" />
+      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="234.0" layoutY="317.0" onAction="#BtnPressed" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" text="Log in" />
+      <JFXTextField fx:id="usernameTxt" focusColor="#009ee3" labelFloat="true" layoutX="234.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.leftAnchor="234.0" AnchorPane.rightAnchor="231.0" />
+      <JFXPasswordField fx:id="passwordTxt" focusColor="#009ee3" labelFloat="true" layoutX="234.0" layoutY="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Password" />
+      <Label layoutX="14.0" layoutY="365.0" text="Hint: student: &quot;chili, chili&quot;         teacher: &quot;Jep, Jeppe&quot;" />
    </children>
 </AnchorPane>
