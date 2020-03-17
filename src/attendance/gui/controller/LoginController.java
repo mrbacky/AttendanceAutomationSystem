@@ -22,12 +22,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -54,6 +56,9 @@ public class LoginController implements Initializable {
     @FXML
     private JFXPasswordField passwordField;
 
+    private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
+    private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
+
     /**
      * Initializes the controller class.
      */
@@ -67,57 +72,47 @@ public class LoginController implements Initializable {
         this.attendance = attendance;
     }
 
-    public void showStudentRoot() throws IOException {
+    public void showRoot(String rootToShow) {
+        try {
+            URL url = getClass().getResource(rootToShow);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(url);
+            Parent user = fxmlLoader.load();
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Attendance.class.getResource("/attendance/gui/view/RootStudent.fxml"));
-        Parent user = loader.load();
+            if (rootToShow.equals(ROOT_STUDENT)) {
+                RootStudentController controller = (RootStudentController) fxmlLoader.getController();
+                controller.setUser(currentUser);
 
-        // Show the scene containing the root layout.
-        //Scene rootLayoutScene = new Scene(rootLayout);
-        RootStudentController controller = (RootStudentController) loader.getController();
+            } else if (rootToShow.equals(ROOT_TEACHER)) {
+                RootTeacherController controller = (RootTeacherController) fxmlLoader.getController();
+                controller.setUser(currentUser);
+            }
+            Stage stage = new Stage();
+            Scene scene = new Scene(user);
+            stage.setScene(scene);
+            stage.show();
 
-        controller.setUser(currentUser);
-        Stage stage = new Stage();
-        Scene scene = new Scene(user);
-        stage.setScene(scene);
-        stage.show();
-
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
-    public void showTeacherRoot() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Attendance.class.getResource("/attendance/gui/view/RootTeacher.fxml"));
-        Parent user = loader.load();
-
-        // Show the scene containing the root layout.
-        //Scene rootLayoutScene = new Scene(rootLayout);
-        Stage stage = new Stage();
-        Scene scene = new Scene(user);
-        stage.setScene(scene);
-        stage.show();
-
-    }
-
-    private void fieldValidator() {
+    private void fieldValidator() {//   could be also decoupled 
         RequiredFieldValidator usernameValidator = new RequiredFieldValidator();
         RequiredFieldValidator passwordValidator = new RequiredFieldValidator();
-        
-        
-        
+
         usernameField.getValidators().add(usernameValidator);
         usernameValidator.setMessage("Please fill out username.");
 
         passwordField.getValidators().add(passwordValidator);
         passwordValidator.setMessage("Please fill out password");
-        
-        
+
         usernameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue) {
                 usernameField.validate();
             }
         });
-        
+
         passwordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue) {
                 passwordField.validate();
@@ -126,47 +121,44 @@ public class LoginController implements Initializable {
 
     }
 
-    @FXML
-
+    @FXML//   could be also decoupled 
     private void BtnPressed(ActionEvent event) throws IOException {
-
         currentUser = model.auth(usernameField.getText(), passwordField.getText());
         if (currentUser != null) {
-            //WrongPassword.setVisible(false);
             if (currentUser.getIsTeacher()) {
-                showTeacherRoot();
-//                attendance.closeStage();
+                showRoot(ROOT_TEACHER);
+                closeLogin();
             } else {
-                showStudentRoot();
-//                attendance.closeStage();
-
+                showRoot(ROOT_STUDENT);
+                closeLogin();
             }
         } else {
             wrongPassword.setVisible(true);
         }
     }
 
-    @FXML
+    @FXML//   could be also decoupled 
     private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException {
-
+        currentUser = model.auth(usernameField.getText(), passwordField.getText());
         if (event.getCode() == KeyCode.ENTER) {
             currentUser = model.auth(usernameField.getText(), passwordField.getText());
             if (currentUser != null) {
-                //WrongPassword.setVisible(false);
                 if (currentUser.getIsTeacher()) {
-                    showTeacherRoot();
-//                    attendance.closeStage();
+                    showRoot(ROOT_TEACHER);
+                    closeLogin();
                 } else {
-                    showStudentRoot();
-//                    attendance.closeStage();
-
+                    showRoot(ROOT_STUDENT);
+                    closeLogin();
                 }
             } else {
                 wrongPassword.setVisible(true);
-
             }
-
         }
+    }
 
+    public void closeLogin() {
+        Stage loginStage;
+        loginStage = (Stage) loginButton.getScene().getWindow();
+        loginStage.close();
     }
 }

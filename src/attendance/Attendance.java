@@ -48,11 +48,7 @@ public class Attendance extends Application {
         }
     }
 
-    public void closeStage() {
-        
-        primaryStage.getScene().getWindow().hide();
-        
-    }
+    
 
     /**
      * @param args the command line arguments

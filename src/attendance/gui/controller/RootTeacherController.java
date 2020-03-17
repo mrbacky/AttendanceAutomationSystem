@@ -5,6 +5,7 @@
  */
 package attendance.gui.controller;
 
+import attendance.be.User;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.net.URL;
@@ -37,6 +38,7 @@ public class RootTeacherController implements Initializable {
     
     private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
     private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
+    private User usr;
     
     
     /**
@@ -72,6 +74,10 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) {
+    }
+
+    void setUser(User currentUser) {
+        usr = currentUser;
     }
 
 }
