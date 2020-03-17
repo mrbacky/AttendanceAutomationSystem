@@ -29,11 +29,13 @@
 
 }
 
-#loginBtn{
-    -fx-background-color: #FBBB2C;
-    -fx-font-size: 15px;
-}
 
+
+#lblWrongPassword{
+    -fx-text-fill: red;
+    -fx-font-size: 13px;
+    
+}
 
 .btnBar{
     -fx-background-color: #A31621;
@@ -98,4 +100,24 @@
     -fx-background-color: white;
 
 
+}
+
+#lblHint{
+    -fx-font-size: 15px;
+    -fx-text-fill: grey;
+}
+
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 9px;
+}
+
+#loginBtn{
+    -fx-background-color: #FBBB2C;
+    -fx-font-size: 15px;
+    -fx-margin-top: 20px;
+}
+
+#usernameTxtField{
+    margin-top: 20px;
 }

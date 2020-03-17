@@ -9,10 +9,15 @@ import attendance.Attendance;
 import attendance.be.User;
 import attendance.dal.Mock.MockUserDAO;
 import attendance.gui.model.Model;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,13 +38,7 @@ import javafx.stage.Stage;
 public class LoginController implements Initializable {
 
     @FXML
-    private TextField usernameTxt;
-    @FXML
-    private TextField passwordTxt;
-    @FXML
     private Button loginButton;
-
-    private Label WrongPassword;
 
     private RootStudentController rootStudentController;
 
@@ -49,6 +48,11 @@ public class LoginController implements Initializable {
     @FXML
     private Label wrongPassword;
     private Model model;
+    private Attendance attendance;
+    @FXML
+    private JFXTextField usernameField;
+    @FXML
+    private JFXPasswordField passwordField;
 
     /**
      * Initializes the controller class.
@@ -56,10 +60,11 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new Model();
+        fieldValidator();
     }
 
     public void setMainApp(Attendance attendance) {
-
+        this.attendance = attendance;
     }
 
     public void showStudentRoot() throws IOException {
@@ -94,40 +99,71 @@ public class LoginController implements Initializable {
 
     }
 
+    private void fieldValidator() {
+        RequiredFieldValidator usernameValidator = new RequiredFieldValidator();
+        RequiredFieldValidator passwordValidator = new RequiredFieldValidator();
+        
+        
+        
+        usernameField.getValidators().add(usernameValidator);
+        usernameValidator.setMessage("Please fill out username.");
+
+        passwordField.getValidators().add(passwordValidator);
+        passwordValidator.setMessage("Please fill out password");
+        
+        
+        usernameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                usernameField.validate();
+            }
+        });
+        
+        passwordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (!newValue) {
+                passwordField.validate();
+            }
+        });
+
+    }
+
     @FXML
+
     private void BtnPressed(ActionEvent event) throws IOException {
 
-        currentUser = model.auth(usernameTxt.getText(), passwordTxt.getText());
+        currentUser = model.auth(usernameField.getText(), passwordField.getText());
         if (currentUser != null) {
             //WrongPassword.setVisible(false);
             if (currentUser.getIsTeacher()) {
                 showTeacherRoot();
+//                attendance.closeStage();
             } else {
                 showStudentRoot();
 //                attendance.closeStage();
 
             }
         } else {
-            WrongPassword.setVisible(true);
+            wrongPassword.setVisible(true);
         }
     }
 
     @FXML
-    private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException {
+    private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException {
 
         if (event.getCode() == KeyCode.ENTER) {
-            currentUser = model.auth(usernameTxt.getText(), passwordTxt.getText());
+            currentUser = model.auth(usernameField.getText(), passwordField.getText());
             if (currentUser != null) {
                 //WrongPassword.setVisible(false);
                 if (currentUser.getIsTeacher()) {
                     showTeacherRoot();
+//                    attendance.closeStage();
                 } else {
                     showStudentRoot();
-//                attendance.closeStage();
+//                    attendance.closeStage();
 
                 }
             } else {
-                WrongPassword.setVisible(true);
+                wrongPassword.setVisible(true);
+
             }
 
         }

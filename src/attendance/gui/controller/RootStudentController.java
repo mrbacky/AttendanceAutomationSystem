@@ -58,7 +58,7 @@ public class RootStudentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        showModule(TodayModule);
     }
 
 //    void setContr(LoginController loginController) {
@@ -66,8 +66,6 @@ public class RootStudentController implements Initializable {
 //    }
     private void showModule(String urlToShow) {
         try {
-
-            attachable.getChildren().clear();
 
             URL url = getClass().getResource(urlToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -77,7 +75,7 @@ public class RootStudentController implements Initializable {
 
             attachable.getChildren().clear();///name of pane where you want to put the fxml.
             attachable.getChildren().add(page);
-            
+
             if (urlToShow.equals(TodayModule)) {
                 TodayController controller = (TodayController) fxmlLoader.getController();
                 controller.setUser(usr);
