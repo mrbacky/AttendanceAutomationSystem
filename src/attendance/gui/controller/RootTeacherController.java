@@ -8,14 +8,18 @@ package attendance.gui.controller;
 import attendance.be.User;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -39,6 +43,7 @@ public class RootTeacherController implements Initializable {
     private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
     private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
     private User usr;
+      private final String LoginPage =  "/attendance/gui/view/Login.fxml";
     
     
     /**
@@ -49,7 +54,7 @@ public class RootTeacherController implements Initializable {
         showModule(DashboardModule);
     }
 
-    private void showModule(String urlToShow) {
+    public void showModule(String urlToShow) {
         try {
             File file = new File(urlToShow);
             URL url = file.toURI().toURL();
@@ -73,7 +78,23 @@ public class RootTeacherController implements Initializable {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handleLogout(ActionEvent event) throws IOException {
+        
+        
+       Stage logOutStage;
+        logOutStage = (Stage) btnLogout.getScene().getWindow();
+         logOutStage.close();
+         
+         
+         URL url = getClass().getResource(LoginPage);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(url);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+        
     }
 
     void setUser(User currentUser) {
