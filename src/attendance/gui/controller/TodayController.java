@@ -8,12 +8,12 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.AttendanceRecord;
 import attendance.be.User;
-import attendance.bll.LogicManager;
 import attendance.gui.model.AttendanceModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -52,12 +52,16 @@ public class TodayController implements Initializable {
     private User user;
    
     private String UsernameLabel;
+   
+   
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
+        showCurrentDate();
         
                 tglBtn1.setSelected(false);
                 tglBtn2.setSelected(false);
@@ -132,18 +136,28 @@ public class TodayController implements Initializable {
         AttendanceRecord atrec = currentProperties;
             
         String TimeLabel = atrec.getTime();
-        String DateLabel = atrec.getDate(); //Add local time?
+        
         String SubjectLabel = atrec.getSubject();
                 
           lblTime1.setText(TimeLabel);
           lblTime2.setText(TimeLabel);
           
-          lblTodayDate.setText(DateLabel);
+         
           
           lblSubject1.setText(SubjectLabel);
           lblSubject2.setText(SubjectLabel);
  }
     
+      
+      public void showCurrentDate() {
+          
+          
+      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+      Calendar cal = Calendar.getInstance();
+                
+      lblTodayDate.setText(dateFormat.format(cal.getTime()));
+      
+}
     
     
 }
