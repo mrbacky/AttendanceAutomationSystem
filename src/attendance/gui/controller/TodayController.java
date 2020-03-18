@@ -6,7 +6,6 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.be.AttendanceRecord;
 import attendance.be.User;
 import attendance.bll.LogicManager;
 import attendance.gui.model.AttendanceModel;
@@ -50,7 +49,6 @@ public class TodayController implements Initializable {
     private JFXToggleButton tglBtn2;
     
     private User user;
-    private AttendanceRecord atrec;
    
     private String UsernameLabel;
     /**
@@ -127,22 +125,7 @@ public class TodayController implements Initializable {
         
     }
     
-    public void setTime(AttendanceRecord currentProperties ){
-          
-        atrec = currentProperties;
-            
-        String TimeLabel = atrec.getTime();
-        String DateLabel = atrec.getDate(); //Add local time?
-        String SubjectLabel = atrec.getSubject();
-                
-          lblTime1.setText(TimeLabel);
-          lblTime2.setText(TimeLabel);
-          
-          lblTodayDate.setText(DateLabel);
-          
-          lblSubject1.setText(SubjectLabel);
-          lblSubject2.setText(SubjectLabel);
- }
+ 
      
     
     
