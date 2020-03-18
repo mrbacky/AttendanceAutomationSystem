@@ -7,7 +7,7 @@ public class AttendanceRecord {
 
     private final StringProperty subject = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
-    private final StringProperty time = new SimpleStringProperty();
+    private final StringProperty time = new SimpleStringProperty();  // change type
     private final StringProperty day = new SimpleStringProperty();
     private final StringProperty date = new SimpleStringProperty();
 

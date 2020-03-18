@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +52,8 @@ public class RootStudentController implements Initializable {
     private final String DashboardModule = "/attendance/gui/view/Dashboard.fxml";
     private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
     private LoginController loginController;
+    private final String LoginPage =  "/attendance/gui/view/Login.fxml";
+
 
     private User usr;
 
@@ -111,7 +115,25 @@ public class RootStudentController implements Initializable {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handleLogout(ActionEvent event) throws IOException {
+        
+      
+       Stage logOutStage;
+        logOutStage = (Stage) btnLogout.getScene().getWindow();
+         logOutStage.close();
+         
+         
+         URL url = getClass().getResource(LoginPage);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(url);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+       
+        
+        
     }
 
     void setUser(User currentUser) {
