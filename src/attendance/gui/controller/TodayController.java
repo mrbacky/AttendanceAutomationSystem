@@ -9,9 +9,7 @@ import attendance.Attendance;
 import attendance.be.AttendanceRecord;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXToggleButton;
-import com.jfoenix.controls.JFXTreeTableColumn;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,15 +21,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -64,8 +53,6 @@ public class TodayController implements Initializable {
    
     private String UsernameLabel;
    
-    @FXML
-    private JFXTreeTableView<?> TableView;
    
     
     /**
@@ -73,42 +60,7 @@ public class TodayController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        JFXTreeTableColumn<AttendanceRecord,String> subjectName = new JFXTreeTableColumn<>("Courses");
-        subjectName.setPrefWidth(150);
-        subjectName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<AttendanceRecord, String>, ObservableValue<String>>(){
-             @Override
-                 public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<AttendanceRecord,String> parm){
-                  return parm.getValue().getValue().subjects;
-                 
-                 }
-                });   
-             
-        JFXTreeTableColumn<AttendanceRecord,String> Time = new JFXTreeTableColumn<>("Time");
-        Time.setPrefWidth(150);
-        Time.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<AttendanceRecord, String>, ObservableValue<String>>(){
-             @Override
-                 public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<AttendanceRecord,String> parm){
-                  return parm.getValue().getValue().time;
-                 
-                 }
-                });   
-    
-        /*
-           ObservableList<AttendanceRecord> attendanceRecord = FXCollections.observableArrayList();
-           attendanceRecord.add(new AttendanceRecord("SCO2","1"));
-           attendanceRecord.add(new AttendanceRecord("9:30","2"));
        
-        final TreeItem<AttendanceRecord>root = new RecursiveTreeItem((Callback) attendanceRecord);
-      //    TableView.getColumns().setAll(subjectName,Time );
-      //    TableView.setRoot(root);
-      //    TableView.setShowRoot(false);
-          
-        
-        */  
-        
-           
-           
         showCurrentDate();
         
                 tglBtn1.setSelected(false);
@@ -182,9 +134,16 @@ public class TodayController implements Initializable {
       public void setTime(AttendanceRecord currentProperties ){
           
         AttendanceRecord atrec = currentProperties;
-
-        String SubjectLabel = atrec.getSubject();
+            
+        String TimeLabel = atrec.getTime();
         
+        String SubjectLabel = atrec.getSubject();
+                
+          lblTime1.setText(TimeLabel);
+          lblTime2.setText(TimeLabel);
+          
+         
+          
           lblSubject1.setText(SubjectLabel);
           lblSubject2.setText(SubjectLabel);
  }
