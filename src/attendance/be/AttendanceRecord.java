@@ -2,14 +2,16 @@ package attendance.be;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 
 public class AttendanceRecord {
 
     private final StringProperty subject = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
-    private final StringProperty time = new SimpleStringProperty();  // change type
+    public final  StringProperty time = new SimpleStringProperty();  // change type
     private final StringProperty day = new SimpleStringProperty();
     private final StringProperty date = new SimpleStringProperty();
+    public ObservableValue<String> subjects;
 
     public AttendanceRecord(String day,String date,String time ,String subject, String status) {
         setDay(day);
@@ -19,6 +21,7 @@ public class AttendanceRecord {
         setStatus(status);
     }
 
+    
 
 
     public String getSubject() {
