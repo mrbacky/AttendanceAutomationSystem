@@ -6,6 +6,8 @@
 package attendance.gui.model;
 
 import attendance.be.User;
+import attendance.bll.LogicFacade;
+import attendance.bll.LogicManager;
 import attendance.dal.Mock.MockUserDAO;
 
 /**
@@ -14,15 +16,34 @@ import attendance.dal.Mock.MockUserDAO;
  */
 public class Model {
 
+    private static Model model;
     private final MockUserDAO UserDAO;
+    private final LogicFacade logicManager;
 
-    public Model() {
+    /**
+     * Create instance of Singleton.
+     *
+     * @return
+     */
+    public static Model getInstance() {
+        if (model == null) {
+            model = new Model();
+        }
+        return model;
+    }
+
+    private Model() {
         UserDAO = new MockUserDAO();
+        logicManager = new LogicManager();
     }
 
     public User auth(String insertedUsername, String password) {
-        
+
         return UserDAO.auth(insertedUsername, password);
-        
+
+    }
+
+    public User login(String username, String password) {
+        return logicManager.getUser(username, password);
     }
 }

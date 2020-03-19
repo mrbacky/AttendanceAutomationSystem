@@ -20,8 +20,15 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
+    public User getUser(String username, String password) {
+        //hash password here. create a tool in a utility folder and call method from there.
+        return dalFacade.getUser(username, password);        
+    }
+
+    @Override
     public void markAttendance(User currentUser, String currentTask) {
         LocalTime loc = java.time.LocalTime.now();
         dalFacade.markAttendance(currentUser, currentTask, loc);
     }
+
 }
