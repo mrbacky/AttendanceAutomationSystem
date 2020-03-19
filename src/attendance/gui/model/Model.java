@@ -18,7 +18,8 @@ public class Model {
 
     private final MockUserDAO mockUserDAO;
     private static Model model;
-    
+    private User currentUser;
+
     private final LogicFacade logicManager;
 
     /**
@@ -38,16 +39,12 @@ public class Model {
         mockUserDAO = new MockUserDAO();
     }
 
-    public User auth(String insertedUsername, String password) {
-        return mockUserDAO.auth(insertedUsername, password);
-    }
-
     public User getCurrentUser() {
-        return mockUserDAO.getCurrentUser();
+        return currentUser;
     }
-
 
     public User login(String username, String password) {
+        currentUser = logicManager.getUser(username, password);
         return logicManager.getUser(username, password);
     }
 }

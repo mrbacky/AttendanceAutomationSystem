@@ -41,6 +41,8 @@ public class RootTeacherController implements Initializable {
 
     private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
     private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
+    private final String LoginPage = "/attendance/gui/view/Login.fxml";
+
     private User user;
 
     /**
@@ -51,7 +53,7 @@ public class RootTeacherController implements Initializable {
 
         showModule(DashboardModule);
         if (user != null) {
-            String firstName = user.getRealName();
+            String firstName = user.getName();
             System.out.println("this is first nameeee   " + firstName);
         }
 
@@ -82,22 +84,20 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        
-        
-       Stage logOutStage;
+
+        Stage logOutStage;
         logOutStage = (Stage) btnLogout.getScene().getWindow();
-         logOutStage.close();
-         
-         
-         URL url = getClass().getResource(LoginPage);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
+        logOutStage.close();
+
+        URL url = getClass().getResource(LoginPage);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(url);
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-        
+
     }
 
     void setUser(User currentUser) {

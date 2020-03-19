@@ -34,10 +34,10 @@ public class DalManager implements DalFacade {
         mockAttendanceDAO = new MockAttendanceDAO();
     }
 
-    @Override
-    public User auth(String insertedUsername, String password) {
-        return UserDAO.auth(insertedUsername, password);
-    }
+//    @Override
+//    public User auth(String insertedUsername, String password) {
+//        return UserDAO.auth(insertedUsername, password);
+//    }
     
     @Override
     public User getUser(String username, String password) {
@@ -47,6 +47,11 @@ public class DalManager implements DalFacade {
     @Override
     public void markAttendance(User currentUser, String currentTask, LocalTime loc) {
         mockAttendanceDAO.markAttendance(currentUser, currentTask, loc);
+    }
+
+    @Override
+    public User auth(String insertedUsername, String password) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

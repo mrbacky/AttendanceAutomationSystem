@@ -34,7 +34,7 @@ public class User {
 
     
     
-    
+    /*
     
     public static String toString(String username) {
         return username;
@@ -84,5 +84,5 @@ public class User {
         this.isTeacher = isTeacher;
     }
 
-    
+    */
 }
