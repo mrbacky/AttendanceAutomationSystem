@@ -25,7 +25,7 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public User getUser(String username, String password) {
-        String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM [User] WHERE username = ? AND password = ?";
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);

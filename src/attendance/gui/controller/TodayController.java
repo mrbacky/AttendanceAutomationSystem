@@ -63,6 +63,7 @@ public class TodayController implements Initializable {
         this.model = Model.getInstance();
         initToggleButtons();
         setUser();
+        showCurrentDate();
     }
 
     public void initToggleButtons() {
@@ -75,25 +76,36 @@ public class TodayController implements Initializable {
                 tglBtn1.setText("Present");
                 AttendanceModel x = AttendanceModel.getInstance();
                 x.markAttendence(user, lblSubject1.getText());
-                tglBtn2.setSelected(false);
+                
             } else {
-                tglBtn1.setText("");
+                tglBtn1.setText("Unregistered");
 
             }
         });
 
         // Toggle Button Absent 
         tglBtn2.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                
             if (tglBtn2.isSelected() == true) {
                 tglBtn2.setText("Absent");
-                tglBtn1.setSelected(false);
+                
 
             } else {
-                tglBtn2.setText("");
+                tglBtn2.setText("Unregistered");
             }
         });
     }
 
+    public void showCurrentDate() {
+
+
+      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+      Calendar cal = Calendar.getInstance();
+
+      lblTodayDate.setText(dateFormat.format(cal.getTime()));
+
+}
+    
     private void setUser() {
 
         user = model.getCurrentUser();

@@ -49,8 +49,8 @@ public class AttendanceDAO implements IAttendanceDAO {
 
         return null;
     }
-*/
-    
+
+    */
     
     public ArrayList<Course> getCourse() throws SQLServerException{
         ArrayList<Course> courses = new ArrayList();
