@@ -9,6 +9,7 @@ import attendance.Attendance;
 import attendance.be.AttendanceRecord;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
+import attendance.gui.model.Model;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
 import java.text.DateFormat;
@@ -48,116 +49,58 @@ public class TodayController implements Initializable {
     private JFXToggleButton tglBtn1;
     @FXML
     private JFXToggleButton tglBtn2;
-    
+
     private User user;
-   
+
     private String UsernameLabel;
-   
-   
-    
+    private Model model;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-        showCurrentDate();
-        
-                tglBtn1.setSelected(false);
-                tglBtn2.setSelected(false);
-        
-        // Toggle Button Present 
-        tglBtn1.selectedProperty().addListener(new ChangeListener <Boolean>()
-        
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                
-                
-
-                if(tglBtn1.isSelected()==true)
-                {
-                   tglBtn1.setText("Present");
-                   AttendanceModel x = AttendanceModel.getInstance();
-                   x.markAttendence(user,lblSubject1.getText());
-                   
-                   tglBtn2.setSelected(false);
-                }
-                else 
-                {
-                   tglBtn1.setText("");
-                   
-                }
-
-            }
-            
-        });
-        
-        
-         // Toggle Button Absent 
-        tglBtn2.selectedProperty().addListener(new ChangeListener <Boolean>()
-        
-        {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
-                if(tglBtn2.isSelected()==true)
-                {
-                   tglBtn2.setText("Absent");
-                   tglBtn1.setSelected(false);
-
-                }
-                else 
-                {
-                   tglBtn2.setText("");
-                   
-
-                }
-
-            }
-            
-        });
-       
-        
-    } 
-
-     void setUser(User currentUser) {
-        System.out.println(currentUser.getUsername());
-        user = currentUser;
-        
-        UsernameLabel = User.toString(user.getUsername());
-        lblUsername.setText(UsernameLabel);
-        
+        this.model = Model.getInstance();
+        initToggleButtons();
+        setUser();
     }
-    
- 
-      public void setTime(AttendanceRecord currentProperties ){
-          
-        AttendanceRecord atrec = currentProperties;
-            
-        String TimeLabel = atrec.getTime();
-        
-        String SubjectLabel = atrec.getSubject();
-                
-          lblTime1.setText(TimeLabel);
-          lblTime2.setText(TimeLabel);
-          
-         
-          
-          lblSubject1.setText(SubjectLabel);
-          lblSubject2.setText(SubjectLabel);
- }
-    
-      
-      public void showCurrentDate() {
-          
-          
-      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-      Calendar cal = Calendar.getInstance();
-                
-      lblTodayDate.setText(dateFormat.format(cal.getTime()));
-      
-}
-    
-    
+
+    public void initToggleButtons() {
+        tglBtn1.setSelected(false);
+        tglBtn2.setSelected(false);
+
+        // Toggle Button Present 
+        tglBtn1.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (tglBtn1.isSelected() == true) {
+                tglBtn1.setText("Present");
+                AttendanceModel x = AttendanceModel.getInstance();
+                x.markAttendence(user, lblSubject1.getText());
+                tglBtn2.setSelected(false);
+            } else {
+                tglBtn1.setText("");
+
+            }
+        });
+
+        // Toggle Button Absent 
+        tglBtn2.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            if (tglBtn2.isSelected() == true) {
+                tglBtn2.setText("Absent");
+                tglBtn1.setSelected(false);
+
+            } else {
+                tglBtn2.setText("");
+            }
+        });
+    }
+
+    private void setUser() {
+
+        user = model.getCurrentUser();
+        lblUsername.setText( user.getRealName());
+
+//        UsernameLabel = User.toString(user.getUsername());
+//        lblUsername.setText(UsernameLabel);
+    }
+
 }

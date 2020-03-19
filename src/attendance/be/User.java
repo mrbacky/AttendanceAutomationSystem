@@ -50,6 +50,16 @@ public class User {
         this.isTeacher = isTeacher;
     }
 
+    
+    
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -66,11 +76,13 @@ public class User {
         this.password = password;
     }
 
-    public boolean getIsTeacher() {
+    public char getIsTeacher() {
         return isTeacher;
     }
 
-    public void setIsTeacher(boolean isTeacher) {
+    public void setIsTeacher(char isTeacher) {
         this.isTeacher = isTeacher;
     }
+
+    
 }

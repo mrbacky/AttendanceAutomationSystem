@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
+import attendance.gui.model.Model;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -22,19 +23,14 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class RootStudentController implements Initializable {
-
+    
     @FXML
     private HBox buttonBar;
     @FXML
@@ -47,22 +43,27 @@ public class RootStudentController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
-
+    
     private final String TodayModule = "/attendance/gui/view/Today.fxml";
     private final String DashboardModule = "/attendance/gui/view/Dashboard.fxml";
     private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
     private LoginController loginController;
-    private final String LoginPage =  "/attendance/gui/view/Login.fxml";
-
-
-    private User usr;
+    
+    private User currentUser;
+    @FXML
+    private Label lblHello;
+    private Model model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        showModule(TodayModule);
+        
+        model = Model.getInstance();
+setUser();
+        //  set     and show
+        //
     }
 
 //    void setContr(LoginController loginController) {
@@ -70,50 +71,42 @@ public class RootStudentController implements Initializable {
 //    }
     private void showModule(String urlToShow) {
         try {
-
+            
             URL url = getClass().getResource(urlToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
             AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
-
-            attachable.getChildren().clear();///name of pane where you want to put the fxml.
+            
+            attachable.getChildren().clear();
             attachable.getChildren().add(page);
+            ///name of pane where you want to put the fxml.
 
-            if (urlToShow.equals(TodayModule)) {
-                TodayController controller = (TodayController) fxmlLoader.getController();
-                controller.setUser(usr);
-            } else if (urlToShow.equals(DashboardModule)) {
-                DashboardController controller = (DashboardController) fxmlLoader.getController();
-                controller.setUser(usr);
-            } else {
-                StudentAttendanceController controller = (StudentAttendanceController) fxmlLoader.getController();
-                controller.setUser(usr);
-            }
-
+          
+            
         } catch (Exception e) {
             System.out.println(e);
         }
-
+        
     }
-
+    
     @FXML
     private void showToday(ActionEvent event) {
         showModule(TodayModule);
-
+        
     }
-
+    
     @FXML
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }
-
+    
     @FXML
     private void showStudentAttendance(ActionEvent event) {
         showModule(StudentModule);
-
+        
     }
-
+    
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
         
@@ -135,9 +128,13 @@ public class RootStudentController implements Initializable {
         
         
     }
-
-    void setUser(User currentUser) {
-        usr = currentUser;
+    
+    private void setUser() {
+        System.out.println("ShownUser in controller");
+        this.currentUser = model.getCurrentUser();
+        showModule(TodayModule);
+        lblHello.setText( currentUser.getRealName());
+        
     }
-
+    
 }

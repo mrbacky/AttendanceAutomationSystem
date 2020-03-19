@@ -15,9 +15,12 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +34,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import java.awt.SystemTray;
 
 /**
  * FXML Controller class
@@ -58,14 +62,17 @@ public class LoginController implements Initializable {
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
+    private User user;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = new Model();
+        this.model = Model.getInstance();
+
         fieldValidator();
+
     }
 
     public void setMainApp(Attendance attendance) {
@@ -77,18 +84,10 @@ public class LoginController implements Initializable {
             URL url = getClass().getResource(rootToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
-            Parent user = fxmlLoader.load();
+            Parent root = fxmlLoader.load();
 
-            if (rootToShow.equals(ROOT_STUDENT)) {
-                RootStudentController controller = (RootStudentController) fxmlLoader.getController();
-                controller.setUser(currentUser);
-
-            } else if (rootToShow.equals(ROOT_TEACHER)) {
-                RootTeacherController controller = (RootTeacherController) fxmlLoader.getController();
-                controller.setUser(currentUser);
-            }
             Stage stage = new Stage();
-            Scene scene = new Scene(user);
+            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
 
@@ -121,14 +120,13 @@ public class LoginController implements Initializable {
 
     }
 
-    @FXML//   could be also decoupled 
-    private void BtnPressed(ActionEvent event) throws IOException {
-        currentUser = model.auth(usernameField.getText(), passwordField.getText());
-        if (currentUser != null) {
-            if (currentUser.getIsTeacher()) {
+    private void authentification() {
+        user = model.auth(usernameField.getText(), passwordField.getText());
+        if (user != null) {
+            if (user.getIsTeacher() == 'T') {
                 showRoot(ROOT_TEACHER);
                 closeLogin();
-            } else {
+            } else if (user.getIsTeacher() == 'S') {
                 showRoot(ROOT_STUDENT);
                 closeLogin();
             }
@@ -138,25 +136,19 @@ public class LoginController implements Initializable {
     }
 
     @FXML//   could be also decoupled 
+    private void BtnPressed(ActionEvent event) throws IOException {
+        authentification();
+    }
+
+    @FXML//   could be also decoupled 
     private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException {
-        currentUser = model.auth(usernameField.getText(), passwordField.getText());
+
         if (event.getCode() == KeyCode.ENTER) {
-            currentUser = model.auth(usernameField.getText(), passwordField.getText());
-            if (currentUser != null) {
-                if (currentUser.getIsTeacher()) {
-                    showRoot(ROOT_TEACHER);
-                    closeLogin();
-                } else {
-                    showRoot(ROOT_STUDENT);
-                    closeLogin();
-                }
-            } else {
-                wrongPassword.setVisible(true);
-            }
+            authentification();
         }
     }
 
-    public void closeLogin() {
+    private void closeLogin() {
         Stage loginStage;
         loginStage = (Stage) loginButton.getScene().getWindow();
         loginStage.close();

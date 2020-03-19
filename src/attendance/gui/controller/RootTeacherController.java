@@ -39,19 +39,22 @@ public class RootTeacherController implements Initializable {
     @FXML
     private AnchorPane attachable;
 
-    
     private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
     private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
-    private User usr;
-      private final String LoginPage =  "/attendance/gui/view/Login.fxml";
-    
-    
+    private User user;
+
     /**
-     * Initializes the controller class.Jep 
+     * Initializes the controller class.Jep
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         showModule(DashboardModule);
+        if (user != null) {
+            String firstName = user.getRealName();
+            System.out.println("this is first nameeee   " + firstName);
+        }
+
     }
 
     public void showModule(String urlToShow) {
@@ -98,7 +101,7 @@ public class RootTeacherController implements Initializable {
     }
 
     void setUser(User currentUser) {
-        usr = currentUser;
+        user = currentUser;
     }
 
 }

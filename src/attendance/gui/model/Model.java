@@ -16,8 +16,9 @@ import attendance.dal.Mock.MockUserDAO;
  */
 public class Model {
 
+    private final MockUserDAO mockUserDAO;
     private static Model model;
-    private final MockUserDAO UserDAO;
+    
     private final LogicFacade logicManager;
 
     /**
@@ -33,15 +34,18 @@ public class Model {
     }
 
     private Model() {
-        UserDAO = new MockUserDAO();
         logicManager = new LogicManager();
+        mockUserDAO = new MockUserDAO();
     }
 
     public User auth(String insertedUsername, String password) {
-
-        return UserDAO.auth(insertedUsername, password);
-
+        return mockUserDAO.auth(insertedUsername, password);
     }
+
+    public User getCurrentUser() {
+        return mockUserDAO.getCurrentUser();
+    }
+
 
     public User login(String username, String password) {
         return logicManager.getUser(username, password);
