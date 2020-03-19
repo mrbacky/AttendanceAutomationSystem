@@ -19,27 +19,34 @@ import java.time.LocalTime;
  * @author annem
  */
 public class DalManager implements DalFacade {
-    
+
     private final MockUserDAO UserDAO;
     private final MockAttendanceDAO mockAttendanceDAO;
-    
+
     private final IUserDAO userDAO;
     private final IAttendanceDAO attendanceDAO;
-    
+
     public DalManager() {
         UserDAO = new MockUserDAO();
-        
+
         userDAO = new UserDAO();
         attendanceDAO = new AttendanceDAO();
         mockAttendanceDAO = new MockAttendanceDAO();
     }
-    
+
+    @Override
     public User auth(String insertedUsername, String password) {
         return UserDAO.auth(insertedUsername, password);
     }
     
     @Override
+    public User getUser(String username, String password) {
+        return userDAO.getUser(username, password);
+    }
+
+    @Override
     public void markAttendance(User currentUser, String currentTask, LocalTime loc) {
         mockAttendanceDAO.markAttendance(currentUser, currentTask, loc);
     }
+
 }

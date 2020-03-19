@@ -13,8 +13,10 @@ import java.time.LocalTime;
  * @author annem
  */
 public interface DalFacade {
-    
+
     User auth(String insertedUsername, String password);
 
-    public void markAttendance(User currentUser, String currentTask, LocalTime loc);
+    User getUser(String username, String password);
+
+    void markAttendance(User currentUser, String currentTask, LocalTime loc);
 }
