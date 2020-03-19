@@ -1,9 +1,15 @@
 package attendance.dal.DAO;
 
 import attendance.be.AttendanceRecord;
+import attendance.be.Course;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -42,5 +48,29 @@ public class AttendanceDAO implements IAttendanceDAO {
 
         return null;
     }
+    
+    
+    public ArrayList<Course> getCourse() throws SQLServerException{
+        ArrayList<Course> courses = new ArrayList();
+        String sql = "SELECT * FROM CourseCalender,Course JOIN Course ON CourseCalender.id = Course.id";
+        try(Connection con = cp.getConnection()){
+            PreparedStatement ptst = con.prepareStatement(sql);
+            ResultSet rs = ptst.executeQuery();
+            while(rs.next()){
+                Course c = new Course(null,null,null);
+                c.setName(rs.getString("name"));
+                c.setStartDuration(rs.getTime("startTime").toString());
+                c.setEndDuration(rs.getTime("endTime").toString());
+                courses.add(c);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(AttendanceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        return courses;
+    }
+    
+    
 
 }
