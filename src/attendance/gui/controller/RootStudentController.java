@@ -126,7 +126,6 @@ public class RootStudentController implements Initializable {
     }
 
     private void setUser() {
-        System.out.println("ShownUser in controller");
         this.currentUser = model.getCurrentUser();
         showModule(TodayModule);
         lblHello.setText(currentUser.getName());
