@@ -6,13 +6,13 @@
 package attendance.dal;
 
 import attendance.be.User;
-import attendance.dal.DAO.AttendanceDAO;
-import attendance.dal.DAO.IAttendanceDAO;
+import attendance.dal.DAO.CourseDAO;
 import attendance.dal.DAO.IUserDAO;
 import attendance.dal.DAO.UserDAO;
 import attendance.dal.Mock.MockAttendanceDAO;
 import attendance.dal.Mock.MockUserDAO;
 import java.time.LocalTime;
+import attendance.dal.DAO.ICourseDAO;
 
 /**
  *
@@ -24,13 +24,13 @@ public class DalManager implements DalFacade {
     private final MockAttendanceDAO mockAttendanceDAO;
 
     private final IUserDAO userDAO;
-    private final IAttendanceDAO attendanceDAO;
+    private final ICourseDAO courseDAO;
 
     public DalManager() {
         UserDAO = new MockUserDAO();
 
         userDAO = new UserDAO();
-        attendanceDAO = new AttendanceDAO();
+        courseDAO = new CourseDAO();
         mockAttendanceDAO = new MockAttendanceDAO();
     }
 

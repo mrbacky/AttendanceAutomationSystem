@@ -1,6 +1,5 @@
 package attendance.dal.DAO;
 
-import attendance.be.AttendanceRecord;
 import attendance.be.Course;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
  *
  * @author annem
  */
-public class AttendanceDAO implements IAttendanceDAO {
+public class CourseDAO implements ICourseDAO {
 
     private final DBConnectionProvider cp;
     
@@ -23,7 +22,7 @@ public class AttendanceDAO implements IAttendanceDAO {
     /**
      * Constructor, which creates the connection with the database.
      */
-    public AttendanceDAO() {
+    public CourseDAO() {
         cp = new DBConnectionProvider();
         
     }
@@ -67,7 +66,7 @@ public class AttendanceDAO implements IAttendanceDAO {
             }
             
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     
         return courses;
