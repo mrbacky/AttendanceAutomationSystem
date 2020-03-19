@@ -5,20 +5,29 @@ package attendance.be;
  * @author annem
  */
 public class User {
-
-    public static String toString(String username) {
-        return username;
-    }
-
+    
+    
+    
+    private String realName;
     private String username;
     private String password;
-    private boolean isTeacher;
-    
-    
-    public User(String username, String password, boolean isTeacher) {
+    private char isTeacher;
+
+    public User(String realName, String username, String password, char isTeacher) {
+        this.realName = realName;
         this.username = username;
         this.password = password;
         this.isTeacher = isTeacher;
+    }
+
+    
+    
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getUsername() {
@@ -37,11 +46,13 @@ public class User {
         this.password = password;
     }
 
-    public boolean getIsTeacher() {
+    public char getIsTeacher() {
         return isTeacher;
     }
 
-    public void setIsTeacher(boolean isTeacher) {
+    public void setIsTeacher(char isTeacher) {
         this.isTeacher = isTeacher;
     }
+
+    
 }

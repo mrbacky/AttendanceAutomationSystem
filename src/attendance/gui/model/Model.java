@@ -14,15 +14,28 @@ import attendance.dal.Mock.MockUserDAO;
  */
 public class Model {
 
-    private final MockUserDAO UserDAO;
+    private final MockUserDAO mockUserDAO;
+    private static Model model;
+    
 
+    public static Model getInstance() {
+        if (model == null) {
+            model = new Model();
+        }
+        return model;
+    }
+    
     public Model() {
-        UserDAO = new MockUserDAO();
+        mockUserDAO = new MockUserDAO();
+
     }
 
     public User auth(String insertedUsername, String password) {
-        
-        return UserDAO.auth(insertedUsername, password);
-        
+        return mockUserDAO.auth(insertedUsername, password);
     }
+
+    public User getCurrentUser() {
+        return mockUserDAO.getCurrentUser();
+    }
+
 }

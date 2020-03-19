@@ -6,8 +6,9 @@ package attendance.be;
  */
 public class Student extends User {
 
-    public Student(String username, String password, boolean isTeacher) {
-        super(username, password, isTeacher);
+    public Student(String realName, String username, String password, char isTeacher) {
+        super(realName, username, password, isTeacher);
     }
+
 
 }
