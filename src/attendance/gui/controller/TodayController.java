@@ -97,7 +97,7 @@ public class TodayController implements Initializable {
     private void setUser() {
 
         user = model.getCurrentUser();
-        lblUsername.setText( user.getRealName());
+        lblUsername.setText(user.getName());
 
 //        UsernameLabel = User.toString(user.getUsername());
 //        lblUsername.setText(UsernameLabel);

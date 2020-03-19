@@ -30,7 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class RootStudentController implements Initializable {
-    
+
     @FXML
     private HBox buttonBar;
     @FXML
@@ -43,12 +43,14 @@ public class RootStudentController implements Initializable {
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
-    
+
     private final String TodayModule = "/attendance/gui/view/Today.fxml";
     private final String DashboardModule = "/attendance/gui/view/Dashboard.fxml";
     private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
+    private final String LoginPage = "/attendance/gui/view/Login.fxml";
+
     private LoginController loginController;
-    
+
     private User currentUser;
     @FXML
     private Label lblHello;
@@ -59,9 +61,9 @@ public class RootStudentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         model = Model.getInstance();
-setUser();
+        setUser();
         //  set     and show
         //
     }
@@ -71,70 +73,64 @@ setUser();
 //    }
     private void showModule(String urlToShow) {
         try {
-            
+
             URL url = getClass().getResource(urlToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
             AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
-            
+
             attachable.getChildren().clear();
             attachable.getChildren().add(page);
             ///name of pane where you want to put the fxml.
 
-          
-            
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
     }
-    
+
     @FXML
     private void showToday(ActionEvent event) {
         showModule(TodayModule);
-        
+
     }
-    
+
     @FXML
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }
-    
+
     @FXML
     private void showStudentAttendance(ActionEvent event) {
         showModule(StudentModule);
-        
+
     }
-    
+
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        
-      
-       Stage logOutStage;
+
+        Stage logOutStage;
         logOutStage = (Stage) btnLogout.getScene().getWindow();
-         logOutStage.close();
-         
-         
-         URL url = getClass().getResource(LoginPage);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
+        logOutStage.close();
+
+        URL url = getClass().getResource(LoginPage);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(url);
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-       
-        
-        
+
     }
-    
+
     private void setUser() {
         System.out.println("ShownUser in controller");
         this.currentUser = model.getCurrentUser();
         showModule(TodayModule);
-        lblHello.setText( currentUser.getRealName());
-        
+        lblHello.setText(currentUser.getName());
+
     }
-    
+
 }

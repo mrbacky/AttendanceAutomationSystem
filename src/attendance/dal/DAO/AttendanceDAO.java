@@ -18,16 +18,17 @@ import java.util.logging.Logger;
 public class AttendanceDAO implements IAttendanceDAO {
 
     private final DBConnectionProvider cp;
-    private IAttendanceDAO attendanceDAO;
+    
 
     /**
      * Constructor, which creates the connection with the database.
      */
     public AttendanceDAO() {
         cp = new DBConnectionProvider();
-        attendanceDAO = new AttendanceDAO();
+        
     }
 
+    /*
     @Override
     public AttendanceRecord createRecord(String day, String date, String time, String subject, String status) {
         try (Connection con = cp.getConnection()) {
@@ -48,6 +49,7 @@ public class AttendanceDAO implements IAttendanceDAO {
 
         return null;
     }
+*/
     
     
     public ArrayList<Course> getCourse() throws SQLServerException{
