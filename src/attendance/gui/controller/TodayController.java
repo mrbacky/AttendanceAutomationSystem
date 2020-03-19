@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -54,6 +55,8 @@ public class TodayController implements Initializable {
 
     private String UsernameLabel;
     private Model model;
+    @FXML
+    private AnchorPane anchorPane;
 
     /**
      * Initializes the controller class.
@@ -61,8 +64,8 @@ public class TodayController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = Model.getInstance();
-        initToggleButtons();
         setUser();
+        initToggleButtons();
         showCurrentDate();
     }
 
@@ -76,7 +79,7 @@ public class TodayController implements Initializable {
                 tglBtn1.setText("Present");
                 AttendanceModel x = AttendanceModel.getInstance();
                 x.markAttendence(user, lblSubject1.getText());
-                
+
             } else {
                 tglBtn1.setText("Unregistered");
 
@@ -85,10 +88,9 @@ public class TodayController implements Initializable {
 
         // Toggle Button Absent 
         tglBtn2.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                
+
             if (tglBtn2.isSelected() == true) {
                 tglBtn2.setText("Absent");
-                
 
             } else {
                 tglBtn2.setText("Unregistered");
@@ -98,18 +100,18 @@ public class TodayController implements Initializable {
 
     public void showCurrentDate() {
 
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar cal = Calendar.getInstance();
 
-      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-      Calendar cal = Calendar.getInstance();
+        lblTodayDate.setText("Date: " + dateFormat.format(cal.getTime()));
 
-      lblTodayDate.setText(dateFormat.format(cal.getTime()));
+    }
 
-}
-    
     private void setUser() {
 
         user = model.getCurrentUser();
-        lblUsername.setText(user.getName());
+
+        lblUsername.setText("Hello " + user.getName());
 
 //        UsernameLabel = User.toString(user.getUsername());
 //        lblUsername.setText(UsernameLabel);

@@ -6,6 +6,7 @@
 package attendance.gui.controller;
 
 import attendance.be.User;
+import attendance.gui.model.Model;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -44,18 +46,19 @@ public class RootTeacherController implements Initializable {
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
+    private Model model;
+    @FXML
+    private Label lblName;
 
     /**
      * Initializes the controller class.Jep
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        showModule(DashboardModule);
-        if (user != null) {
-            String firstName = user.getName();
-            System.out.println("this is first nameeee   " + firstName);
-        }
+        this.model = Model.getInstance();
+        setUser();
+        
+        
 
     }
 
@@ -100,8 +103,10 @@ public class RootTeacherController implements Initializable {
 
     }
 
-    void setUser(User currentUser) {
-        user = currentUser;
+    void setUser() {
+        user = model.getCurrentUser();
+        showModule(DashboardModule);
+        lblName.setText(user.getName());
     }
 
 }

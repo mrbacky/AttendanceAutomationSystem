@@ -23,7 +23,7 @@
                   <Insets left="10.0" right="5.0" />
                </HBox.margin>
             </JFXButton>
-            <Label styleClass="btnBarNameLabel" text="Hello Jeppe!">
+            <Label fx:id="lblName" styleClass="btnBarNameLabel">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
