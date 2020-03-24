@@ -1,11 +1,15 @@
 package attendance.bll;
 
+import attendance.be.Course;
+import attendance.be.Student;
 import attendance.be.User;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import attendance.dal.Mock.MockAttendanceDAO;
 import attendance.dal.Mock.MockUserDAO;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class LogicManager implements LogicFacade {
 
@@ -29,6 +33,18 @@ public class LogicManager implements LogicFacade {
     public void markAttendance(User currentUser, String currentTask) {
         LocalTime loc = java.time.LocalTime.now();
         dalFacade.markAttendance(currentUser, currentTask, loc);
+    }
+
+    @Override
+    public List<Student> getAbsentStudents() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double calculateAbsence(Course selectedCourse,int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
+        //          RETURN lessons attended / lessons until today * 100
+        
+        return 88.14;
     }
 
 }

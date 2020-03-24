@@ -123,10 +123,10 @@ public class LoginController implements Initializable {
     private void authentification() {
         user = model.login(usernameField.getText(), passwordField.getText());
         if (user != null) {
-            if (user.getType() == User.UserType.Teacher) {
+            if (user.getType() == User.UserType.TEACHER) {
                 showRoot(ROOT_TEACHER);
                 closeLogin();
-            } else if (user.getType() == User.UserType.Student) {
+            } else if (user.getType() == User.UserType.STUDENT) {
                 showRoot(ROOT_STUDENT);
                 closeLogin();
             }

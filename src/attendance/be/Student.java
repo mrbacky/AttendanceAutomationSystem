@@ -1,14 +1,31 @@
 package attendance.be;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 /**
  *
  * @author annem
  */
 public class Student extends User {
 
-    public Student(int id, String name) {
-        super(id, name, UserType.Student);
+    private final DoubleProperty absence = new SimpleDoubleProperty();
+
+    public Student(int id, String name, double absence) {
+        super(id, name, UserType.STUDENT);
+        setAbsence(absence);
     }
 
+    public double getAbsence() {
+        return absence.get();
+    }
+
+    public void setAbsence(double value) {
+        absence.set(value);
+    }
+
+    public DoubleProperty absenceProperty() {
+        return absence;
+    }
 
 }

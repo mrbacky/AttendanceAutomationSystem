@@ -7,7 +7,7 @@ package attendance.be;
 public class Teacher extends User {
 
     public Teacher(int id, String name) {
-        super(id, name, UserType.Teacher);
+        super(id, name, UserType.TEACHER);
     }
 
     

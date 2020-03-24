@@ -5,8 +5,10 @@
  */
 package attendance.dal;
 
+import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  *
@@ -19,4 +21,6 @@ public interface DalFacade {
     User getUser(String username, String password);
 
     void markAttendance(User currentUser, String currentTask, LocalTime loc);
+    
+    List<Student> getAbsentStudents();
 }
