@@ -5,6 +5,7 @@
  */
 package attendance.dal;
 
+import attendance.be.Student;
 import attendance.be.User;
 import attendance.dal.DAO.AttendanceDAO;
 import attendance.dal.DAO.IAttendanceDAO;
@@ -13,6 +14,7 @@ import attendance.dal.DAO.UserDAO;
 import attendance.dal.Mock.MockAttendanceDAO;
 import attendance.dal.Mock.MockUserDAO;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  *
@@ -53,5 +55,12 @@ public class DalManager implements DalFacade {
     public User auth(String insertedUsername, String password) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Student> getAbsentStudents() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 
 }

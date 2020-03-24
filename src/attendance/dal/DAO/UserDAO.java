@@ -39,9 +39,9 @@ public class UserDAO implements IUserDAO {
             String type = rs.getString("userTypeId");
 
             if (type.equals("T")) {
-                return new User(id, name, User.UserType.Teacher);
+                return new User(id, name, User.UserType.TEACHER);
             } else {
-                return new User(id, name, User.UserType.Student);
+                return new User(id, name, User.UserType.STUDENT);
             }
 
         } catch (SQLServerException ex) {
