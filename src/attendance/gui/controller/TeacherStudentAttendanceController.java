@@ -23,8 +23,7 @@ public class TeacherStudentAttendanceController implements Initializable {
     private TableColumn<Student, String> studentName;
     @FXML
     private TableColumn<Student, Double> absence;
-   
-    
+
     private StudentModel studentModel;
 
     /**
@@ -34,15 +33,12 @@ public class TeacherStudentAttendanceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.studentModel = StudentModel.getInstance();
         setTableViews();
-        
-        
+
     }
 
     private void setTableViews() {
-        studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        absence.setCellValueFactory(new PropertyValueFactory<>("absence"));
-        
-        
+        studentName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        absence.setCellValueFactory(cellData -> cellData.getValue().absenceProperty().asObject());
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
         studentModel.loadAllStudents();
 
