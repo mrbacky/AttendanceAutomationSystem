@@ -5,7 +5,6 @@
  */
 package attendance.dal.DAO;
 
-import attendance.be.Course;
 import attendance.be.Student;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
@@ -79,6 +78,7 @@ public class StudentDAO implements IStudentDAO {
                 //check names below
                 int id = rs.getInt("userId");
                 String name = rs.getString("name");
+                //change to include absent lesson count 
                 lst.add(new Student(id, name));
             }
             return lst;
