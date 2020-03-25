@@ -16,10 +16,9 @@ public class User {
     private UserType type;
 
     public User(int id, String name, UserType type) {
-        setId(id);
-        setName(name);
+        this.id.set(id);
+        this.name.set(name);
         this.type = type;
-        
 
     }
 

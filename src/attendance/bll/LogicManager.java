@@ -42,8 +42,8 @@ public class LogicManager implements LogicFacade {
 
     @Override
     public double calculateAbsence(Course selectedCourse,int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
-        //          RETURN lessons attended / lessons until today * 100
-        
+        //          Presence % = lessons attended / lessons until today * 100
+        //          Absence % = 100 - Presence%
         return 88.14;
     }
 
