@@ -21,6 +21,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -143,7 +144,22 @@ public class TodayController implements Initializable {
 //        UsernameLabel = User.toString(user.getUsername());
 //        lblUsername.setText(UsernameLabel);
     }
+
+    @FXML
+    private void setPresenttglButton(ActionEvent event) {
+        
+         sceduleList.get(0).setSubjects("Present");
+        
+       
+        
+    }
+
+    @FXML
+    private void setAbsenttglButton(ActionEvent event) {
+        sceduleList.get(1).setSubjects("Absent");
+        
+    }
     
-    
+   
 
 }
