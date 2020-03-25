@@ -12,6 +12,7 @@ import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
 import attendance.gui.model.Model;
 import com.jfoenix.controls.JFXToggleButton;
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -36,6 +39,8 @@ import javafx.scene.layout.AnchorPane;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class TodayController implements Initializable {
+    
+    public static final String IN_TODAY_COURSE_VIEW_PATH = "/attendance/gui/view/InTodayCourseView";
 
     private Attendance attendance;
     @FXML
@@ -95,6 +100,25 @@ public class TodayController implements Initializable {
         tableview.setItems(sceduleList);
         
         
+    }
+    
+    public void initializeSchedule() throws IOException
+    {
+        for(Scedule scedule : sceduleList)
+        {
+            //initialize intodayview
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(IN_TODAY_COURSE_VIEW_PATH));
+            Parent root = fxmlLoader.load();
+            
+            //initialize in today view data to scedule data
+            InTodayCourseViewController controller = fxmlLoader.getController();
+            controller.setScedule(scedule);
+            
+            //add in today view to this view
+           
+            
+          
+        }
     }
 
     public void initToggleButtons() {
