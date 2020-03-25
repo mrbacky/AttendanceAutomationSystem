@@ -11,6 +11,8 @@ public class AttendanceRecord {
     private final StringProperty day = new SimpleStringProperty();
     private final StringProperty date = new SimpleStringProperty();
 
+    
+    
     public AttendanceRecord(String day,String date,String time ,String subject, String status) {
         setDay(day);
         setDate(date);

@@ -13,7 +13,7 @@ public class Student extends User {
 
     public Student(int id, String name, double absence) {
         super(id, name, UserType.STUDENT);
-        setAbsence(absence);
+        this.absence.set(absence);
     }
 
     public double getAbsence() {
