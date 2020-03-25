@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.AttendanceRecord;
+import attendance.be.Scedule;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
 import attendance.gui.model.Model;
@@ -18,9 +19,13 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -57,7 +62,16 @@ public class TodayController implements Initializable {
     private Model model;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private TableView<Scedule> tableview;
+    @FXML
+    private TableColumn<Scedule, Integer> starttimecol;
+    @FXML
+    private TableColumn<Scedule, Integer> endtimecol;
+    @FXML
+    private TableColumn<Scedule, String> subjects;
 
+    private ObservableList<Scedule> sceduleList = FXCollections.observableArrayList();
     /**
      * Initializes the controller class.
      */
@@ -67,6 +81,19 @@ public class TodayController implements Initializable {
         setUser();
         initToggleButtons();
         showCurrentDate();
+        
+        
+        sceduleList.add(new Scedule(9,12, "SCO2"));
+        sceduleList.add(new Scedule(9,12, "SDE2"));
+        sceduleList.add(new Scedule(10,15, "ITO2"));
+        
+        starttimecol.setCellValueFactory(cellData -> cellData.getValue().startTimeProperty().asObject());
+        endtimecol.setCellValueFactory(cellData -> cellData.getValue().endTimeProperty().asObject());
+        subjects.setCellValueFactory(cellData -> cellData.getValue().subjectsProperty());
+        
+        tableview.setItems(sceduleList);
+        
+        
     }
 
     public void initToggleButtons() {
@@ -116,5 +143,7 @@ public class TodayController implements Initializable {
 //        UsernameLabel = User.toString(user.getUsername());
 //        lblUsername.setText(UsernameLabel);
     }
+    
+    
 
 }
