@@ -56,19 +56,14 @@ public class StudentAttendanceController implements Initializable {
      * Initializes the controller class.
      */
     
-    ObservableList<AttendanceRecord> StudentAttendance = FXCollections.observableArrayList(
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present")
-            );
+    
+          
             
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         displayAttendance();
     }    
     public void displayAttendance() {
-        StudentAttTable.setItems(StudentAttendance);
 }
 
     void setUser(User usr) {

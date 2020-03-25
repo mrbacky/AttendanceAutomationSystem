@@ -1,10 +1,48 @@
 package attendance.be;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class AttendanceRecord {
+    
+    private final IntegerProperty userId = new SimpleIntegerProperty();
+    private final IntegerProperty courseCalenderId = new SimpleIntegerProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    
+    
+    public AttendanceRecord(int userId, int courseCalenderId, String status){
+        setUserId(userId);
+        setCourseCalenderId(courseCalenderId);
+        setStatus(status);
+    }
+    
+     public IntegerProperty getUserId() {
+        return userId;
+    }
 
+    public IntegerProperty getCourseCalenderId() {
+        return courseCalenderId;
+    }
+
+    public StringProperty getStatus() {
+        return status;
+    }
+     public void setUserId(int value) {
+        userId.set(value);
+    }
+
+    public void setCourseCalenderId(int value) {
+        courseCalenderId.set(value);
+    }
+
+    public void setStatus(String value) {
+        status.set(value);
+    }
+/*
+    
+    
     private final StringProperty subject = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
     private final StringProperty time = new SimpleStringProperty();  // change type
@@ -80,5 +118,7 @@ public class AttendanceRecord {
     public StringProperty dayProperty() {
         return day;
     }
+*/
 
+   
 }
