@@ -5,9 +5,13 @@
  */
 package attendance;
 
+import attendance.dal.DAO.StudentDAO;
 import attendance.gui.controller.DashboardController;
 import attendance.gui.controller.TodayController;
 import java.io.IOException;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 public class Attendance extends Application {
 
@@ -22,9 +27,13 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        StudentDAO s = new StudentDAO();
+        s.getNumberOfConductedLessons(2, LocalDateTime.parse("2020-03-09T14:31:00"));
+        
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         showLogin();
+        
     }
 
     /**
