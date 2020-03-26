@@ -5,6 +5,19 @@
  */
 package attendance.dal.DAO;
 
+import attendance.be.Student;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author annem
@@ -15,6 +28,71 @@ public class StudentDAO implements IStudentDAO {
 
     public StudentDAO() {
         connection = new DBConnectionProvider();
+    }
+
+    @Override
+    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
+        String sql = "SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND endTime <= ?";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setTimestamp(2, Timestamp.valueOf(current));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    //public List<Student> getNumberOfAbsentLessons(Course course) {
+    @Override
+    public List<Student> getNumberOfAbsentLessons(int courseId) {
+        List<Student> students = new ArrayList<>();
+
+        String sql
+                = "SELECT T1.id, T1.name, COUNT(T2.status) AS absentLessons "
+                + "FROM "
+                + "	(SELECT U.id, U.name "
+                + "	FROM [User] AS U "
+                + "	JOIN UserCourse AS UC ON U.id = UC.userId "
+                + "	WHERE UC.courseId = ? AND U.userTypeId = 'S') "
+                + "	AS T1 "
+                + "LEFT JOIN "
+                + "	(SELECT AR.userId, AR.status "
+                + "	FROM AttendanceRecord AS AR "
+                + "	JOIN CourseCalendar AS CC ON AR.courseCalendarId = CC.id "
+                + "	WHERE CC.courseId = ? "
+                + "	AND AR.status = 'Absent') "
+                + "	AS T2 "
+                + "ON T1.id = T2.userId "
+                + "GROUP BY T1.id, T1.name "
+                + "ORDER BY absentLessons DESC";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setInt(2, courseId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int absentCount = rs.getInt("absentLessons");                
+                students.add(new Student(id, name, absentCount));
+            }
+            return students;
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /*
