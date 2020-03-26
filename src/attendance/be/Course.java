@@ -5,6 +5,10 @@
  */
 package attendance.be;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,37 +17,40 @@ import javafx.beans.property.StringProperty;
  * @author Martin
  */
 public class Course {
-
+    
+    // add id, change to localdatetime, List<students>
     private final StringProperty name = new SimpleStringProperty();
-    private final StringProperty startDuration = new SimpleStringProperty();
-    private final StringProperty endDuration = new SimpleStringProperty();
 
-   
+    private final ObjectProperty<LocalDateTime> startDuration = new SimpleObjectProperty<>();
+    private final ObjectProperty<LocalDateTime> endDuration = new SimpleObjectProperty<>();
 
-    public Course(String name, String startDuration, String endDuration) {
-       
+    public Course(String name, LocalDateTime startDuration, LocalDateTime endDuration) {
+        this.name.set(name);
+        this.startDuration.set(startDuration);
+        this.endDuration.set(endDuration);
     }
-    public String getEndDuration() {
+
+    public LocalDateTime getEndDuration() {
         return endDuration.get();
     }
 
-    public void setEndDuration(String value) {
+    public void setEndDuration(LocalDateTime value) {
         endDuration.set(value);
     }
 
-    public StringProperty endDurationProperty() {
+    public ObjectProperty endDurationProperty() {
         return endDuration;
     }
 
-    public String getStartDuration() {
+    public LocalDateTime getStartDuration() {
         return startDuration.get();
     }
 
-    public void setStartDuration(String value) {
+    public void setStartDuration(LocalDateTime value) {
         startDuration.set(value);
     }
 
-    public StringProperty startDurationProperty() {
+    public ObjectProperty startDurationProperty() {
         return startDuration;
     }
 
@@ -57,6 +64,11 @@ public class Course {
 
     public StringProperty nameProperty() {
         return name;
+    }
+    
+    @Override
+    public String toString() {
+        return getName();
     }
 
 }

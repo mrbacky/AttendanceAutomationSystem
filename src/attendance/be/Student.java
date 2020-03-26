@@ -10,8 +10,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class Student extends User {
 
     private final DoubleProperty absence = new SimpleDoubleProperty();
-
-    public Student(int id, String name, double absence) {
+    
+    public Student(int id, String name, double absence) {// absence to INT
         super(id, name, UserType.STUDENT);
         this.absence.set(absence);
     }
