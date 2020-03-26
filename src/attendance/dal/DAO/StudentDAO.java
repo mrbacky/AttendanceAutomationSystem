@@ -30,17 +30,6 @@ public class StudentDAO implements IStudentDAO {
         connection = new DBConnectionProvider();
     }
 
-    /*As a teacher, I should be able to see summarized attendance for a specific course,
-    where most absent students are at the top.
-    
-    1. total number of lessons taken place until current date
-    parameters: courseId, date, time?
-    SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND date <= ? AND time???
-    SELECT COUNT(id) FROM CourseCalendar WHERE courseId = 2 AND endTime <= '2020-03-09 14:29:00'
-
-    2. number of lessons each student in the course has attended
-    courseId -> find userId
-     */
     @Override
     public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
         String sql = "SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND endTime <= ?";
@@ -52,8 +41,6 @@ public class StudentDAO implements IStudentDAO {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
-                //remember to delete
-                System.out.println("count is" + count);
                 return count;
             }
         } catch (SQLServerException ex) {
@@ -96,11 +83,7 @@ public class StudentDAO implements IStudentDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                int absentCount = rs.getInt("absentLessons");
-                //remember to delete
-                System.out.println(id);
-                System.out.println(name);
-                System.out.println(absentCount);
+                int absentCount = rs.getInt("absentLessons");                
                 students.add(new Student(id, name, absentCount));
             }
             return students;
