@@ -5,11 +5,8 @@
  */
 package attendance.be;
 
-import java.time.LocalDate;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -23,44 +20,47 @@ public class Scedule {
     private ObjectProperty<LocalDate> startTime = new SimpleObjectProperty<>();
     private ObjectProperty<LocalDate> endTime = new SimpleObjectProperty<>();
 */
-    private IntegerProperty startTime = new SimpleIntegerProperty();
-    private IntegerProperty endTime = new SimpleIntegerProperty();
+    private StringProperty startTime = new SimpleStringProperty();
+    private StringProperty endTime = new SimpleStringProperty();
     private StringProperty subjects = new SimpleStringProperty();
-    
+   
+    private StringProperty status = new SimpleStringProperty();
    
     
-    public Scedule( int startTime, int endTime, String subjects ){
+    public Scedule( String startTime, String endTime, String subjects, String status){
         
         this.startTime.set(startTime);
         this.endTime.set(endTime);
         this.subjects.set(subjects);
-    
+        this.status.set(status);
     
     }
     
-    public void setStartTime(int startTime){
+    
+    
+    public void setStartTime(String startTime){
     
      this.startTime.set(startTime);
     }
     
-    public int getStartTime(){
+    public String getStartTime(){
       return  this.startTime.get();
     }
     
-     public IntegerProperty startTimeProperty()
+     public StringProperty startTimeProperty()
     {
         return startTime;
     }
-     public void setEndTime(int startTime){
+     public void setEndTime(String startTime){
     
      this.startTime.set(startTime);
     }
     
-    public int getEndTime(){
+    public String getEndTime(){
       return  this.startTime.get();
     }
     
-     public IntegerProperty endTimeProperty()
+     public StringProperty endTimeProperty()
     {
         return startTime;
     }
@@ -79,5 +79,16 @@ public class Scedule {
         return subjects;
     }
     
+    public void setStatus(String status){
+           this.status.set(status);
+    }
      
+    public String getStatus(){
+        
+        return this.status.get();
+    }
+    
+    public StringProperty statusProperty(){
+         return status;
+    }
 }

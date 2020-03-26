@@ -6,7 +6,6 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.be.AttendanceRecord;
 import attendance.be.Scedule;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
@@ -18,7 +17,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import java.lang.String;
 
 /**
  * FXML Controller class
@@ -40,7 +39,7 @@ import javafx.scene.layout.AnchorPane;
  */
 public class TodayController implements Initializable {
     
-    public static final String IN_TODAY_COURSE_VIEW_PATH = "/attendance/gui/view/InTodayCourseView";
+    public static final String IN_TODAY_COURSE_VIEW_PATH = "/attendance/gui/view/InTodayCourseView.fxml";
 
     private Attendance attendance;
     @FXML
@@ -49,35 +48,31 @@ public class TodayController implements Initializable {
     private ImageView imgUser;
     @FXML
     private Label lblTodayDate;
-    @FXML
-    private Label lblTime1;
-    @FXML
-    private Label lblTime2;
-    @FXML
     private Label lblSubject1;
     @FXML
-    private Label lblSubject2;
-    @FXML
     private JFXToggleButton tglBtn1;
-    @FXML
     private JFXToggleButton tglBtn2;
 
     private User user;
 
     private String UsernameLabel;
+    
     private Model model;
     @FXML
     private AnchorPane anchorPane;
     @FXML
     private TableView<Scedule> tableview;
     @FXML
-    private TableColumn<Scedule, Integer> starttimecol;
+    private TableColumn<Scedule, String> starttimecol;
     @FXML
-    private TableColumn<Scedule, Integer> endtimecol;
+    private TableColumn<Scedule, String> endtimecol;
     @FXML
     private TableColumn<Scedule, String> subjects;
 
     private ObservableList<Scedule> sceduleList = FXCollections.observableArrayList();
+    
+    @FXML
+    private TableColumn<Scedule, String> statuscol;
     /**
      * Initializes the controller class.
      */
@@ -89,18 +84,25 @@ public class TodayController implements Initializable {
         showCurrentDate();
         
         
-        sceduleList.add(new Scedule(9,12, "SCO2"));
-        sceduleList.add(new Scedule(9,12, "SDE2"));
-        sceduleList.add(new Scedule(10,15, "ITO2"));
         
-        starttimecol.setCellValueFactory(cellData -> cellData.getValue().startTimeProperty().asObject());
-        endtimecol.setCellValueFactory(cellData -> cellData.getValue().endTimeProperty().asObject());
+        sceduleList.add(new Scedule("9:30","11:30", "SCO2", ""));
+        sceduleList.add(new Scedule("10:00","14:30", "SDE2", ""));
+        sceduleList.add(new Scedule("9:00","15:00", "ITO2",""));
+        
+        
+        starttimecol.setCellValueFactory(cellData ->cellData.getValue().startTimeProperty());
+        endtimecol.setCellValueFactory(cellData ->cellData.getValue().endTimeProperty());
         subjects.setCellValueFactory(cellData -> cellData.getValue().subjectsProperty());
-        
+        statuscol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+                
         tableview.setItems(sceduleList);
         
         
+        
     }
+   
+    
+    ////////////// This is for deleting 
     
     public void initializeSchedule() throws IOException
     {
@@ -116,38 +118,44 @@ public class TodayController implements Initializable {
             
             //add in today view to this view
            
-            
+         
           
-        }
-    }
+          
+         //TilePane tilePane = (TilePane) fxmlLoader.load();
+          
+          
+         anchorPane.getChildren().addAll(root);
+          
+         anchorPane.setId(IN_TODAY_COURSE_VIEW_PATH);
+          
+         
+          // root.setVisible(true); <- aka Show Yourself. When you want magic to exist, but it doesn't :/
+         
 
+        
+    }
+        
+  }
+    
+    //////////////
+    
     public void initToggleButtons() {
         tglBtn1.setSelected(false);
-        tglBtn2.setSelected(false);
+      
 
         // Toggle Button Present 
         tglBtn1.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (tglBtn1.isSelected() == true) {
                 tglBtn1.setText("Present");
-                AttendanceModel x = AttendanceModel.getInstance();
-                x.markAttendence(user, lblSubject1.getText());
+            //    AttendanceModel x = AttendanceModel.getInstance();
+          //      x.markAttendence(user, lblSubject1.getText());
 
             } else {
                 tglBtn1.setText("Unregistered");
 
             }
         });
-
-        // Toggle Button Absent 
-        tglBtn2.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-
-            if (tglBtn2.isSelected() == true) {
-                tglBtn2.setText("Absent");
-
-            } else {
-                tglBtn2.setText("Unregistered");
-            }
-        });
+ 
     }
 
     public void showCurrentDate() {
@@ -172,17 +180,13 @@ public class TodayController implements Initializable {
     @FXML
     private void setPresenttglButton(ActionEvent event) {
         
-         sceduleList.get(0).setSubjects("Present");
+         sceduleList.get(0).setStatus("Present");  //show Present Status
         
+         
        
         
     }
 
-    @FXML
-    private void setAbsenttglButton(ActionEvent event) {
-        sceduleList.get(1).setSubjects("Absent");
-        
-    }
     
    
 
