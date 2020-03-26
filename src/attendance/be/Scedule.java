@@ -27,6 +27,8 @@ public class Scedule {
     private StringProperty status = new SimpleStringProperty();
    
     
+    
+    
     public Scedule( String startTime, String endTime, String subjects, String status){
         
         this.startTime.set(startTime);

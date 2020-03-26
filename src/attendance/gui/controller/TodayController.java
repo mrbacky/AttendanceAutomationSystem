@@ -48,11 +48,9 @@ public class TodayController implements Initializable {
     private ImageView imgUser;
     @FXML
     private Label lblTodayDate;
-    private Label lblSubject1;
     @FXML
     private JFXToggleButton tglBtn1;
-    private JFXToggleButton tglBtn2;
-
+   
     private User user;
 
     private String UsernameLabel;
@@ -68,11 +66,12 @@ public class TodayController implements Initializable {
     private TableColumn<Scedule, String> endtimecol;
     @FXML
     private TableColumn<Scedule, String> subjects;
-
+     @FXML
+    private TableColumn<Scedule, String> statuscol;
+    
     private ObservableList<Scedule> sceduleList = FXCollections.observableArrayList();
     
-    @FXML
-    private TableColumn<Scedule, String> statuscol;
+   
     /**
      * Initializes the controller class.
      */
@@ -82,8 +81,20 @@ public class TodayController implements Initializable {
         setUser();
         initToggleButtons();
         showCurrentDate();
+        setTable();
         
+        //BINDINGS
+        //subjectlbl.textProperty().bind(scedule.subjectsProperty());
+      /*
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT);
+        lblEndDate.textProperty().bind(Bindings.createStringBinding(() ->
+               dtf.format(task.getEndDate()), task.endDateProperty()));
+        */
         
+    }
+    
+    public void setTable()
+    {
         
         sceduleList.add(new Scedule("9:30","11:30", "SCO2", ""));
         sceduleList.add(new Scedule("10:00","14:30", "SDE2", ""));
@@ -96,12 +107,11 @@ public class TodayController implements Initializable {
         statuscol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
                 
         tableview.setItems(sceduleList);
-        
-        
-        
-    }
    
     
+    }
+   
+    /*
     ////////////// This is for deleting 
     
     public void initializeSchedule() throws IOException
@@ -138,6 +148,7 @@ public class TodayController implements Initializable {
   }
     
     //////////////
+*/
     
     public void initToggleButtons() {
         tglBtn1.setSelected(false);
@@ -187,7 +198,6 @@ public class TodayController implements Initializable {
         
     }
 
-    
-   
+  
 
 }
