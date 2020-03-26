@@ -1,88 +1,61 @@
 package attendance.be;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author annem
  */
 public class User {
 
-    private int id;
-    private String name;
+    private final IntegerProperty id = new SimpleIntegerProperty();
+    private final StringProperty name = new SimpleStringProperty();
     private UserType type;
 
     public User(int id, String name, UserType type) {
-        this.id = id;
-        this.name = name;
+        this.id.set(id);
+        this.name.set(name);
         this.type = type;
+
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public enum UserType {
+        TEACHER, STUDENT
     }
 
     public UserType getType() {
         return type;
     }
-        
-    public enum UserType{
-        Teacher, Student
+
+    public void setType(UserType type) {
+        this.type = type;
     }
 
-    
-    
-    /*
-    
-    public static String toString(String username) {
-        return username;
+    public int getId() {
+        return id.get();
     }
 
-    private String username;
-    private String password;
-    private boolean isTeacher;
-
-    public User(String username, String password, boolean isTeacher) {
-        this.username = username;
-        this.password = password;
-        this.isTeacher = isTeacher;
+    public void setId(int value) {
+        id.set(value);
     }
 
-    
-    
-    public String getRealName() {
-        return realName;
+    public IntegerProperty idProperty() {
+        return id;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public String getName() {
+        return name.get();
     }
 
-    public String getUsername() {
-        return username;
+    public void setName(String value) {
+        name.set(value);
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public StringProperty nameProperty() {
+        return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public char getIsTeacher() {
-        return isTeacher;
-    }
-
-    public void setIsTeacher(char isTeacher) {
-        this.isTeacher = isTeacher;
-    }
-
-    */
 }

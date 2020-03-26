@@ -5,46 +5,58 @@
  */
 package attendance.be;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author Martin
  */
 public class Course {
-    
-    private String name;
-    private String startDuration;
-    private String endDuration;
-    
+
+    private final StringProperty name = new SimpleStringProperty();
+    private final StringProperty startDuration = new SimpleStringProperty();
+    private final StringProperty endDuration = new SimpleStringProperty();
+
+   
+
     public Course(String name, String startDuration, String endDuration) {
-        this.name = name;
-        this.startDuration = startDuration;
-        this.endDuration = endDuration;
+       
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStartDuration() {
-        return startDuration;
-    }
-
-    public void setStartDuration(String startDuration) {
-        this.startDuration = startDuration;
-    }
-
     public String getEndDuration() {
+        return endDuration.get();
+    }
+
+    public void setEndDuration(String value) {
+        endDuration.set(value);
+    }
+
+    public StringProperty endDurationProperty() {
         return endDuration;
     }
 
-    public void setEndDuration(String endDuration) {
-        this.endDuration = endDuration;
+    public String getStartDuration() {
+        return startDuration.get();
     }
-    
-    
-    
+
+    public void setStartDuration(String value) {
+        startDuration.set(value);
+    }
+
+    public StringProperty startDurationProperty() {
+        return startDuration;
+    }
+
+    public String getName() {
+        return name.get();
+    }
+
+    public void setName(String value) {
+        name.set(value);
+    }
+
+    public StringProperty nameProperty() {
+        return name;
+    }
+
 }

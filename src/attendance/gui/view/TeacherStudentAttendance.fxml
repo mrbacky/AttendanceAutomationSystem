@@ -1,161 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="1100.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="530.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherStudentAttendanceController">
    <children>
-      <GridPane layoutX="122.0" layoutY="67.0" prefHeight="995.0" prefWidth="556.0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="30.111083984375" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.888916015625" minWidth="10.0" prefWidth="191.888916015625" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.22222900390625" minWidth="10.0" prefWidth="31.666656494140625" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.33334350585943" minWidth="10.0" prefWidth="186.33334350585943" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="126.44442749023438" minHeight="10.0" prefHeight="75.99999491373697" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="246.1111297607422" minHeight="0.0" prefHeight="5.00000508626303" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="375.3333282470703" minHeight="10.0" prefHeight="82.8888753255208" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="368.3333282470703" minHeight="10.0" prefHeight="19.555572509765625" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="289.77776082356775" minHeight="10.0" prefHeight="209.111083984375" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="156.11114501953125" minHeight="6.999979654947936" prefHeight="18.33329264322913" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="277.66670735677087" minHeight="10.0" prefHeight="277.66670735677087" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="156.11114501953125" minHeight="0.0" prefHeight="23.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="304.0" minHeight="10.0" prefHeight="192.33333333333337" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="30">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="14.0" layoutY="67.0" text="Students" />
-               </children></AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.rowIndex="2">
-               <children>
-                  <Label layoutX="14.0" layoutY="14.0" text="21">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="20.0" layoutY="67.0" text="Present" />
-               </children></AnchorPane>
-            <AnchorPane prefHeight="257.0" prefWidth="559.0" style="-fx-background-color: lightgray;" GridPane.columnSpan="2147483647" GridPane.rowIndex="6">
-               <children>
-                  <BarChart layoutY="50.0" prefHeight="228.0" prefWidth="556.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </BarChart>
-                  <Label layoutX="256.0" layoutY="32.0" text="Week 06" />
-                  <Label layoutX="235.0" layoutY="12.0" text="Weekly Status">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="2" GridPane.rowSpan="3">
-               <children>
-                  <PieChart layoutX="2.0" layoutY="33.0" prefHeight="199.0" prefWidth="200.0" />
-                  <Label layoutX="54.0" layoutY="4.0" text="Today's Status">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="54.0" layoutY="24.0" text="February 05, 2020" />
-               </children></AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="4" GridPane.rowSpan="3">
-               <children>
-                  <Label layoutX="63.0" layoutY="14.0" text="Requests">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="83.0" layoutY="139.0" text="2">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-               </children></AnchorPane>
-            <GridPane GridPane.columnSpan="2147483647" GridPane.rowIndex="8">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="258.99995930989587" minWidth="10.0" prefWidth="258.99995930989587" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.33331298828125" minWidth="10.0" prefWidth="37.666707356770814" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.9999796549479" minWidth="10.0" prefWidth="257.9999796549479" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <AnchorPane prefHeight="140.0" prefWidth="167.0" style="-fx-background-color: lightgray;">
-                     <children>
-                        <PieChart layoutX="30.0" layoutY="41.0" prefHeight="77.0" prefWidth="117.0" />
-                        <Label layoutX="82.0" layoutY="8.0" text="Overall Status">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="33.0" layoutY="27.0" text="January 26, 2020 - February 05, 2020" />
-                     </children></AnchorPane>
-                  <AnchorPane prefHeight="135.0" prefWidth="237.0" style="-fx-background-color: lightgray;" GridPane.columnIndex="2">
-                     <children>
-                        <TableView layoutX="6.0" layoutY="24.0" prefHeight="176.0" prefWidth="245.0">
-                          <columns>
-                            <TableColumn prefWidth="96.66662347316742" text="Student Name" />
-                            <TableColumn prefWidth="69.77777862548828" text="Overall" />
-                              <TableColumn prefWidth="68.88885498046875" text="Details" />
-                          </columns>
-                        </TableView>
-                        <Label layoutX="55.0" layoutY="5.0" text="Lowest Student Attendance">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </GridPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
-               <children>
-                  <TableView layoutX="14.0" layoutY="31.0" prefHeight="169.0" prefWidth="534.0">
-                    <columns>
-                      <TableColumn prefWidth="231.33338928222656" text="Student Name" />
-                      <TableColumn prefWidth="172.66659545898438" text="Status" />
-                        <TableColumn prefWidth="130.0" text="Details" />
-                    </columns>
-                  </TableView>
-                  <Label layoutX="200.0" layoutY="7.0" text="Today's Attendance List">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </children>
-      </GridPane>
-      <SplitMenuButton layoutX="121.0" layoutY="31.0" mnemonicParsing="false" text="SDE2.B.20">
+      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="125.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icons8-male-user-96.png" />
+         </image>
+      </ImageView>
+      <TableView fx:id="tbvStudentAbsence" layoutX="123.0" layoutY="73.0" prefHeight="167.0" prefWidth="550.0">
+        <columns>
+          <TableColumn fx:id="studentName" prefWidth="374.0" sortType="DESCENDING" text="Student Name" />
+          <TableColumn fx:id="absence" prefWidth="156.0" text="Absence %" />
+        </columns>
+      </TableView>
+      <Label layoutX="121.0" layoutY="31.0" text="Student Attendance" />
+      <TextField layoutX="524.0" layoutY="41.0" />
+      <Label layoutX="121.0" layoutY="48.0" text="Student Selection" />
+      <Label layoutX="183.0" layoutY="273.0" text="Giacomo Guilizzoni" />
+      <Label layoutX="183.0" layoutY="291.0" text="CSe19B" />
+      <SplitMenuButton layoutX="125.0" layoutY="316.0" mnemonicParsing="false" text="All courses">
         <items>
           <MenuItem mnemonicParsing="false" text="Action 1" />
           <MenuItem mnemonicParsing="false" text="Action 2" />
         </items>
       </SplitMenuButton>
+      <TableView layoutX="125.0" layoutY="353.0" prefHeight="150.0" prefWidth="272.0">
+        <columns>
+          <TableColumn prefWidth="162.0" text="Day" />
+            <TableColumn prefWidth="108.0" text="Absence counter" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
