@@ -29,6 +29,7 @@ public class Attendance extends Application {
     public void start(Stage primaryStage) throws Exception {
         StudentDAO s = new StudentDAO();
         s.getNumberOfConductedLessons(2, LocalDateTime.parse("2020-03-09T14:31:00"));
+        s.getNumberOfAbsentLessons(1);
         
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
