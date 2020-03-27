@@ -24,23 +24,20 @@ public class StudentDAO implements IStudentDAO {
     }
 
     
-    public AttendanceRecord createRecord(int userId, int courseCalenderId, String status) {
+    public void createRecord(int userId, int courseCalenderId, String status) {
         try (Connection con = cp.getConnection()) {
             String sql = "INSERT INTO AttendanceRecord(userId, courseCalenderId, status) VALUES (?,?,?)";
 
-            PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, userId);
             pstmt.setInt(2, courseCalenderId);
             pstmt.setString(3, status);
 
             pstmt.executeUpdate();
 
-            AttendanceRecord record = new AttendanceRecord(userId, courseCalenderId, status);
-
         } catch (Exception e) {
         }
 
-        return null;
     }
 
      

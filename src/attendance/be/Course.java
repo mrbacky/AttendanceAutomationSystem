@@ -17,7 +17,7 @@ public class Course {
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty startDuration = new SimpleStringProperty();
     private final StringProperty endDuration = new SimpleStringProperty();
-
+//change to localDateTime
    
 
     public Course(String name, String startDuration, String endDuration) {
