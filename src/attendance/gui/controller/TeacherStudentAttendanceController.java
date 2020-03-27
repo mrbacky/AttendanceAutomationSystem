@@ -6,14 +6,20 @@
 package attendance.gui.controller;
 
 import attendance.be.Student;
+import attendance.be.User;
 import attendance.gui.model.StudentModel;
+import com.sun.jdi.connect.Connector;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class TeacherStudentAttendanceController implements Initializable {
 
@@ -25,6 +31,11 @@ public class TeacherStudentAttendanceController implements Initializable {
     private TableColumn<Student, Double> absence;
 
     private StudentModel studentModel;
+
+    @FXML
+    private TextField lblSearchField;
+    @FXML
+    private Label lblstudentname;
 
     /**
      * Initializes the controller class.
@@ -41,6 +52,18 @@ public class TeacherStudentAttendanceController implements Initializable {
         absence.setCellValueFactory(cellData -> cellData.getValue().absenceProperty().asObject());
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
         studentModel.loadAllStudents();
+
+    }
+
+    @FXML
+    private void getSelectedStudent(MouseEvent event) {
+
+        Student selectedStudent = tbvStudentAbsence.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+
+            lblstudentname.setText(selectedStudent.getName());
+
+        }
 
     }
 
