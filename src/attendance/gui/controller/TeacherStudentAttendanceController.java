@@ -14,7 +14,10 @@ import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,6 +39,20 @@ public class TeacherStudentAttendanceController implements Initializable {
     private TextField lblSearchField;
     @FXML
     private Label lblstudentname;
+    @FXML
+    private TableColumn<?, ?> absence1;
+    @FXML
+    private SplitMenuButton comboBoxStudentCourses;
+    @FXML
+    private BarChart<?, ?> barChart;
+    @FXML
+    private Label lblStudentsPresent;
+    @FXML
+    private Button BtnRefreshStudents;
+    @FXML
+    private Label lblTotalOfStudents;
+    @FXML
+    private Label lblRequestCount;
 
     /**
      * Initializes the controller class.

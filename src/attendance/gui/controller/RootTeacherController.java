@@ -34,21 +34,23 @@ public class RootTeacherController implements Initializable {
     private HBox buttonBar;
     @FXML
     private JFXButton btnDashboard;
-    @FXML
-    private JFXButton btmStudentAttendance;
+ //   @FXML
+ //   private JFXButton btmStudentAttendance;
     @FXML
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
 
-    private final String DashboardModule = "src/attendance/gui/view/TeacherDashboard.fxml";
-    private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
+    private final String DashboardModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
+  //  private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
     private Model model;
     @FXML
     private Label lblName;
+    @FXML
+    private JFXButton btnRequests;
 
     /**
      * Initializes the controller class.Jep
@@ -79,11 +81,11 @@ public class RootTeacherController implements Initializable {
         showModule(DashboardModule);
     }
 
-    @FXML
+ /*   @FXML
     private void showStudentAttendance(ActionEvent event) {
         showModule(AttendanceModule);
 
-    }
+    }*/
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
@@ -107,6 +109,10 @@ public class RootTeacherController implements Initializable {
         user = model.getCurrentUser();
         showModule(DashboardModule);
         lblName.setText(user.getName());
+    }
+
+    @FXML
+    private void showRequests(ActionEvent event) {
     }
 
 }
