@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.view.ChooseSubjectAfterLoginController">
-    
+
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="attendance.gui.view.ChooseSubjectAfterLoginController">
+   <children>
+      <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/EASV%20RGB%20invert.png" />
+         </image>
+      </ImageView>
+      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#BtnPressed" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Log in" />
+      <ComboBox id="PaneColorsTeacherView" fx:id="combChooseCourse" layoutX="226.0" layoutY="225.0" prefHeight="25.0" prefWidth="150.0" stylesheets="@../css/style.css" />
+   </children>
 </AnchorPane>
