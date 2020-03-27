@@ -16,40 +16,62 @@ public class CourseCal {
 
     private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty courseName = new SimpleStringProperty();
-    private final StringProperty startTime = new SimpleStringProperty();
-    private final StringProperty endTime = new SimpleStringProperty();
+    private final StringProperty status = new SimpleStringProperty();
+    private final ObjectProperty<LocalDateTime> startTime = new SimpleObjectProperty<>();
+    private final ObjectProperty<LocalDateTime> endTime = new SimpleObjectProperty<>();
+    private StatusType statusType;
+    
 
+    //  (CourseCal , studentOBJ,  )
     //  maybe course could be STRING
-    public CourseCal(int id, String courseName, String startTime, String endTime) {
+    public CourseCal(int id, String courseName, LocalDateTime startTime, LocalDateTime endTime, StatusType statusType) {
+        // courseID?
         this.id.set(id);
         this.courseName.set(courseName);
         this.startTime.set(startTime);
         this.endTime.set(endTime);
+        this.statusType = statusType;
 
     }
+    
+    public enum StatusType{
+       PRESENT,ABSENT
+    }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime.get();
     }
 
-    public void setEndTime(String value) {
+    public void setEndTime(LocalDateTime value) {
         endTime.set(value);
     }
 
-    public StringProperty endTimeProperty() {
+    public ObjectProperty endTimeProperty() {
         return endTime;
     }
 
-    public String getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime.get();
     }
 
-    public void setStartTime(String value) {
+    public void setStartTime(LocalDateTime value) {
         startTime.set(value);
     }
 
-    public StringProperty startTimeProperty() {
+    public ObjectProperty startTimeProperty() {
         return startTime;
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setStatus(String value) {
+        status.set(value);
+    }
+
+    public StringProperty statusProperty() {
+        return status;
     }
 
     public String getCourseName() {

@@ -13,6 +13,7 @@ import attendance.gui.model.AttendanceModel;
 import attendance.gui.model.CourseCalModel;
 import attendance.gui.model.Model;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
 import java.text.DateFormat;
@@ -32,6 +33,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 public class TodayController implements Initializable {
@@ -54,16 +56,15 @@ public class TodayController implements Initializable {
     private CourseCalModel courseCalModel;
     @FXML
     private AnchorPane anchorPane;
-    @FXML
     private TableView<CourseCal> tbvCal;
-    @FXML
     private TableColumn<CourseCal, String> colStart;
-    @FXML
     private TableColumn<CourseCal, String> colEnd;
-    @FXML
     private TableColumn<CourseCal, String> colSubject;
+    private TableColumn<CourseCal, String> colStatus;
     @FXML
-    private JFXButton btnPresent;
+    private JFXComboBox<CourseCal> comboBoxCal;
+    @FXML
+    private JFXToggleButton tbRegister;
 
     /**
      * Initializes the controller class.
@@ -72,10 +73,10 @@ public class TodayController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //  get models
         this.model = Model.getInstance();
-        this.courseCalModel = CourseCalModel.getInstance();
+        //this.courseCalModel = CourseCalModel.getInstance();
         //  load objects
-        courseCalModel.loadAllCourseCals();
-        setTableView();
+        //courseCalModel.loadAllCourseCals();
+        //setTableView();
         setUser();
         //initToggleButtons();
         showCurrentDate();
@@ -134,17 +135,32 @@ public class TodayController implements Initializable {
         colStart.setCellValueFactory(cellData -> cellData.getValue().startTimeProperty());
         colEnd.setCellValueFactory(cellData -> cellData.getValue().endTimeProperty());
         colSubject.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
+        colStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+
         tbvCal.setItems(courseCalModel.getObsCourseCals());
     }
 
-    @FXML
     private void registerAttendance(ActionEvent event) {
-        CourseCal subject = tbvCal.getSelectionModel().getSelectedItem();
+        if (tbRegister.isSelected()) {
+            
+            
+        }
+    }
 
-        //  insert
-       
-        AttendanceRecord ar = new AttendanceRecord(subject.getStartTime(), subject.getEndTime(), subject.getCourseName(), "Present");
-        System.out.println("new attendance: " + ar.getStartTime() + ar.getEndTime() + ar.getCourseName() + ar.getStatus());
+
+    @FXML
+    private void handle_registerAttendance(ActionEvent event) {
+
+//        CourseCal selectedSubject = tbvCal.getSelectionModel().getSelectedItem();
+//
+//        if (selectedSubject != null) {
+//            selectedSubject.setStatus("Present");
+//            //  temp insert
+//            AttendanceRecord ar = new AttendanceRecord(selectedSubject.getStartTime(), selectedSubject.getEndTime(),
+//                    selectedSubject.getCourseName(), selectedSubject.getStatus());
+//
+//            System.out.println("new attendance: " + ar.getStartTime() + " - " + ar.getEndTime() + " - " + ar.getCourseName() + " - " + ar.getStatus());
+        
 
     }
 
