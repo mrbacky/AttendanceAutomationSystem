@@ -7,28 +7,33 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.AttendanceRecord;
+import attendance.be.CourseCal;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
+import attendance.gui.model.CourseCalModel;
 import attendance.gui.model.Model;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-/**
- * FXML Controller class
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class TodayController implements Initializable {
 
     private Attendance attendance;
@@ -38,35 +43,43 @@ public class TodayController implements Initializable {
     private ImageView imgUser;
     @FXML
     private Label lblTodayDate;
-    @FXML
-    private Label lblTime1;
-    @FXML
-    private Label lblTime2;
-    @FXML
     private Label lblSubject1;
-    @FXML
-    private Label lblSubject2;
-    @FXML
     private JFXToggleButton tglBtn1;
-    @FXML
     private JFXToggleButton tglBtn2;
 
     private User user;
 
     private String UsernameLabel;
     private Model model;
+    private CourseCalModel courseCalModel;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private TableView<CourseCal> tbvCal;
+    @FXML
+    private TableColumn<CourseCal, String> colStart;
+    @FXML
+    private TableColumn<CourseCal, String> colEnd;
+    @FXML
+    private TableColumn<CourseCal, String> colSubject;
+    @FXML
+    private JFXButton btnPresent;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //  get models
         this.model = Model.getInstance();
+        this.courseCalModel = CourseCalModel.getInstance();
+        //  load objects
+        courseCalModel.loadAllCourseCals();
+        setTableView();
         setUser();
-        initToggleButtons();
+        //initToggleButtons();
         showCurrentDate();
+
     }
 
     public void initToggleButtons() {
@@ -115,6 +128,24 @@ public class TodayController implements Initializable {
 
 //        UsernameLabel = User.toString(user.getUsername());
 //        lblUsername.setText(UsernameLabel);
+    }
+
+    private void setTableView() {
+        colStart.setCellValueFactory(cellData -> cellData.getValue().startTimeProperty());
+        colEnd.setCellValueFactory(cellData -> cellData.getValue().endTimeProperty());
+        colSubject.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
+        tbvCal.setItems(courseCalModel.getObsCourseCals());
+    }
+
+    @FXML
+    private void registerAttendance(ActionEvent event) {
+        CourseCal subject = tbvCal.getSelectionModel().getSelectedItem();
+
+        //  insert
+       
+        AttendanceRecord ar = new AttendanceRecord(subject.getStartTime(), subject.getEndTime(), subject.getCourseName(), "Present");
+        System.out.println("new attendance: " + ar.getStartTime() + ar.getEndTime() + ar.getCourseName() + ar.getStatus());
+
     }
 
 }

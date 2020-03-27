@@ -7,51 +7,42 @@ package attendance.be;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author Martin
  */
 public class Course {
-    
-    // add id, change to localdatetime, List<students>
+
+    private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty name = new SimpleStringProperty();
+    private final ListProperty<Student> studentList = new SimpleListProperty<>();
 
-    private final ObjectProperty<LocalDateTime> startDuration = new SimpleObjectProperty<>();
-    private final ObjectProperty<LocalDateTime> endDuration = new SimpleObjectProperty<>();
-
-    public Course(String name, LocalDateTime startDuration, LocalDateTime endDuration) {
+    public Course(int id, String name, ListProperty<Student> studentList) {
+        this.id.set(id);
         this.name.set(name);
-        this.startDuration.set(startDuration);
-        this.endDuration.set(endDuration);
+
     }
 
-    public LocalDateTime getEndDuration() {
-        return endDuration.get();
+    public ObservableList getStudentList() {
+        return studentList.get();
     }
 
-    public void setEndDuration(LocalDateTime value) {
-        endDuration.set(value);
+    public void setStudentList(ObservableList value) {
+        studentList.set(value);
     }
 
-    public ObjectProperty endDurationProperty() {
-        return endDuration;
-    }
-
-    public LocalDateTime getStartDuration() {
-        return startDuration.get();
-    }
-
-    public void setStartDuration(LocalDateTime value) {
-        startDuration.set(value);
-    }
-
-    public ObjectProperty startDurationProperty() {
-        return startDuration;
+    public ListProperty studentListProperty() {
+        return studentList;
     }
 
     public String getName() {
@@ -65,10 +56,21 @@ public class Course {
     public StringProperty nameProperty() {
         return name;
     }
-    
+
     @Override
     public String toString() {
         return getName();
     }
 
+    public int getId() {
+        return id.get();
+    }
+
+    public void setId(int value) {
+        id.set(value);
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
+    }
 }

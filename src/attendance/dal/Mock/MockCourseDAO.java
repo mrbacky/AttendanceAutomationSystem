@@ -14,7 +14,7 @@ public class MockCourseDAO {
     private List<Course> courseList = FXCollections.observableArrayList();
 
     public MockCourseDAO() {
-        createCourses();
+//        createCourses();
         System.out.println("coursesss in mock classss    " + courseList);
     }
 
@@ -22,12 +22,12 @@ public class MockCourseDAO {
         return courseList;
     }
 
-    private void createCourses() {
-        courseList.add(new Course("SDR2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
-        courseList.add(new Course("SCO2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
-        courseList.add(new Course("ITO2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
-        courseList.add(new Course("DBOS.AB.20", LocalDate.EPOCH, LocalDate.EPOCH));
-
-    }
+//    private void createCourses() {
+//        courseList.add(new Course("SDR2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
+//        courseList.add(new Course("SCO2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
+//        courseList.add(new Course("ITO2.B.20", LocalDate.EPOCH, LocalDate.EPOCH));
+//        courseList.add(new Course("DBOS.AB.20", LocalDate.EPOCH, LocalDate.EPOCH));
+//
+//    }
 
 }

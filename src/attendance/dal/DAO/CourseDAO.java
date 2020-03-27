@@ -51,26 +51,26 @@ public class CourseDAO implements ICourseDAO {
 
     */
     
-    public ArrayList<Course> getCourse() throws SQLServerException{
-        ArrayList<Course> courses = new ArrayList();
-        String sql = "SELECT * FROM CourseCalender,Course JOIN Course ON CourseCalender.id = Course.id";
-        try(Connection con = cp.getConnection()){
-            PreparedStatement ptst = con.prepareStatement(sql);
-            ResultSet rs = ptst.executeQuery();
-            while(rs.next()){
-                Course c = new Course(null,null,null);
-                c.setName(rs.getString("name"));
-                c.setStartDuration(rs.getTime("startTime").toString());
-                c.setEndDuration(rs.getTime("endTime").toString());
-                courses.add(c);
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-        return courses;
-    }
+//    public ArrayList<Course> getCourse() throws SQLServerException{
+//        ArrayList<Course> courses = new ArrayList();
+//        String sql = "SELECT * FROM CourseCalender,Course JOIN Course ON CourseCalender.id = Course.id";
+//        try(Connection con = cp.getConnection()){
+//            PreparedStatement ptst = con.prepareStatement(sql);
+//            ResultSet rs = ptst.executeQuery();
+//            while(rs.next()){
+//                Course c = new Course(null,null,null);
+//                c.setName(rs.getString("name"));
+//                c.setStartDuration(rs.getTime("startTime").toString());
+//                c.setEndDuration(rs.getTime("endTime").toString());
+//                courses.add(c);
+//            }
+//            
+//        } catch (SQLException ex) {
+//            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    
+//        return courses;
+//    }
     
     
 
