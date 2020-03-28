@@ -48,8 +48,6 @@ public class Attendance extends Application {
         }
     }
 
-    
-
     /**
      * @param args the command line arguments
      */

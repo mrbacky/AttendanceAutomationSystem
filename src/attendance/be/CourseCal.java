@@ -20,7 +20,6 @@ public class CourseCal {
     private final ObjectProperty<LocalDateTime> startTime = new SimpleObjectProperty<>();
     private final ObjectProperty<LocalDateTime> endTime = new SimpleObjectProperty<>();
     private StatusType statusType;
-    
 
     //  (CourseCal , studentOBJ,  )
     //  maybe course could be STRING
@@ -33,9 +32,17 @@ public class CourseCal {
         this.statusType = statusType;
 
     }
-    
-    public enum StatusType{
-       PRESENT,ABSENT,UNREGISTERED
+
+    public enum StatusType {
+        PRESENT, ABSENT, UNREGISTERED
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 
     public LocalDateTime getEndTime() {

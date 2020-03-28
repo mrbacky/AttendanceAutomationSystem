@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -61,7 +62,7 @@ public class StudentDAO implements IStudentDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                int absentCount = rs.getInt("absentLessons");                
+                int absentCount = rs.getInt("absentLessons");
                 students.add(new Student(id, name, absentCount));
             }
             return students;
@@ -73,6 +74,7 @@ public class StudentDAO implements IStudentDAO {
         return null;
     }
 
+    @Override
     public void createRecord(int userId, int courseCalenderId, CourseCal.StatusType status) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
 
@@ -88,7 +90,7 @@ public class StudentDAO implements IStudentDAO {
         }
 
     }
-    
+
     /*
     public AttendanceRecord createRecord(String day, String date, String time, String subject, String status) {
         try (Connection con = cp.getConnection()) {
@@ -111,4 +113,44 @@ public class StudentDAO implements IStudentDAO {
     }
 
      */
+    
+    @Override
+    public List<CourseCal> getAttendanceRecords(int userId, int courseId) {
+        List<CourseCal> cc = new ArrayList<>();
+        String sql
+                = "SELECT AR.courseCalendarId, C.name, CC.startTime, CC.endTime, AR.status "
+                + "FROM AttendanceRecord AR "
+                + "JOIN CourseCalendar CC "
+                + "	ON AR.courseCalendarId = CC.id "
+                + "JOIN Course C "
+                + "	ON CC.courseId = C.id "
+                + "WHERE AR.userId = ? "
+                + "	AND CC.courseId = ? "
+                + "ORDER BY CC.startTime";
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, courseId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("courseCalendarId");
+                String courseName = rs.getString("name");
+                LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
+                String type = rs.getString("status");
+
+                if (type.contains("PRESENT")) {
+                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT));
+                } else if (type.contains("ABSENT")) {
+                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT));
+                }
+            }
+            return cc;
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
