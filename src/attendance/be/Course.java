@@ -5,6 +5,8 @@
  */
 package attendance.be;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -17,9 +19,25 @@ public class Course {
     private final StringProperty name = new SimpleStringProperty();
     private final StringProperty startDuration = new SimpleStringProperty();
     private final StringProperty endDuration = new SimpleStringProperty();
+    private final IntegerProperty id = new SimpleIntegerProperty();
 
-   
+    public int getId() {
+        return id.get();
+    }
 
+    public void setId(int value) {
+        id.set(value);
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
+    }
+
+    public Course(int id, String name) {
+        setId(id);
+        setName(name);
+    }
+    
     public Course(String name, String startDuration, String endDuration) {
        
     }
