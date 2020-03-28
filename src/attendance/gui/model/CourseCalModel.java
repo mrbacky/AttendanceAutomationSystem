@@ -40,6 +40,7 @@ public class CourseCalModel {
         List<CourseCal> allCourseCals = mockCourseCalDAO.getCourseCals();
         courseCalList.clear();
         courseCalList.addAll(allCourseCals);
+        
     }
 
     public ObservableList<CourseCal> getObsCourseCals() {

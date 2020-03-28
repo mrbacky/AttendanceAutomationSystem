@@ -21,11 +21,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -66,6 +69,8 @@ public class TodayController implements Initializable {
     @FXML
     private JFXToggleButton tbRegister;
 
+    private boolean threadRun = true;
+
     /**
      * Initializes the controller class.
      */
@@ -73,13 +78,13 @@ public class TodayController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //  get models
         this.model = Model.getInstance();
-        //this.courseCalModel = CourseCalModel.getInstance();
+        this.courseCalModel = CourseCalModel.getInstance();
         //  load objects
-        //courseCalModel.loadAllCourseCals();
-        //setTableView();
+        courseCalModel.loadAllCourseCals();
         setUser();
         //initToggleButtons();
         showCurrentDate();
+        loadCalToComboBox();
 
     }
 
@@ -131,37 +136,84 @@ public class TodayController implements Initializable {
 //        lblUsername.setText(UsernameLabel);
     }
 
-    private void setTableView() {
-        colStart.setCellValueFactory(cellData -> cellData.getValue().startTimeProperty());
-        colEnd.setCellValueFactory(cellData -> cellData.getValue().endTimeProperty());
-        colSubject.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
-        colStatus.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+    @FXML
+    private void handle_registerAttendance(ActionEvent event) {
+        CourseCal calas = comboBoxCal.getSelectionModel().getSelectedItem();
 
-        tbvCal.setItems(courseCalModel.getObsCourseCals());
+        if (tbRegister.isSelected()) {
+            tbRegister.setText("Present");
+
+            calas.setStatusType(CourseCal.StatusType.PRESENT);
+            // register method, send coursecal obj, send user ()
+            // if endtime of subject <= currentTime. MARK... get it in BLL
+
+        } else if (!tbRegister.isSelected()) {
+            tbRegister.setText("Unregistered");
+            calas.setStatusType(CourseCal.StatusType.UNREGISTERED);
+        }
+
     }
 
-    private void registerAttendance(ActionEvent event) {
-        if (tbRegister.isSelected()) {
-            
-            
+    private void loadCalToComboBox() {
+        comboBoxCal.getItems().setAll(courseCalModel.getObsCourseCals());
+        comboBoxCal.getSelectionModel().select(0);
+        Thread thread = new Thread() {
+            public void run() {
+
+                //Go to bll
+                // take this : comboBoxCal.getItems()
+                // do for each loop
+                //Check if its unregistered and if enddate > current date
+                //If it is . Set absent for single item
+                //Return modified list
+                //get current selected item index (So it doesnt interupt user)
+                //clear list
+                //add list again using modified list 
+                //set previously chosen item index
+                //call checkCurrentSelection()  -- modify TB to absent (maybe dont need)
+                //sleep for 1 min (give or take)
+                //Repeat (GOOGLE :D)
+                onFinish(currentThread());
+            }
+
+        };
+        //thread.run();
+        //threadRun=false;
+    }
+
+    public void onFinish(Thread thread) {
+        try {
+            if (threadRun) {
+                thread.wait(1000, 0);// This is wrong. Check correct usage.
+                thread.run();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-
-    @FXML
-    private void handle_registerAttendance(ActionEvent event) {
-
-//        CourseCal selectedSubject = tbvCal.getSelectionModel().getSelectedItem();
-//
-//        if (selectedSubject != null) {
-//            selectedSubject.setStatus("Present");
-//            //  temp insert
-//            AttendanceRecord ar = new AttendanceRecord(selectedSubject.getStartTime(), selectedSubject.getEndTime(),
-//                    selectedSubject.getCourseName(), selectedSubject.getStatus());
-//
-//            System.out.println("new attendance: " + ar.getStartTime() + " - " + ar.getEndTime() + " - " + ar.getCourseName() + " - " + ar.getStatus());
-        
-
+    private void checkCurrentSelection() {
+        //for current selected item in combo box. Modify tbRegister to represent current status.
     }
 
+    @FXML
+    private void subjectStatusCheck(Event event) {
+        System.out.println("ISCALLED");
+        CourseCal calItem = comboBoxCal.getSelectionModel().getSelectedItem();
+        tbRegister.setDisable(false);
+        if (calItem.getStatusType() == CourseCal.StatusType.ABSENT) {
+            tbRegister.setText("Absent");
+            tbRegister.setDisable(true);
+            tbRegister.setSelected(true);
+            //  later style button
+
+        }else if(calItem.getStatusType() == CourseCal.StatusType.PRESENT) {
+            tbRegister.setText("Present");
+            tbRegister.setSelected(true);
+        }else {
+            tbRegister.setText("Unregistered");
+            tbRegister.setSelected(false);
+        }
+
+    }
 }

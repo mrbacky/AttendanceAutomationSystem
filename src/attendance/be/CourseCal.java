@@ -16,11 +16,9 @@ public class CourseCal {
 
     private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty courseName = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
     private final ObjectProperty<LocalDateTime> startTime = new SimpleObjectProperty<>();
     private final ObjectProperty<LocalDateTime> endTime = new SimpleObjectProperty<>();
     private StatusType statusType;
-    
 
     //  (CourseCal , studentOBJ,  )
     //  maybe course could be STRING
@@ -33,9 +31,28 @@ public class CourseCal {
         this.statusType = statusType;
 
     }
-    
-    public enum StatusType{
-       PRESENT,ABSENT
+
+    @Override
+    public String toString() {
+//        return "CourseCal{" + "courseName=" + courseName + ", startTime=" + startTime + ", endTime=" + endTime + '}';
+        String output = formatTime(startTime.get()) + " - " + formatTime(endTime.get()) + " " + courseName.get();
+        return output;
+    }
+
+    private String formatTime(LocalDateTime timeToProcess) {
+        return "" + timeToProcess.getHour() + ":" + checkIfNot10(timeToProcess.getMinute());
+    }
+
+    private String checkIfNot10(int time) {
+        String timeStringas = "" + time;
+        if (time < 10) {
+            timeStringas = "0" + timeStringas;
+        }
+        return timeStringas;
+    }
+
+    public enum StatusType {
+        UNREGISTERED, PRESENT, ABSENT
     }
 
     public LocalDateTime getEndTime() {
@@ -62,16 +79,12 @@ public class CourseCal {
         return startTime;
     }
 
-    public String getStatus() {
-        return status.get();
+    public void setStatusType(StatusType enm) {
+        statusType = enm;
     }
 
-    public void setStatus(String value) {
-        status.set(value);
-    }
-
-    public StringProperty statusProperty() {
-        return status;
+    public StatusType getStatusType() {
+        return statusType;
     }
 
     public String getCourseName() {
