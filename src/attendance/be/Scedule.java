@@ -42,7 +42,7 @@ public class Scedule {
     
     public void setStartTime(String startTime){
     
-     this.startTime.set(startTime);
+     this.startTime.set(startTime);   
     }
     
     public String getStartTime(){
