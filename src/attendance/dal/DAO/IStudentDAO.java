@@ -28,11 +28,19 @@ public interface IStudentDAO {
     List<Student> getNumberOfAbsentLessons(int courseId);
 
     /**
+     * Gets the attendance records for all the courses a student is enrolled in.
+     *
+     * @param userId The id of the student.
+     * @return A list of attendance records (CourseCal objects with status).
+     */
+    List<CourseCal> getAttendanceRecordsForAllCourses(int userId);
+
+    /**
      * Gets all the attendance records of a student for a course.
      *
      * @param userId The id of the student.
      * @param courseId The id of the course.
      * @return A list of attendance records (CourseCal objects with status).
      */
-    List<CourseCal> getAttendanceRecords(int userId, int courseId);
+    List<CourseCal> getAttendanceRecordsForACourse(int userId, int courseId);
 }
