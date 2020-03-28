@@ -5,6 +5,7 @@
  */
 package attendance.dal.DAO;
 
+import attendance.be.CourseCal;
 import attendance.be.Student;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
@@ -95,6 +96,22 @@ public class StudentDAO implements IStudentDAO {
         return null;
     }
 
+    public void createRecord(int userId, int courseCalenderId, CourseCal.StatusType status) {
+        String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, courseCalenderId);
+            pstmt.setString(3, status.name());
+
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+        }
+
+    }
+    
     /*
     public AttendanceRecord createRecord(String day, String date, String time, String subject, String status) {
         try (Connection con = cp.getConnection()) {

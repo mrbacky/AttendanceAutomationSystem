@@ -5,7 +5,9 @@
  */
 package attendance;
 
+import attendance.be.CourseCal;
 import attendance.dal.DAO.CourseDAO;
+import attendance.dal.DAO.StudentDAO;
 import attendance.gui.controller.DashboardController;
 import attendance.gui.controller.TodayController;
 import java.io.IOException;
@@ -24,6 +26,9 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //StudentDAO s = new StudentDAO();
+        //s.createRecord(7, 59, CourseCal.StatusType.ABSENT);
+        
         CourseDAO c = new CourseDAO();
         System.out.println(LocalDate.parse("2020-02-27"));
         c.getCourseCal(9, LocalDate.parse("2020-02-27"));
