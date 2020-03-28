@@ -44,7 +44,8 @@ public class RootTeacherController implements Initializable {
     private final String DashboardModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
   //  private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
-
+    private final String Request = "src/attendance/gui/view/TeacherChangeRequest.fxml";
+    
     private User user;
     private Model model;
     @FXML
@@ -80,6 +81,7 @@ public class RootTeacherController implements Initializable {
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }
+    
 
  /*   @FXML
     private void showStudentAttendance(ActionEvent event) {
@@ -113,6 +115,9 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void showRequests(ActionEvent event) {
+         showModule(Request);
+       
+        
     }
 
 }
