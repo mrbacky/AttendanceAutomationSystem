@@ -178,3 +178,16 @@
     
     
 }
+
+#messagebox{
+    
+    -fx-border-color: black;
+    -fx-background-color: white;
+    
+}
+
+#acceptdenybtn{
+    
+     -fx-background-color: whitesmoke;
+     
+}
