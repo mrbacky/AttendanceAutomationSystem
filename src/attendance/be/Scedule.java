@@ -31,7 +31,7 @@ public class Scedule {
     
     public Scedule( String startTime, String endTime, String subjects, String status){
         
-        this.startTime.set(startTime);
+        this.startTime.set(startTime);  
         this.endTime.set(endTime);
         this.subjects.set(subjects);
         this.status.set(status);
