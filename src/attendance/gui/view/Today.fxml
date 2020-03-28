@@ -8,17 +8,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
+<AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
    <children>
       <Label id="todaylbls" fx:id="lblUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="82.0" prefHeight="25.0" prefWidth="563.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
-      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="378.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgUser" fitHeight="91.0" fitWidth="89.0" layoutX="356.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/icons8-male-user-96.png" />
          </image>
       </ImageView>
       <Label id="todaydatelbls" fx:id="lblTodayDate" alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="233.0" prefHeight="41.0" prefWidth="460.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
-      <JFXToggleButton fx:id="tglBtn1" layoutX="367.0" layoutY="462.0" onAction="#setPresenttglButton" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
-      <TableView fx:id="tableview" layoutX="228.0" layoutY="301.0" prefHeight="147.0" prefWidth="395.0">
+      <JFXToggleButton fx:id="tglBtn1" layoutX="321.0" layoutY="456.0" onAction="#setPresenttglButton" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
+      <TableView fx:id="tableview" layoutX="203.0" layoutY="301.0" prefHeight="147.0" prefWidth="395.0">
         <columns>
           <TableColumn fx:id="starttimecol" prefWidth="85.0" text="StartTime" />
           <TableColumn fx:id="endtimecol" prefWidth="72.0" text="EndTime" />
