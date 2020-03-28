@@ -70,8 +70,6 @@ public class UserDAO implements IUserDAO {
             while (rs.next()) {
                 int courseId = rs.getInt("id");
                 String courseName = rs.getString("name");
-                System.out.println(courseId);
-                System.out.println(courseName);
                 courses.add(new Course(courseId, courseName));
             }
             return courses;
