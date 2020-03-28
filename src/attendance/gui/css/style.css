@@ -142,3 +142,39 @@
 #usernameTxtField{
     margin-top: 20px;
 }
+
+
+#TeacherStudentBorders{
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    
+    
+}
+#StudentCount{
+    
+    -fx-font-size: 25px;
+    -fx-text-fill: black;
+    
+}
+
+#Dashboard{
+    -fx-font-size: 22px;
+        -fx-text-fill: black;
+
+}
+#PaneColorsTeacherView{
+    
+      -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-background-color: white;
+    
+}
+
+#CourseCombobox{
+    -fx-border-style: solid;
+    -fx-border-color: black;
+    -fx-background-color: white;
+    
+    
+    
+}
