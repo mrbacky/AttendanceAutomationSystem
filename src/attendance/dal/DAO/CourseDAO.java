@@ -4,13 +4,14 @@ import attendance.be.Course;
 import attendance.be.CourseCal;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,16 +22,13 @@ import java.util.logging.Logger;
  */
 public class CourseDAO implements ICourseDAO {
 
-    private final DBConnectionProvider cp;
-    private final UserDAO userDAO;
+    private final DBConnectionProvider connection;
 
     /**
      * Constructor, which creates the connection with the database.
      */
     public CourseDAO() {
-        cp = new DBConnectionProvider();
-        userDAO = new UserDAO();
-
+        connection = new DBConnectionProvider();
     }
 
     /*
@@ -56,7 +54,34 @@ public class CourseDAO implements ICourseDAO {
     }
 
      */
-    
+    @Override
+    public List<Course> getCourses(int userId) {
+        List<Course> courses = new ArrayList<>();
+
+        String sql = "SELECT C.id, C.name "
+                + "FROM Course C "
+                + "JOIN UserCourse UC ON C.id = UC.courseId "
+                + "WHERE userId = ?";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int courseId = rs.getInt("id");
+                String courseName = rs.getString("name");
+                courses.add(new Course(courseId, courseName));
+            }
+            return courses;
+        } catch (SQLServerException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     @Override
     public List<CourseCal> getCourseCal(int userId, LocalDate current) {
         List<CourseCal> courses = new ArrayList<>();
@@ -67,11 +92,11 @@ public class CourseDAO implements ICourseDAO {
                 + "ON CC.courseId = C.id "
                 + "WHERE ";
 
-        List<Course> cs = userDAO.getCourses(userId);
+        List<Course> cs = getCourses(userId);
 
         String sqlFinal = preparedStatement(sql, cs);
 
-        try (Connection con = cp.getConnection()) {
+        try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sqlFinal);
             int i = 0;
             for (Course c : cs) {
@@ -100,6 +125,7 @@ public class CourseDAO implements ICourseDAO {
 
     /**
      * The conditions of the SQL PreparedStatement for getCourseCal().
+     *
      * @param sql The SQL PreparedStatement.
      * @param courses
      * @return
@@ -116,5 +142,26 @@ public class CourseDAO implements ICourseDAO {
         }
         sql += ") AND (CC.startTime >= ? AND CC.startTime < ?)";
         return sql;
+    }
+
+    @Override
+    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
+        String sql = "SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND endTime <= ?";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setTimestamp(2, Timestamp.valueOf(current));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

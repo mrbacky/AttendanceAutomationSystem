@@ -9,11 +9,9 @@ import attendance.be.CourseCal;
 import attendance.be.Student;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
-import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,27 +27,6 @@ public class StudentDAO implements IStudentDAO {
 
     public StudentDAO() {
         connection = new DBConnectionProvider();
-    }
-
-    @Override
-    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
-        String sql = "SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND endTime <= ?";
-
-        try (Connection con = connection.getConnection()) {
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, courseId);
-            pstmt.setTimestamp(2, Timestamp.valueOf(current));
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                return count;
-            }
-        } catch (SQLServerException ex) {
-            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
     }
 
     //public List<Student> getNumberOfAbsentLessons(Course course) {
