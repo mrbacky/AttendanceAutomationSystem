@@ -74,6 +74,7 @@ public class StudentDAO implements IStudentDAO {
         return null;
     }
 
+    @Override
     public void createRecord(int userId, int courseCalenderId, CourseCal.StatusType status) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
 
@@ -112,6 +113,8 @@ public class StudentDAO implements IStudentDAO {
     }
 
      */
+    
+    @Override
     public List<CourseCal> getAttendanceRecords(int userId, int courseId) {
         List<CourseCal> cc = new ArrayList<>();
         String sql
@@ -135,25 +138,12 @@ public class StudentDAO implements IStudentDAO {
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
                 String type = rs.getString("status");
-                
+
                 if (type.contains("PRESENT")) {
-                    CourseCal c = new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT);
-                    System.out.println("HERE " + c.getStatusType());
-                    cc.add(c);
-                    //cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT));
-                } else {
-                    CourseCal c = new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT);
-                     System.out.println("HERE " + c.getStatusType());
-                    cc.add(c);
-                    //cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT));
+                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT));
+                } else if (type.contains("ABSENT")) {
+                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT));
                 }
-            }
-            for (CourseCal c : cc) {
-                System.out.println("id " + c.getId());
-                System.out.println("cn " + c.getCourseName());
-                System.out.println("st " + c.getStartTime());
-                System.out.println("et " + c.getEndTime());
-                System.out.println("st " + c.getStatusType());
             }
             return cc;
         } catch (SQLServerException ex) {
@@ -162,6 +152,5 @@ public class StudentDAO implements IStudentDAO {
             Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-
     }
 }

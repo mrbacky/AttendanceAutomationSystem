@@ -5,7 +5,6 @@
  */
 package attendance;
 
-import attendance.dal.DAO.StudentDAO;
 import attendance.gui.controller.DashboardController;
 import attendance.gui.controller.TodayController;
 import java.io.IOException;
@@ -23,8 +22,6 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        StudentDAO s = new StudentDAO();
-        s.getAttendanceRecords(9, 1);
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         showLogin();
@@ -50,8 +47,6 @@ public class Attendance extends Application {
             e.printStackTrace();
         }
     }
-
-    
 
     /**
      * @param args the command line arguments
