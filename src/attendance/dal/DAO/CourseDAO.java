@@ -56,8 +56,9 @@ public class CourseDAO implements ICourseDAO {
     }
 
      */
-    //public List<CourseCal> getCourseCal(int courseId, int userId, LocalDateTime current) throws SQLServerException {
-    public List<CourseCal> getCourseCal(int userId, LocalDate current) throws SQLServerException {
+    
+    @Override
+    public List<CourseCal> getCourseCal(int userId, LocalDate current) {
         List<CourseCal> courses = new ArrayList<>();
 
         String sql = "SELECT CC.id, C.name, CC.startTime, CC.endTime "
@@ -65,45 +66,46 @@ public class CourseDAO implements ICourseDAO {
                 + "JOIN Course C "
                 + "ON CC.courseId = C.id "
                 + "WHERE ";
+
         List<Course> cs = userDAO.getCourses(userId);
 
         String sqlFinal = preparedStatement(sql, cs);
 
         try (Connection con = cp.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sqlFinal);
-
             int i = 0;
             for (Course c : cs) {
                 pstmt.setInt(i + 1, c.getId());
                 i++;
             }
-
             pstmt.setDate(i + 1, Date.valueOf(current));
             pstmt.setDate(i + 2, Date.valueOf(current.plusDays(1)));
-            //pstmt.setTimestamp(i + 2, Timestamp.valueOf(current.atStartOfDay()));
+
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String courseName = rs.getString("name");
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
-                System.out.println("id is " + id);
-                System.out.println("course is " + courseName);
-                System.out.println("start is " + start);
-                System.out.println("end is " + end);
                 courses.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.UNREGISTERED));
             }
-            System.out.println("number of rows " + courses.size());
             return courses;
+        } catch (SQLServerException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
+    /**
+     * The conditions of the SQL PreparedStatement for getCourseCal().
+     * @param sql The SQL PreparedStatement.
+     * @param courses
+     * @return
+     */
     private String preparedStatement(String sql, List<Course> courses) {
         boolean firstItem = true;
-
         for (Course c : courses) {
             if (firstItem) {
                 sql += "(CC.courseId = ? ";
@@ -112,13 +114,7 @@ public class CourseDAO implements ICourseDAO {
                 sql += " OR CC.courseId = ?";
             }
         }
-
-        //sql += ")";
-        //sql += ") AND CC.startTime = ?"
-        //+ "BETWEEN '?' AND '? 23:59:59'";  
         sql += ") AND (CC.startTime >= ? AND CC.startTime < ?)";
-
-        System.out.println(sql);
         return sql;
     }
 }
