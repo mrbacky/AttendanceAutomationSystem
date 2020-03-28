@@ -31,26 +31,28 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     private JFXButton loginButton;
     @FXML
     private ComboBox<?> combChooseCourse;
-private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
-  
-     private Model model;
+    private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
+
+    private Model model;
     public LoginController loginController;
-    
+
     /**
      * Initializes the controller class.
+     *
      * @param url
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void BtnPressed(ActionEvent event) {
         showRoot(ROOT_TEACHER);
+        closeLogin();
     }
-    
-     public void showRoot(String rootToShow) {
+
+    public void showRoot(String rootToShow) {
         try {
             URL url = getClass().getResource(rootToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -65,6 +67,12 @@ private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
         } catch (Exception e) {
             System.out.println(e);
         }
-    
-     }
+
+    }
+
+    private void closeLogin() {
+        Stage chooseStage;
+        chooseStage = (Stage) loginButton.getScene().getWindow();
+        chooseStage.close();
+    }
 }
