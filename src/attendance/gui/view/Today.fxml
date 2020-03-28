@@ -2,11 +2,13 @@
 
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
+<AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
    <children>
       <Label id="todaylbls" fx:id="lblUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="82.0" prefHeight="25.0" prefWidth="563.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
       <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="378.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
@@ -15,11 +17,14 @@
          </image>
       </ImageView>
       <Label id="todaydatelbls" fx:id="lblTodayDate" alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="233.0" prefHeight="41.0" prefWidth="460.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
-      <Label id="todaydatelbls" fx:id="lblTime1" layoutX="234.0" layoutY="325.0" stylesheets="@../css/style.css" text="09:00 - 11:30" />
-      <Label id="todaydatelbls" fx:id="lblTime2" layoutX="235.0" layoutY="383.0" stylesheets="@../css/style.css" text="12:00 - 13:30" />
-      <Label id="todaylbls" fx:id="lblSubject1" layoutX="371.0" layoutY="334.0" stylesheets="@../css/style.css" text="SCO2.B.20 " />
-      <Label id="todaylbls" fx:id="lblSubject2" layoutX="371.0" layoutY="392.0" stylesheets="@../css/style.css" text="SDE2.B.20" />
-      <JFXToggleButton fx:id="tglBtn1" layoutX="479.0" layoutY="315.0" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
-      <JFXToggleButton fx:id="tglBtn2" layoutX="479.0" layoutY="373.0" text="Unregistered" textAlignment="RIGHT" toggleColor="#b90000" toggleLineColor="RED" />
+      <JFXToggleButton fx:id="tglBtn1" layoutX="367.0" layoutY="462.0" onAction="#setPresenttglButton" text="Unregistered" toggleColor="#03ae00" toggleLineColor="#35eb4a" />
+      <TableView fx:id="tableview" layoutX="228.0" layoutY="301.0" prefHeight="147.0" prefWidth="395.0">
+        <columns>
+          <TableColumn fx:id="starttimecol" prefWidth="85.0" text="StartTime" />
+          <TableColumn fx:id="endtimecol" prefWidth="72.0" text="EndTime" />
+            <TableColumn fx:id="subjects" prefWidth="141.0" text="Subjects" />
+            <TableColumn fx:id="statuscol" prefWidth="96.0" text="Status" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
