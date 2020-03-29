@@ -3,7 +3,7 @@ package attendance.be;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class AttendanceRecord {
+public class MockAttendanceRecord {
 
     private final StringProperty subject = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
@@ -13,7 +13,7 @@ public class AttendanceRecord {
 
     
     
-    public AttendanceRecord(String day,String date,String time ,String subject, String status) {
+    public MockAttendanceRecord(String day,String date,String time ,String subject, String status) {
         setDay(day);
         setDate(date);
         setTime(time);

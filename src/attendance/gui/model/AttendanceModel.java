@@ -5,7 +5,7 @@
  */
 package attendance.gui.model;
 
-import attendance.be.AttendanceRecord;
+import attendance.be.MockAttendanceRecord;
 import attendance.be.User;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
@@ -49,7 +49,7 @@ public class AttendanceModel {
          AttendanceDAO = new MockAttendanceDAO();
     }
     
-    public AttendanceRecord atendancerec(String day,String date,String time ,String subject, String status){
+    public MockAttendanceRecord atendancerec(String day,String date,String time ,String subject, String status){
      return AttendanceDAO.atendancerec(day, date, time,subject,status);
    
     

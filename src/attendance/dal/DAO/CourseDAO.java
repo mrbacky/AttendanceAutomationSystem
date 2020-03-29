@@ -1,7 +1,7 @@
 package attendance.dal.DAO;
 
 import attendance.be.Course;
-import attendance.be.CourseCal;
+import attendance.be.Lesson;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -83,8 +83,8 @@ public class CourseDAO implements ICourseDAO {
     }
 
     @Override
-    public List<CourseCal> getCourseCal(int userId, LocalDate current) {
-        List<CourseCal> courses = new ArrayList<>();
+    public List<Lesson> getCourseCal(int userId, LocalDate current) {
+        List<Lesson> courses = new ArrayList<>();
 
         String sql = "SELECT CC.id, C.name, CC.startTime, CC.endTime "
                 + "FROM CourseCalendar CC "
@@ -112,7 +112,7 @@ public class CourseDAO implements ICourseDAO {
                 String courseName = rs.getString("name");
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
-                courses.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.UNREGISTERED));
+                courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
             }
             return courses;
         } catch (SQLServerException ex) {

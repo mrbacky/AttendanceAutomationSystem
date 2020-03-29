@@ -5,7 +5,7 @@
  */
 package attendance.dal.DAO;
 
-import attendance.be.CourseCal;
+import attendance.be.Lesson;
 import attendance.be.Student;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
@@ -75,7 +75,7 @@ public class StudentDAO implements IStudentDAO {
     }
 
     @Override
-    public void createRecord(int userId, int courseCalenderId, CourseCal.StatusType status) {
+    public void createRecord(int userId, int courseCalenderId, Lesson.StatusType status) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
 
         try (Connection con = connection.getConnection()) {
@@ -114,8 +114,8 @@ public class StudentDAO implements IStudentDAO {
 
      */
     @Override
-    public List<CourseCal> getAttendanceRecordsForAllCourses(int userId) {
-        List<CourseCal> cc = new ArrayList<>();
+    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
+        List<Lesson> cc = new ArrayList<>();
         String sql
                 = "SELECT AR.courseCalendarId, C.name, CC.startTime, CC.endTime, AR.status "
                 + "FROM AttendanceRecord AR "                
@@ -137,9 +137,9 @@ public class StudentDAO implements IStudentDAO {
                 String type = rs.getString("status");
 
                 if (type.contains("PRESENT")) {
-                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT));
+                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
                 } else if (type.contains("ABSENT")) {
-                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT));
+                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
                 }
             }
             return cc;
@@ -152,8 +152,8 @@ public class StudentDAO implements IStudentDAO {
     }
 
     @Override
-    public List<CourseCal> getAttendanceRecordsForACourse(int userId, int courseId) {
-        List<CourseCal> cc = new ArrayList<>();
+    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
+        List<Lesson> cc = new ArrayList<>();
         String sql
                 = "SELECT AR.courseCalendarId, C.name, CC.startTime, CC.endTime, AR.status "
                 + "FROM AttendanceRecord AR "
@@ -177,9 +177,9 @@ public class StudentDAO implements IStudentDAO {
                 String type = rs.getString("status");
 
                 if (type.contains("PRESENT")) {
-                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.PRESENT));
+                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
                 } else if (type.contains("ABSENT")) {
-                    cc.add(new CourseCal(id, courseName, start, end, CourseCal.StatusType.ABSENT));
+                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
                 }
             }
             return cc;

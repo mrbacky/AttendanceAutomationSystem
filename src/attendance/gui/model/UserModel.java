@@ -14,10 +14,10 @@ import attendance.dal.Mock.MockUserDAO;
  *
  * @author Martin
  */
-public class Model {
+public class UserModel {
 
     private final MockUserDAO mockUserDAO;
-    private static Model model;
+    private static UserModel model;
     private User currentUser;
 
     private final LogicFacade logicManager;
@@ -27,14 +27,14 @@ public class Model {
      *
      * @return
      */
-    public static Model getInstance() {
+    public static UserModel getInstance() {
         if (model == null) {
-            model = new Model();
+            model = new UserModel();
         }
         return model;
     }
 
-    private Model() {
+    private UserModel() {
         logicManager = new LogicManager();
         mockUserDAO = new MockUserDAO();
     }

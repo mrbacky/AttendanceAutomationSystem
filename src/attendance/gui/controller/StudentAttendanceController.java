@@ -5,8 +5,8 @@
  */
 package attendance.gui.controller;
 
-import attendance.be.AttendanceRecord;
-import attendance.be.SubjectAttendance;
+import attendance.be.MockAttendanceRecord;
+import attendance.be.MockSubjectAttendance;
 import attendance.be.User;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -28,7 +28,7 @@ import javafx.scene.control.TableView;
 public class StudentAttendanceController implements Initializable {
 
     @FXML
-    private TableView<AttendanceRecord> StudentAttTable;
+    private TableView<MockAttendanceRecord> StudentAttTable;
     @FXML
     private TableColumn<?, ?> DayCellTableview;
     @FXML
@@ -56,11 +56,10 @@ public class StudentAttendanceController implements Initializable {
      * Initializes the controller class.
      */
     
-    ObservableList<AttendanceRecord> StudentAttendance = FXCollections.observableArrayList(
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present")
+    ObservableList<MockAttendanceRecord> StudentAttendance = FXCollections.observableArrayList(new MockAttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new MockAttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new MockAttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
+            new MockAttendanceRecord("Monday","10-02-2020","3","SCO","Present")
             );
             
     @Override

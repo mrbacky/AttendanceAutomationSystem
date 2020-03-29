@@ -6,10 +6,10 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.be.Scedule;
+import attendance.be.MockScedule;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
-import attendance.gui.model.Model;
+import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
 import java.net.URL;
@@ -55,21 +55,21 @@ public class TodayController implements Initializable {
 
     private String UsernameLabel;
     
-    private Model model;
+    private UserModel model;
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    private TableView<Scedule> tableview;
+    private TableView<MockScedule> tableview;
     @FXML
-    private TableColumn<Scedule, String> starttimecol;
+    private TableColumn<MockScedule, String> starttimecol;
     @FXML
-    private TableColumn<Scedule, String> endtimecol;
+    private TableColumn<MockScedule, String> endtimecol;
     @FXML
-    private TableColumn<Scedule, String> subjects;
+    private TableColumn<MockScedule, String> subjects;
      @FXML
-    private TableColumn<Scedule, String> statuscol;
+    private TableColumn<MockScedule, String> statuscol;
     
-    private ObservableList<Scedule> sceduleList = FXCollections.observableArrayList();
+    private ObservableList<MockScedule> sceduleList = FXCollections.observableArrayList();
     
    
     /**
@@ -77,7 +77,7 @@ public class TodayController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = Model.getInstance();
+        this.model = UserModel.getInstance();
         setUser();
         initToggleButtons();
         showCurrentDate();
@@ -96,9 +96,9 @@ public class TodayController implements Initializable {
     public void setTable()
     {
         
-        sceduleList.add(new Scedule("9:30","11:30", "SCO2", ""));
-        sceduleList.add(new Scedule("10:00","14:30", "SDE2", ""));
-        sceduleList.add(new Scedule("9:00","15:00", "ITO2",""));
+        sceduleList.add(new MockScedule("9:30","11:30", "SCO2", ""));
+        sceduleList.add(new MockScedule("10:00","14:30", "SDE2", ""));
+        sceduleList.add(new MockScedule("9:00","15:00", "ITO2",""));
         
         
         starttimecol.setCellValueFactory(cellData ->cellData.getValue().startTimeProperty());
@@ -116,7 +116,7 @@ public class TodayController implements Initializable {
     
     public void initializeSchedule() throws IOException
     {
-        for(Scedule scedule : sceduleList)
+        for(MockScedule scedule : sceduleList)
         {
             //initialize intodayview
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(IN_TODAY_COURSE_VIEW_PATH));

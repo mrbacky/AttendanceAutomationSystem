@@ -12,18 +12,17 @@ import javafx.beans.property.StringProperty;
  *
  * @author rado
  */
-public class CourseCal {
+public class Lesson {
 
     private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty courseName = new SimpleStringProperty();
-    private final StringProperty status = new SimpleStringProperty();
     private final ObjectProperty<LocalDateTime> startTime = new SimpleObjectProperty<>();
     private final ObjectProperty<LocalDateTime> endTime = new SimpleObjectProperty<>();
     private StatusType statusType;
 
-    //  (CourseCal , studentOBJ,  )
+    //  (Lesson , studentOBJ,  )
     //  maybe course could be STRING
-    public CourseCal(int id, String courseName, LocalDateTime startTime, LocalDateTime endTime, StatusType statusType) {
+    public Lesson(int id, String courseName, LocalDateTime startTime, LocalDateTime endTime, StatusType statusType) {
         // courseID?
         this.id.set(id);
         this.courseName.set(courseName);
@@ -69,17 +68,7 @@ public class CourseCal {
         return startTime;
     }
 
-    public String getStatus() {
-        return status.get();
-    }
-
-    public void setStatus(String value) {
-        status.set(value);
-    }
-
-    public StringProperty statusProperty() {
-        return status;
-    }
+    
 
     public String getCourseName() {
         return courseName.get();

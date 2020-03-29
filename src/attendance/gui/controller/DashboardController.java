@@ -6,8 +6,8 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.be.AttendanceRecord;
-import attendance.be.SubjectAttendance;
+import attendance.be.MockAttendanceRecord;
+import attendance.be.MockSubjectAttendance;
 import attendance.be.User;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,23 +47,23 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane pieChartAnchorPane;
     @FXML
-    private TableView<SubjectAttendance> tbvWeeklySubjectAttendance;
+    private TableView<MockSubjectAttendance> tbvWeeklySubjectAttendance;
 
     @FXML
-    private TableColumn<SubjectAttendance, String> colWeeklySubjects;
+    private TableColumn<MockSubjectAttendance, String> colWeeklySubjects;
     @FXML
-    private TableColumn<SubjectAttendance, Integer> colWeeklyOverall;
+    private TableColumn<MockSubjectAttendance, Integer> colWeeklyOverall;
     @FXML
-    private TableColumn<SubjectAttendance, String> colWeeklyDetails;
+    private TableColumn<MockSubjectAttendance, String> colWeeklyDetails;
 
     @FXML
-    private TableView<SubjectAttendance> tbvSemesterSubjectAttendance;
+    private TableView<MockSubjectAttendance> tbvSemesterSubjectAttendance;
     @FXML
-    private TableColumn<SubjectAttendance, String> colSemesterSubjects;
+    private TableColumn<MockSubjectAttendance, String> colSemesterSubjects;
     @FXML
-    private TableColumn<SubjectAttendance, Integer> colSemesterOverall;
+    private TableColumn<MockSubjectAttendance, Integer> colSemesterOverall;
     @FXML
-    private TableColumn<SubjectAttendance, String> colSemesterDetails;
+    private TableColumn<MockSubjectAttendance, String> colSemesterDetails;
 
     final static String monday = "Mon";
     final static String tuesday = "Tue";
@@ -84,18 +84,16 @@ public class DashboardController implements Initializable {
             new PieChart.Data("Absent", 25)
     );
 
-    ObservableList<SubjectAttendance> weeklySubjectAttendances = FXCollections.observableArrayList(
-            new SubjectAttendance("SDE2.B.20", 84, "details"),
-            new SubjectAttendance("SCO2.B.20", 78, "details"),
-            new SubjectAttendance("ITO2.B.20", 69, "details"),
-            new SubjectAttendance("DBOS.B.20", 57, "details")
+    ObservableList<MockSubjectAttendance> weeklySubjectAttendances = FXCollections.observableArrayList(new MockSubjectAttendance("SDE2.B.20", 84, "details"),
+            new MockSubjectAttendance("SCO2.B.20", 78, "details"),
+            new MockSubjectAttendance("ITO2.B.20", 69, "details"),
+            new MockSubjectAttendance("DBOS.B.20", 57, "details")
     );
 
-    ObservableList<SubjectAttendance> semesterSubjectAttendances = FXCollections.observableArrayList(
-            new SubjectAttendance("SDE2.B.20", 74, "details"),
-            new SubjectAttendance("SCO2.B.20", 62, "details"),
-            new SubjectAttendance("ITO2.B.20", 30, "details"),
-            new SubjectAttendance("DBOS.B.20", 74, "details")
+    ObservableList<MockSubjectAttendance> semesterSubjectAttendances = FXCollections.observableArrayList(new MockSubjectAttendance("SDE2.B.20", 74, "details"),
+            new MockSubjectAttendance("SCO2.B.20", 62, "details"),
+            new MockSubjectAttendance("ITO2.B.20", 30, "details"),
+            new MockSubjectAttendance("DBOS.B.20", 74, "details")
     );
 
     /**

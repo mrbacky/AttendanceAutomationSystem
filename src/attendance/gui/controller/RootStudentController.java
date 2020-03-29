@@ -7,7 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
-import attendance.gui.model.Model;
+import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class RootStudentController implements Initializable {
     private User currentUser;
     @FXML
     private Label lblHello;
-    private Model model;
+    private UserModel model;
 
     /**
      * Initializes the controller class.
@@ -62,7 +62,7 @@ public class RootStudentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        model = Model.getInstance();
+        model = UserModel.getInstance();
         setUser();
         //  set     and show
         //

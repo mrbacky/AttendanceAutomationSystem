@@ -6,7 +6,7 @@
 package attendance.gui.controller;
 
 import attendance.gui.controller.LoginController;
-import attendance.gui.model.Model;
+import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,7 +34,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
-    private Model model;
+    private UserModel model;
     public LoginController loginController;
 
     /**

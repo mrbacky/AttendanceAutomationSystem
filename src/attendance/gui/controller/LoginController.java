@@ -8,7 +8,7 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.User;
 import attendance.dal.Mock.MockUserDAO;
-import attendance.gui.model.Model;
+import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
@@ -53,7 +53,7 @@ public class LoginController implements Initializable {
     private User currentUser;
     @FXML
     private Label wrongPassword;
-    private Model model;
+    private UserModel model;
     private Attendance attendance;
     @FXML
     private JFXTextField usernameField;
@@ -69,7 +69,7 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = Model.getInstance();
+        this.model = UserModel.getInstance();
 
         fieldValidator();
 

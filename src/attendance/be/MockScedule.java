@@ -14,7 +14,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author mac
  */
-public class Scedule {
+public class MockScedule {
     
    /*
     private ObjectProperty<LocalDate> startTime = new SimpleObjectProperty<>();
@@ -29,7 +29,7 @@ public class Scedule {
     
     
     
-    public Scedule( String startTime, String endTime, String subjects, String status){
+    public MockScedule( String startTime, String endTime, String subjects, String status){
         
         this.startTime.set(startTime);
         this.endTime.set(endTime);

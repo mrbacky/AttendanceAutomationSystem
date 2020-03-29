@@ -5,13 +5,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class SubjectAttendance {
+public class MockSubjectAttendance {
 
     private final StringProperty name = new SimpleStringProperty();
     private final IntegerProperty overall = new SimpleIntegerProperty();
     private final StringProperty details = new SimpleStringProperty();
 
-    public SubjectAttendance(String name, int overall, String details) {
+    public MockSubjectAttendance(String name, int overall, String details) {
         setName(name);
         setOverall(overall);
         setDetails(details);

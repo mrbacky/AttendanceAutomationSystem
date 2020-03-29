@@ -1,7 +1,7 @@
 package attendance.dal.DAO;
 
 import attendance.be.Course;
-import attendance.be.CourseCal;
+import attendance.be.Lesson;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +20,7 @@ public interface ICourseDAO {
      * @param current The date of the current day.
      * @return A list of lessons.
      */
-    List<CourseCal> getCourseCal(int userId, LocalDate current);
+    List<Lesson> getCourseCal(int userId, LocalDate current);
 
     /**
      * Gets the courses a user is related to.
