@@ -21,7 +21,6 @@ public interface LogicFacade {
 
     List<Course> getCourses(int userId);
 
-
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
     void createRecord(int userId, Lesson lessonToUpdate);
