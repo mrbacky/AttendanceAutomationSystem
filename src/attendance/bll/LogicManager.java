@@ -1,6 +1,7 @@
 package attendance.bll;
 
 import attendance.be.Course;
+import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.dal.DalFacade;
@@ -49,6 +50,16 @@ public class LogicManager implements LogicFacade {
 
     public List<Course> getCourses(int userId) {
         return dalFacade.getCourses(userId);
+    }
+
+    @Override
+    public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
+        return dalFacade.getLessonsForToday(userId, current);
+    }
+
+    @Override
+    public void createRecord(int userId, int lessonId, Lesson.StatusType status) {
+        dalFacade.createRecord(userId,lessonId,status);
     }
 
 }

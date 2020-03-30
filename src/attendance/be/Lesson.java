@@ -20,8 +20,6 @@ public class Lesson {
     private final ObjectProperty<LocalDateTime> endTime = new SimpleObjectProperty<>();
     private StatusType statusType;
 
-    //  (Lesson , studentOBJ,  )
-    //  maybe course could be STRING
     public Lesson(int id, String courseName, LocalDateTime startTime, LocalDateTime endTime, StatusType statusType) {
         // courseID?
         this.id.set(id);
@@ -30,6 +28,25 @@ public class Lesson {
         this.endTime.set(endTime);
         this.statusType = statusType;
 
+    }
+
+    @Override
+    public String toString() {
+//        return "CourseCal{" + "courseName=" + courseName + ", startTime=" + startTime + ", endTime=" + endTime + '}';
+        String output = formatTime(startTime.get()) + " - " + formatTime(endTime.get()) + " " + courseName.get();
+        return output;
+    }
+
+    private String formatTime(LocalDateTime timeToProcess) {
+        return "" + timeToProcess.getHour() + ":" + checkIfNot10(timeToProcess.getMinute());
+    }
+
+    private String checkIfNot10(int time) {
+        String timeStringas = "" + time;
+        if (time < 10) {
+            timeStringas = "0" + timeStringas;
+        }
+        return timeStringas;
     }
 
     public enum StatusType {
@@ -67,8 +84,6 @@ public class Lesson {
     public ObjectProperty startTimeProperty() {
         return startTime;
     }
-
-    
 
     public String getCourseName() {
         return courseName.get();

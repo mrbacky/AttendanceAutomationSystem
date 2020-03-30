@@ -6,42 +6,29 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.be.CourseCal;
+import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.gui.model.AttendanceModel;
-import attendance.gui.model.CourseCalModel;
+import attendance.gui.model.LessonModel;
 import attendance.gui.model.UserModel;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
-import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import java.lang.String;
+import java.time.LocalDate;
 
 public class TodayController implements Initializable {
 
@@ -62,16 +49,12 @@ public class TodayController implements Initializable {
 
     private String UsernameLabel;
     private UserModel userModel;
-    private CourseCalModel courseCalModel;
+    private LessonModel lessonModel;
     @FXML
     private AnchorPane anchorPane;
-    private TableView<CourseCal> tbvCal;
-    private TableColumn<CourseCal, String> colStart;
-    private TableColumn<CourseCal, String> colEnd;
-    private TableColumn<CourseCal, String> colSubject;
-    private TableColumn<CourseCal, String> colStatus;
+
     @FXML
-    private JFXComboBox<CourseCal> comboBoxCal;
+    private JFXComboBox<Lesson> comboBoxCal;
     @FXML
     private JFXToggleButton tbRegister;
 
@@ -84,13 +67,16 @@ public class TodayController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         //  get models
         this.userModel = UserModel.getInstance();
-        this.courseCalModel = CourseCalModel.getInstance();
+        this.lessonModel = LessonModel.getInstance();
         //  load objects
-        courseCalModel.loadAllCourseCals();
         setUser();
+        LocalDate currentDate = LocalDate.now();
+        lessonModel.loadAllLessons(user.getId(), currentDate);
+        System.out.println("lessons for today: " + lessonModel.getObsLessons());
+
         //initToggleButtons();
         showCurrentDate();
-        loadCalToComboBox();
+        loadLessonsToCB();
 
     }
 
@@ -115,45 +101,49 @@ public class TodayController implements Initializable {
 
     @FXML
     private void handle_registerAttendance(ActionEvent event) {
-        CourseCal calas = comboBoxCal.getSelectionModel().getSelectedItem();
+        Lesson lesson = comboBoxCal.getSelectionModel().getSelectedItem();
 
         if (tbRegister.isSelected()) {
             tbRegister.setText("Present");
 
-            calas.setStatusType(CourseCal.StatusType.PRESENT);
-            // register method, send coursecal obj, send user ()
+            lesson.setStatusType(Lesson.StatusType.PRESENT);
+            //int userId, int courseCalenderId, Lesson.StatusType status
+            lessonModel.createRecord(user.getId(), lesson.getId(), lesson.getStatusType());
+// register method, send coursecal obj, send user ()
             // if endtime of subject <= currentTime. MARK... get it in BLL
 
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
-            calas.setStatusType(CourseCal.StatusType.UNREGISTERED);
+            lesson.setStatusType(Lesson.StatusType.UNREGISTERED);
         }
 
     }
 
-    private void loadCalToComboBox() {
-        comboBoxCal.getItems().setAll(courseCalModel.getObsCourseCals());
+    private void loadLessonsToCB() {
+        comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
+//        Lesson lessonNow = lessonModel.getObsLessons();
         comboBoxCal.getSelectionModel().select(0);
-        Thread thread = new Thread() {
-            public void run() {
 
-                //Go to bll
-                // take this : comboBoxCal.getItems()
-                // do for each loop
-                //Check if its unregistered and if enddate > current date
-                //If it is . Set absent for single item
-                //Return modified list
-                //get current selected item index (So it doesnt interupt user)
-                //clear list
-                //add list again using modified list 
-                //set previously chosen item index
-                //call checkCurrentSelection()  -- modify TB to absent (maybe dont need)
-                //sleep for 1 min (give or take)
-                //Repeat (GOOGLE :D)
-                onFinish(currentThread());
-            }
-
-        };
+//        Thread thread = new Thread() {
+//            public void run() {
+//
+//                //Go to bll
+//                // take this : comboBoxCal.getItems()
+//                // do for each loop
+//                //Check if its unregistered and if enddate > current date
+//                //If it is . Set absent for single item
+//                //Return modified list
+//                //get current selected item index (So it doesnt interupt user)
+//                //clear list
+//                //add list again using modified list 
+//                //set previously chosen item index
+//                //call checkCurrentSelection()  -- modify TB to absent (maybe dont need)
+//                //sleep for 1 min (give or take)
+//                //Repeat (GOOGLE :D)
+//                onFinish(currentThread());
+//            }
+//
+//        };
         //thread.run();
         //threadRun=false;
     }
@@ -176,15 +166,15 @@ public class TodayController implements Initializable {
     @FXML
     private void subjectStatusCheck(Event event) {
         System.out.println("ISCALLED");
-        CourseCal calItem = comboBoxCal.getSelectionModel().getSelectedItem();
+        Lesson calItem = comboBoxCal.getSelectionModel().getSelectedItem();
         tbRegister.setDisable(false);
-        if (calItem.getStatusType() == CourseCal.StatusType.ABSENT) {
+        if (calItem.getStatusType() == Lesson.StatusType.ABSENT) {
             tbRegister.setText("Absent");
             tbRegister.setDisable(true);
             tbRegister.setSelected(true);
             //  later style button
 
-        } else if (calItem.getStatusType() == CourseCal.StatusType.PRESENT) {
+        } else if (calItem.getStatusType() == Lesson.StatusType.PRESENT) {
             tbRegister.setText("Present");
             tbRegister.setSelected(true);
         } else {
@@ -193,4 +183,5 @@ public class TodayController implements Initializable {
         }
 
     }
+
 }

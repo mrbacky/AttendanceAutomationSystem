@@ -83,7 +83,7 @@ public class CourseDAO implements ICourseDAO {
     }
 
     @Override
-    public List<Lesson> getCourseCal(int userId, LocalDate current) {
+    public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
         List<Lesson> courses = new ArrayList<>();
 
         String sql = "SELECT CC.id, C.name, CC.startTime, CC.endTime "
@@ -124,7 +124,7 @@ public class CourseDAO implements ICourseDAO {
     }
 
     /**
-     * The conditions of the SQL PreparedStatement for getCourseCal().
+     * The conditions of the SQL PreparedStatement for getLessonsForToday().
      *
      * @param sql The SQL PreparedStatement.
      * @param courses
