@@ -17,7 +17,7 @@ public interface IStudentDAO {
      * @param courseCalenderId The id of the lesson.
      * @param status The status to be recorded.
      */
-    void createRecord(int userId, int courseCalenderId, Lesson.StatusType status);
+    void createRecord(int userId, Lesson lessonToUpdate);
 
     /**
      * Gets the number of absent lessons for each student for a course.

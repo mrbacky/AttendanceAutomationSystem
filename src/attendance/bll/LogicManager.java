@@ -27,7 +27,7 @@ public class LogicManager implements LogicFacade {
     @Override
     public User getUser(String username, String password) {
         //hash password here. create a tool in a utility folder and call method from there.
-        return dalFacade.getUser(username, password);        
+        return dalFacade.getUser(username, password);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public double calculateAbsence(Course selectedCourse,int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
+    public double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
         //          Presence % = lessons attended / lessons until today * 100
         //          Absence % = 100 - Presence%
         return 88.14;
@@ -58,8 +58,8 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public void createRecord(int userId, int lessonId, Lesson.StatusType status) {
-        dalFacade.createRecord(userId,lessonId,status);
+    public void createRecord(int userId, Lesson lessonToUpdate) {
+        dalFacade.createRecord(userId, lessonToUpdate);
     }
 
 }

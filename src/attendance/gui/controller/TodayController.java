@@ -29,6 +29,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import java.lang.String;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class TodayController implements Initializable {
 
@@ -72,9 +74,7 @@ public class TodayController implements Initializable {
         setUser();
         LocalDate currentDate = LocalDate.now();
         lessonModel.loadAllLessons(user.getId(), currentDate);
-        System.out.println("lessons for today: " + lessonModel.getObsLessons());
 
-        //initToggleButtons();
         showCurrentDate();
         loadLessonsToCB();
 
@@ -84,45 +84,49 @@ public class TodayController implements Initializable {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
-
         lblTodayDate.setText("Date: " + dateFormat.format(cal.getTime()));
-
     }
 
     private void setUser() {
-
         user = userModel.getCurrentUser();
-
         lblUsername.setText("Hello " + user.getName());
 
-//        UsernameLabel = User.toString(user.getUsername());
-//        lblUsername.setText(UsernameLabel);
     }
 
     @FXML
     private void handle_registerAttendance(ActionEvent event) {
-        Lesson lesson = comboBoxCal.getSelectionModel().getSelectedItem();
+        Lesson lessonToUpdate = comboBoxCal.getSelectionModel().getSelectedItem();
 
         if (tbRegister.isSelected()) {
             tbRegister.setText("Present");
 
-            lesson.setStatusType(Lesson.StatusType.PRESENT);
+            lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
             //int userId, int courseCalenderId, Lesson.StatusType status
-            lessonModel.createRecord(user.getId(), lesson.getId(), lesson.getStatusType());
-// register method, send coursecal obj, send user ()
-            // if endtime of subject <= currentTime. MARK... get it in BLL
+            lessonModel.createRecord(user.getId(), lessonToUpdate);
 
+            //   createRecords returns status PRESENT - set present but
+            //      if Lesson.getstatus == PRESENT && tb is not selected 
+            //    is selected(true)
+            // register method, send coursecal obj, send user ()
+            // if endtime of subject <= currentTime. MARK... get it in BLL
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
-            lesson.setStatusType(Lesson.StatusType.UNREGISTERED);
+//            lesson.setStatusType(Lesson.StatusType.UNREGISTERED);
         }
 
     }
 
     private void loadLessonsToCB() {
+
         comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
+
 //        Lesson lessonNow = lessonModel.getObsLessons();
-        comboBoxCal.getSelectionModel().select(0);
+        List<Lesson> lessonList = lessonModel.getObsLessons();
+        for (Lesson lesson : lessonList) {
+            if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
+                comboBoxCal.getSelectionModel().select(lesson);
+            }
+        }
 
 //        Thread thread = new Thread() {
 //            public void run() {
@@ -166,15 +170,16 @@ public class TodayController implements Initializable {
     @FXML
     private void subjectStatusCheck(Event event) {
         System.out.println("ISCALLED");
-        Lesson calItem = comboBoxCal.getSelectionModel().getSelectedItem();
+        System.out.println("obs: " + lessonModel.getObsLessons());
+        Lesson lessonItem = comboBoxCal.getSelectionModel().getSelectedItem();
         tbRegister.setDisable(false);
-        if (calItem.getStatusType() == Lesson.StatusType.ABSENT) {
+        if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
             tbRegister.setText("Absent");
             tbRegister.setDisable(true);
             tbRegister.setSelected(true);
             //  later style button
 
-        } else if (calItem.getStatusType() == Lesson.StatusType.PRESENT) {
+        } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
             tbRegister.setText("Present");
             tbRegister.setSelected(true);
         } else {
@@ -184,4 +189,5 @@ public class TodayController implements Initializable {
 
     }
 
+    //  combobox.
 }

@@ -24,12 +24,12 @@ public interface DalFacade {
     User getUser(String username, String password);
 
     void markAttendance(User currentUser, String currentTask, LocalTime loc);
-    
+
     List<Student> getAbsentStudents();
 
     public List<Course> getCourses(int userId);
-    
+
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
-    public void createRecord(int userId, int lessonId, Lesson.StatusType status);
+    public void createRecord(int userId, Lesson lessonToUpdate);
 }

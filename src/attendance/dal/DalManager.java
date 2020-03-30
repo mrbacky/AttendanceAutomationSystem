@@ -77,8 +77,8 @@ public class DalManager implements DalFacade {
     }
 
     @Override
-    public void createRecord(int userId, int lessonId, Lesson.StatusType status) {
-        studentDAO.createRecord(userId,lessonId,status);
+    public void createRecord(int userId, Lesson lessonToUpdate) {
+        studentDAO.createRecord(userId, lessonToUpdate);
     }
 
 }

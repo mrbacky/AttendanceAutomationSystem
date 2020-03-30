@@ -14,15 +14,16 @@ public interface LogicFacade {
     User getUser(String username, String password);
 
     public void markAttendance(User currentUser, String currentTask);
-    
+
     List<Student> getAbsentStudents();
-    
-    double calculateAbsence(Course selectedCourse ,int lessonsAttended, int lessonsToDate, LocalDate currentDay);
+
+    double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay);
 
     List<Course> getCourses(int userId);
-    
+
+
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
-    
-    void createRecord(int userId, int lessonId, Lesson.StatusType status);
+
+    void createRecord(int userId, Lesson lessonToUpdate);
 
 }

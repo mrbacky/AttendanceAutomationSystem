@@ -1,5 +1,3 @@
-
-
 package attendance.gui.model;
 
 import attendance.be.Lesson;
@@ -14,14 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * 
+ *
  * @author rado
  */
 public class LessonModel {
 
     private static LessonModel lessonModel;
     private final ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
-    private final MockCourseCalDAO mockCourseCalDAO;
     private LogicManager logicManager;
 
     public static LessonModel getInstance() {
@@ -32,24 +29,23 @@ public class LessonModel {
     }
 
     private LessonModel() {
-        mockCourseCalDAO = new MockCourseCalDAO();
         logicManager = new LogicManager();
-        
-
     }
 
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
         lessonList.addAll(allLessons);
-        
+
     }
 
     public ObservableList<Lesson> getObsLessons() {
         return lessonList;
     }
 
-    public void createRecord(int userId, int lessonId, StatusType status) {
-        logicManager.createRecord(userId,lessonId,status);
+    public void createRecord(int userId, Lesson lessonToInsert) {
+        logicManager.createRecord(userId, lessonToInsert);
+        int index = lessonList.indexOf(lessonToInsert);
+        lessonList.set(index, lessonToInsert);
     }
 }

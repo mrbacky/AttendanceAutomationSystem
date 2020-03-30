@@ -112,6 +112,7 @@ public class CourseDAO implements ICourseDAO {
                 String courseName = rs.getString("name");
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
+//                courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
                 courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
             }
             return courses;

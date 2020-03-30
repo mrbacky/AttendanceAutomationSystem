@@ -74,15 +74,15 @@ public class StudentDAO implements IStudentDAO {
         return null;
     }
 
-    @Override
-    public void createRecord(int userId, int courseCalenderId, Lesson.StatusType status) {
+    @Override// return Lesson Object and replace in model
+    public void createRecord(int userId, Lesson lessonToInsert) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, userId);
-            pstmt.setInt(2, courseCalenderId);
-            pstmt.setString(3, status.name());
+            pstmt.setInt(2, lessonToInsert.getId());
+            pstmt.setString(3, lessonToInsert.getStatusType().toString());
 
             pstmt.executeUpdate();
 
@@ -118,9 +118,9 @@ public class StudentDAO implements IStudentDAO {
         List<Lesson> cc = new ArrayList<>();
         String sql
                 = "SELECT AR.courseCalendarId, C.name, CC.startTime, CC.endTime, AR.status "
-                + "FROM AttendanceRecord AR "                
+                + "FROM AttendanceRecord AR "
                 + "JOIN CourseCalendar CC "
-                + "	ON AR.courseCalendarId = CC.id "                
+                + "	ON AR.courseCalendarId = CC.id "
                 + "JOIN Course C "
                 + "	ON CC.courseId = C.id "
                 + "WHERE AR.userId = ? "
