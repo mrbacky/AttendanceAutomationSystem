@@ -32,9 +32,8 @@ public class StudentModel {
 
     }
 
-    public void loadAllStudents() {
+    public void loadAllStudents() {// calculate absence here
         List<Student> allStudents = mockStudentDAO.getStudents();
-                                    //logicManager.getAbsentStudents();
         studentList.clear();
         studentList.addAll(allStudents);
     }

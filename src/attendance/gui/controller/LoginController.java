@@ -61,7 +61,9 @@ public class LoginController implements Initializable {
     private JFXPasswordField passwordField;
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
-    private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
+//    private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
+    private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
+
     private User user;
 
     /**
@@ -124,7 +126,8 @@ public class LoginController implements Initializable {
         user = model.login(usernameField.getText(), passwordField.getText());
         if (user != null) {
             if (user.getType() == User.UserType.TEACHER) {
-                showRoot(SUBJECT_CHOOSER);
+//                showRoot(SUBJECT_CHOOSER);
+                showRoot(ROOT_TEACHER);
                 closeLogin();
             } else if (user.getType() == User.UserType.STUDENT) {
                 showRoot(ROOT_STUDENT);

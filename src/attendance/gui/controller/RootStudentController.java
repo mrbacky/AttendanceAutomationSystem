@@ -45,7 +45,7 @@ public class RootStudentController implements Initializable {
     private AnchorPane attachable;
 
     private final String TodayModule = "/attendance/gui/view/Today.fxml";
-    private final String DashboardModule = "/attendance/gui/view/Dashboard.fxml";
+    private final String DashboardModule = "/attendance/gui/view/StudentDashboard.fxml";
     private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 

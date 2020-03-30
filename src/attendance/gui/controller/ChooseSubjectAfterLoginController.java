@@ -5,7 +5,10 @@
  */
 package attendance.gui.controller;
 
+import attendance.be.Course;
+import attendance.be.User;
 import attendance.gui.controller.LoginController;
+import attendance.gui.model.CourseModel;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
@@ -29,13 +32,15 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @FXML
     private JFXButton loginButton;
-    @FXML
-    private ComboBox<?> combChooseCourse;
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
-    private UserModel model;
+    private UserModel userModel;
     public LoginController loginController;
+    @FXML
+    private ComboBox<Course> cbChooseCourse;
+    private CourseModel courseModel;
+    private User user;
 
     /**
      * Initializes the controller class.
@@ -44,7 +49,20 @@ public class ChooseSubjectAfterLoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        
+        this.courseModel = CourseModel.getInstance();
+        this.userModel = UserModel.getInstance();
+        setUser();
+        
+        courseModel.loadAllCourses(user.getId());
+        System.out.println("courses of user: " + courseModel.getObsCourses());
+        loadCoursesInCombobox();
+        
+    }
+
+    private void setUser() {
+        this.user = userModel.getCurrentUser();
     }
 
     @FXML
@@ -76,4 +94,8 @@ public class ChooseSubjectAfterLoginController implements Initializable {
         chooseStage = (Stage) loginButton.getScene().getWindow();
         chooseStage.close();
     }
+
+    private void loadCoursesInCombobox() {
+        cbChooseCourse.getItems().clear();
+        cbChooseCourse.getItems().addAll(courseModel.getObsCourses());    }
 }

@@ -5,6 +5,7 @@
  */
 package attendance.dal;
 
+import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.dal.DAO.CourseDAO;
@@ -59,6 +60,11 @@ public class DalManager implements DalFacade {
     @Override
     public List<Student> getAbsentStudents() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Course> getCourses(int userId) {
+        return courseDAO.getCourses(userId);
     }
     
     

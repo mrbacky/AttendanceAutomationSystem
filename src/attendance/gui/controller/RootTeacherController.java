@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -34,15 +35,14 @@ public class RootTeacherController implements Initializable {
     private HBox buttonBar;
     @FXML
     private JFXButton btnDashboard;
- //   @FXML
- //   private JFXButton btmStudentAttendance;
+    //   @FXML
+    //   private JFXButton btmStudentAttendance;
     @FXML
     private JFXButton btnLogout;
     @FXML
     private AnchorPane attachable;
 
-    private final String DashboardModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
-  //  private final String AttendanceModule = "src/attendance/gui/view/TeacherStudentAttendance.fxml";
+    private final String DashboardModule = "/attendance/gui/view/TeacherDashboard.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
@@ -59,17 +59,22 @@ public class RootTeacherController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.model = UserModel.getInstance();
         setUser();
-        
-        
 
     }
 
-    public void showModule(String urlToShow) {
+    private void showModule(String urlToShow) {
         try {
-            File file = new File(urlToShow);
-            URL url = file.toURI().toURL();
+
+            URL url = getClass().getResource(urlToShow);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(url);
+            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
+
             attachable.getChildren().clear();
-            attachable.getChildren().add(FXMLLoader.load(url));
+            attachable.getChildren().add(page);
+            ///name of pane where you want to put the fxml.
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -80,12 +85,6 @@ public class RootTeacherController implements Initializable {
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }
-
- /*   @FXML
-    private void showStudentAttendance(ActionEvent event) {
-        showModule(AttendanceModule);
-
-    }*/
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {

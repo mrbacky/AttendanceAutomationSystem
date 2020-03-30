@@ -5,6 +5,7 @@
  */
 package attendance.be;
 
+import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,53 +17,13 @@ import javafx.beans.property.StringProperty;
  */
 public class Course {
 
-    private final StringProperty name = new SimpleStringProperty();
-    private final StringProperty startDuration = new SimpleStringProperty();
-    private final StringProperty endDuration = new SimpleStringProperty();
     private final IntegerProperty id = new SimpleIntegerProperty();
-
-    public int getId() {
-        return id.get();
-    }
-
-    public void setId(int value) {
-        id.set(value);
-    }
-
-    public IntegerProperty idProperty() {
-        return id;
-    }
+    private final StringProperty name = new SimpleStringProperty();
 
     public Course(int id, String name) {
-        setId(id);
-        setName(name);
-    }
-    
-    public Course(String name, String startDuration, String endDuration) {
-       
-    }
-    public String getEndDuration() {
-        return endDuration.get();
-    }
+        this.id.set(id);
+        this.name.set(name);
 
-    public void setEndDuration(String value) {
-        endDuration.set(value);
-    }
-
-    public StringProperty endDurationProperty() {
-        return endDuration;
-    }
-
-    public String getStartDuration() {
-        return startDuration.get();
-    }
-
-    public void setStartDuration(String value) {
-        startDuration.set(value);
-    }
-
-    public StringProperty startDurationProperty() {
-        return startDuration;
     }
 
     public String getName() {
@@ -77,4 +38,20 @@ public class Course {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    public int getId() {
+        return id.get();
+    }
+
+    public void setId(int value) {
+        id.set(value);
+    }
+
+    public IntegerProperty idProperty() {
+        return id;
+    }
 }

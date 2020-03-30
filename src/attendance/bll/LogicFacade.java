@@ -18,6 +18,6 @@ public interface LogicFacade {
     
     double calculateAbsence(Course selectedCourse ,int lessonsAttended, int lessonsToDate, LocalDate currentDay);
 
-    
+    List<Course> getCourses(int userId);
 
 }
