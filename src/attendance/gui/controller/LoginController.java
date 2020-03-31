@@ -124,6 +124,7 @@ public class LoginController implements Initializable {
         user = model.login(usernameField.getText(), passwordField.getText());
         if (user != null) {
             if (user.getType() == User.UserType.TEACHER) {
+                System.out.println("we are in teacher iffff");
                 showRoot(SUBJECT_CHOOSER);
                 closeLogin();
             } else if (user.getType() == User.UserType.STUDENT) {
