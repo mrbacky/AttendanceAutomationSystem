@@ -16,10 +16,34 @@ import javafx.beans.property.StringProperty;
  */
 public class Course {
 
-    private final StringProperty name = new SimpleStringProperty();
-    private final StringProperty startDuration = new SimpleStringProperty();
-    private final StringProperty endDuration = new SimpleStringProperty();
     private final IntegerProperty id = new SimpleIntegerProperty();
+    private final StringProperty courseName = new SimpleStringProperty();
+
+    public Course(int id, String courseName) {
+        this.id.set(id);
+        this.courseName.set(courseName);
+
+    }
+
+    public String getCourseName() {
+        return courseName.get();
+    }
+
+    public void setCourseName(String value) {
+        courseName.set(value);
+    }
+
+    public StringProperty courseNameProperty() {
+        return courseName;
+    }
+
+  
+    @Override
+    public String toString() {
+        return  "" + courseName.get();
+       // String output = "" + courseName.get();
+       // return output;
+    }
 
     public int getId() {
         return id.get();
@@ -32,49 +56,4 @@ public class Course {
     public IntegerProperty idProperty() {
         return id;
     }
-
-    public Course(int id, String name) {
-        setId(id);
-        setName(name);
-    }
-    
-    public Course(String name, String startDuration, String endDuration) {
-       
-    }
-    public String getEndDuration() {
-        return endDuration.get();
-    }
-
-    public void setEndDuration(String value) {
-        endDuration.set(value);
-    }
-
-    public StringProperty endDurationProperty() {
-        return endDuration;
-    }
-
-    public String getStartDuration() {
-        return startDuration.get();
-    }
-
-    public void setStartDuration(String value) {
-        startDuration.set(value);
-    }
-
-    public StringProperty startDurationProperty() {
-        return startDuration;
-    }
-
-    public String getName() {
-        return name.get();
-    }
-
-    public void setName(String value) {
-        name.set(value);
-    }
-
-    public StringProperty nameProperty() {
-        return name;
-    }
-
 }

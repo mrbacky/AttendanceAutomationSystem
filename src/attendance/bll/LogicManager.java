@@ -47,4 +47,17 @@ public class LogicManager implements LogicFacade {
         return 88.14;
     }
 
+
+    @Override
+    public List<Course> getCourses(int userId) {
+        return dalFacade.getCourses(userId);
+    }
+    
+/*
+    @Override
+    public List<Course> getCoursesForTeacher(Course selectedCourse, int userId) {
+        return dalFacade.getCoursesForTeacher(userId,selectedCourse);
+    }
+*/
+
 }

@@ -5,6 +5,7 @@
  */
 package attendance.dal;
 
+import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalTime;
@@ -23,4 +24,8 @@ public interface DalFacade {
     void markAttendance(User currentUser, String currentTask, LocalTime loc);
     
     List<Student> getAbsentStudents();
+
+   // public List<Course> getCoursesForTeacher(int userId,);
+    
+    public List<Course> getCourses(int userId);
 }

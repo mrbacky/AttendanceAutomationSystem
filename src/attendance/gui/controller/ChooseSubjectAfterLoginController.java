@@ -5,10 +5,15 @@
  */
 package attendance.gui.controller;
 
+import attendance.be.Course;
+import attendance.be.User;
 import attendance.gui.controller.LoginController;
+import attendance.gui.model.CourseModel;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,14 +34,16 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @FXML
     private JFXButton loginButton;
-    @FXML
-    private ComboBox<?> combChooseCourse;
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
     private UserModel model;
     public LoginController loginController;
-
+    @FXML
+    private JFXComboBox<Course> comboboxS;
+    private CourseModel courseModel;
+    private UserModel userModel;
+     private User user;
     /**
      * Initializes the controller class.
      *
@@ -44,7 +51,15 @@ public class ChooseSubjectAfterLoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        this.userModel = UserModel.getInstance();
+        this.courseModel = CourseModel.getInstance();
+        
+        setUser();
+        
+       // System.out.println("Course: " + courseModel.getObsCourses());
+        
+        coursesInCB();
     }
 
     @FXML
@@ -76,4 +91,31 @@ public class ChooseSubjectAfterLoginController implements Initializable {
         chooseStage = (Stage) loginButton.getScene().getWindow();
         chooseStage.close();
     }
+
+    private void coursesInCB() {
+        
+        Course course = comboboxS.getSelectionModel().getSelectedItem();
+        
+      //JFXComboBox combobox = new JFXComboBox();
+      //combobox.getItems().setAll(comboboxS);
+       comboboxS.getItems().setAll(courseModel.getObsCourses());
+       
+       
+       
+       List<Course>courseList = courseModel.getObsCourses();
+     //  courseList.forEach((course) -> {
+     //      comboboxS.getSelectionModel().select(course);
+     //   });
+        //comboboxS.getSelectionModel().select(1); 
+    
+      comboboxS.getItems().setAll(courseModel.getObsCourses());
+      
+     
+    }
+
+    private void setUser() {
+        
+        user = model.getCurrentUser();
+    }
+    
 }
