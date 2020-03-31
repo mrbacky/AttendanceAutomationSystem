@@ -42,9 +42,9 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private UserModel userModel;
     public LoginController loginController;
-    @FXML  
+    @FXML
     private JFXComboBox<Course> comboboxS;
-    
+
     @FXML
     private CourseModel courseModel;
     private User user;
@@ -56,26 +56,22 @@ public class ChooseSubjectAfterLoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        
+
         this.courseModel = CourseModel.getInstance();
         this.userModel = UserModel.getInstance();
         setUser();
-        
-        courseModel.loadAllCourses(user.getId());
-        System.out.println("courses of user: " + courseModel.getObsCourses());
+
+        //courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
-        
+
     }
 
     private void setUser() {
         try {
             this.user = userModel.getCurrentUser();
         } catch (ModelException ex) {
-            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }
 
     }
 
@@ -85,7 +81,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
             Parent root = fxmlLoader.load();
-
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -104,30 +99,9 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     private void loadCoursesInCombobox() {
-        cbChooseCourse.getItems().clear();
-        cbChooseCourse.getItems().addAll(courseModel.getObsCourses());    }
-
-    private void coursesInCB() {
-
-//        Course course = comboboxS.getSelectionModel().getSelectedItem();
-
-        //JFXComboBox combobox = new JFXComboBox();
-        //combobox.getItems().setAll(comboboxS);
-        List<Course> courseList = courseModel.getObsCourses();
-        comboboxS.getItems().setAll(courseList);
-
-        
-        //  courseList.forEach((course) -> {
-        //      comboboxS.getSelectionModel().select(course);
-        //   });
-        //comboboxS.getSelectionModel().select(1); 
-
-        
-
+        comboboxS.getItems().clear();
+        comboboxS.getItems().addAll(courseModel.getObsCourses());
     }
-
-
-
 
     @FXML
     private void btnTeacherLogin(ActionEvent event) {

@@ -67,7 +67,7 @@ public class LoginController implements Initializable {
     private JFXPasswordField passwordField;
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
-//    private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
+    private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
     private User user;
