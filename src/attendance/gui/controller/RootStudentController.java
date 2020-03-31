@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
@@ -126,7 +127,11 @@ public class RootStudentController implements Initializable {
     }
 
     private void setUser() {
-        this.currentUser = model.getCurrentUser();
+        try {
+            this.currentUser = model.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         showModule(TodayModule);
         lblHello.setText(currentUser.getName());
 

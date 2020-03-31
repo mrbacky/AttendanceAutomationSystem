@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.dal;
 
 import attendance.be.Course;
@@ -47,8 +42,12 @@ public class DalManager implements DalFacade {
 //        return UserDAO.auth(insertedUsername, password);
 //    }
     @Override
-    public User getUser(String username, String password) {
-        return userDAO.getUser(username, password);
+    public User getUser(String username, String password) throws DalException {
+        try {
+            return userDAO.getUser(username, password);
+        } catch (DalException ex) {
+            throw new DalException(ex.getMessage());
+        }
     }
 
     @Override

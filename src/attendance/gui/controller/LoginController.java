@@ -8,6 +8,7 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.User;
 import attendance.dal.Mock.MockUserDAO;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -35,6 +36,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.awt.SystemTray;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.Region;
 
 /**
  * FXML Controller class
@@ -123,7 +129,11 @@ public class LoginController implements Initializable {
     }
 
     private void authentification() {
-        user = model.login(usernameField.getText(), passwordField.getText());
+        try {
+            user = model.login(usernameField.getText(), passwordField.getText());
+        } catch (ModelException ex) {
+            showAlert(ex);
+        }
         if (user != null) {
             if (user.getType() == User.UserType.TEACHER) {
 //                showRoot(SUBJECT_CHOOSER);
@@ -134,10 +144,21 @@ public class LoginController implements Initializable {
                 closeLogin();
             }
         } else {
-            wrongPassword.setVisible(true);
+            //showAlert("There is no user.");
         }
     }
 
+    private void showAlert(Exception ex){
+        Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex.getMessage(), ButtonType.OK);
+        
+        a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        a.show();
+        //change so whole message shows
+        if (a.getResult() == ButtonType.OK){
+            
+        }
+    }
+    
     @FXML//   could be also decoupled 
     private void BtnPressed(ActionEvent event) throws IOException {
         authentification();

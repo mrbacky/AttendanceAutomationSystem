@@ -112,8 +112,19 @@ public class CourseDAO implements ICourseDAO {
                 String courseName = rs.getString("name");
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
-//                courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
-                courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
+                String status = checkStatus(userId, id);
+                if (status.contains("PRESENT")) {
+                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
+                } else if (status.contains("ABSENT")) {
+                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
+                } else {
+                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
+                }
+            }
+            for (Lesson c : courses) {
+                System.out.println(c.getId());
+                System.out.println(c.getCourseName());
+                System.out.println(c.getStatusType());
             }
             return courses;
         } catch (SQLServerException ex) {
@@ -122,6 +133,29 @@ public class CourseDAO implements ICourseDAO {
             Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    private String checkStatus(int userId, int calId) {
+        String sql = "SELECT status "
+                + "FROM AttendanceRecord "
+                + "WHERE userId = ? AND courseCalendarId = ?;";
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, calId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String status = rs.getString(1);
+                return status;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String s = "UNREGISTERED";
+        return s;
     }
 
     /**

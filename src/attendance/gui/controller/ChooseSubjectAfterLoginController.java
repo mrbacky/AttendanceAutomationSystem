@@ -9,10 +9,13 @@ import attendance.be.Course;
 import attendance.be.User;
 import attendance.gui.controller.LoginController;
 import attendance.gui.model.CourseModel;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,7 +65,12 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     private void setUser() {
-        this.user = userModel.getCurrentUser();
+        try {
+            this.user = userModel.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @FXML

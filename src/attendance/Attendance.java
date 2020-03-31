@@ -5,15 +5,11 @@
  */
 package attendance;
 
-import attendance.gui.controller.DashboardController;
-import attendance.gui.controller.TodayController;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class Attendance extends Application {
@@ -22,6 +18,7 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         showLogin();

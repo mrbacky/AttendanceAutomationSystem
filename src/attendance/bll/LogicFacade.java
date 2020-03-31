@@ -11,7 +11,7 @@ public interface LogicFacade {
 
     User auth(String insertedUsername, String password);
 
-    User getUser(String username, String password);
+    User getUser(String username, String password) throws LogicException;
 
     public void markAttendance(User currentUser, String currentTask);
 

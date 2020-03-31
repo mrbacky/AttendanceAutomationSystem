@@ -8,6 +8,8 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
+import attendance.gui.model.AttendanceModel;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.LessonModel;
 import attendance.gui.model.UserModel;
 
@@ -31,6 +33,8 @@ import java.lang.String;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TodayController implements Initializable {
 
@@ -88,7 +92,12 @@ public class TodayController implements Initializable {
     }
 
     private void setUser() {
-        user = userModel.getCurrentUser();
+        try {
+            user = userModel.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         lblUsername.setText("Hello " + user.getName());
 
     }
@@ -125,8 +134,10 @@ public class TodayController implements Initializable {
         for (Lesson lesson : lessonList) {
             if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                 comboBoxCal.getSelectionModel().select(lesson);
+
             }
         }
+    }
 
 //        Thread thread = new Thread() {
 //            public void run() {
@@ -148,10 +159,8 @@ public class TodayController implements Initializable {
 //            }
 //
 //        };
-        //thread.run();
-        //threadRun=false;
-    }
-
+    //thread.run();
+    //threadRun=false;
     public void onFinish(Thread thread) {
         try {
             if (threadRun) {
@@ -159,7 +168,8 @@ public class TodayController implements Initializable {
                 thread.run();
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TodayController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

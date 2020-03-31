@@ -1,13 +1,11 @@
 package attendance.dal.DAO;
 
 import attendance.be.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+import attendance.dal.DalException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,7 +20,7 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public User getUser(String username, String password) {
+    public User getUser(String username, String password) throws DalException {
         String sql = "SELECT * FROM [User] WHERE username = ? AND password = ?";
 
         try (Connection con = connection.getConnection()) {
@@ -42,11 +40,8 @@ public class UserDAO implements IUserDAO {
                 return new User(id, name, User.UserType.STUDENT);
             }
 
-        } catch (SQLServerException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DalException(ex.getMessage());
         }
-        return null;
     }
 }

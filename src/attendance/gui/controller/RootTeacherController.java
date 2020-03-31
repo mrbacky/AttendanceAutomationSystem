@@ -6,12 +6,15 @@
 package attendance.gui.controller;
 
 import attendance.be.User;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -105,7 +108,11 @@ public class RootTeacherController implements Initializable {
     }
 
     void setUser() {
-        user = model.getCurrentUser();
+        try {
+            user = model.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         showModule(DashboardModule);
         lblName.setText(user.getName());
     }

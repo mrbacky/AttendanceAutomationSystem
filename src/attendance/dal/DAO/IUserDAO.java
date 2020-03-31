@@ -1,6 +1,7 @@
 package attendance.dal.DAO;
 
 import attendance.be.User;
+import attendance.dal.DalException;
 
 /**
  *
@@ -8,6 +9,6 @@ import attendance.be.User;
  */
 public interface IUserDAO {
 
-    User getUser(String username, String password);
-    
+    User getUser(String username, String password) throws DalException;
+
 }
