@@ -61,7 +61,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
         this.userModel = UserModel.getInstance();
         setUser();
 
-        //courseModel.loadAllCourses(user.getId());
+        courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
 
     }
