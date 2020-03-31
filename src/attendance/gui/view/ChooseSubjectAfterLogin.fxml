@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.ComboBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +13,7 @@
             <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
-      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#BtnPressed" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Log in" />
-      <ComboBox id="PaneColorsTeacherView" fx:id="cbChooseCourse" layoutX="226.0" layoutY="225.0" prefHeight="25.0" prefWidth="150.0" stylesheets="@../css/style.css" />
+      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Log in" />
+      <JFXComboBox fx:id="comboboxS" layoutX="225.0" layoutY="212.0" prefHeight="27.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

@@ -12,7 +12,9 @@ import attendance.gui.model.CourseModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,8 +42,10 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private UserModel userModel;
     public LoginController loginController;
+    @FXML  
+    private JFXComboBox<Course> comboboxS;
+    
     @FXML
-    private ComboBox<Course> cbChooseCourse;
     private CourseModel courseModel;
     private User user;
 
@@ -73,10 +77,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
         
     }
 
-    @FXML
-    private void BtnPressed(ActionEvent event) {
-        showRoot(ROOT_TEACHER);
-        closeLogin();
     }
 
     public void showRoot(String rootToShow) {
@@ -106,4 +106,33 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     private void loadCoursesInCombobox() {
         cbChooseCourse.getItems().clear();
         cbChooseCourse.getItems().addAll(courseModel.getObsCourses());    }
+
+    private void coursesInCB() {
+
+//        Course course = comboboxS.getSelectionModel().getSelectedItem();
+
+        //JFXComboBox combobox = new JFXComboBox();
+        //combobox.getItems().setAll(comboboxS);
+        List<Course> courseList = courseModel.getObsCourses();
+        comboboxS.getItems().setAll(courseList);
+
+        
+        //  courseList.forEach((course) -> {
+        //      comboboxS.getSelectionModel().select(course);
+        //   });
+        //comboboxS.getSelectionModel().select(1); 
+
+        
+
+    }
+
+
+
+
+    @FXML
+    private void btnTeacherLogin(ActionEvent event) {
+        showRoot(ROOT_TEACHER);
+        closeLogin();
+    }
+
 }

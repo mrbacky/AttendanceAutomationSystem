@@ -136,8 +136,7 @@ public class LoginController implements Initializable {
         }
         if (user != null) {
             if (user.getType() == User.UserType.TEACHER) {
-//                showRoot(SUBJECT_CHOOSER);
-                showRoot(ROOT_TEACHER);
+                showRoot(SUBJECT_CHOOSER);
                 closeLogin();
             } else if (user.getType() == User.UserType.STUDENT) {
                 showRoot(ROOT_STUDENT);
