@@ -20,7 +20,7 @@ public interface ICourseDAO {
      * @param current The date of the current day.
      * @return A list of lessons.
      */
-    List<Lesson> getCourseCal(int userId, LocalDate current);
+    List<Lesson> getLessons(int userId, LocalDate current);
 
     /**
      * Gets the courses a user is related to.

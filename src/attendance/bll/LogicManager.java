@@ -3,10 +3,9 @@ package attendance.bll;
 import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.User;
+import attendance.dal.DalException;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
-import attendance.dal.Mock.MockAttendanceDAO;
-import attendance.dal.Mock.MockUserDAO;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,9 +23,13 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public User getUser(String username, String password) {
-        //hash password here. create a tool in a utility folder and call method from there.
-        return dalFacade.getUser(username, password);        
+    public User getUser(String username, String password) throws LogicException {
+        try {
+            //hash password here. create a tool in a utility folder and call method from there.
+            return dalFacade.getUser(username, password);
+        } catch (DalException ex) {
+            throw new LogicException(ex.getMessage());
+        }
     }
 
     @Override
@@ -41,7 +44,7 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public double calculateAbsence(Course selectedCourse,int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
+    public double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
         //          Presence % = lessons attended / lessons until today * 100
         //          Absence % = 100 - Presence%
         return 88.14;

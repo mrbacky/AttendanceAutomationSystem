@@ -9,6 +9,7 @@ import attendance.Attendance;
 import attendance.be.MockScedule;
 import attendance.be.User;
 import attendance.gui.model.AttendanceModel;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXToggleButton;
 import java.io.IOException;
@@ -31,6 +32,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import java.lang.String;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FXML Controller class
@@ -180,7 +183,11 @@ public class TodayController implements Initializable {
 
     private void setUser() {
 
-        user = model.getCurrentUser();
+        try {
+            user = model.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         lblUsername.setText("Hello " + user.getName());
 
