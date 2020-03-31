@@ -73,7 +73,7 @@ public class StudentDAO implements IStudentDAO {
         }
         return null;
     }
-
+    //  update
     @Override// return Lesson Object and replace in model
     public void createRecord(int userId, Lesson lessonToInsert) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status) VALUES (?,?,?)";
