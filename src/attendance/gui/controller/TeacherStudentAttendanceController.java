@@ -43,20 +43,7 @@ public class TeacherStudentAttendanceController implements Initializable {
     private CourseModel courseModel;
     private ComboBox<Course> comboBoxCourses;
     @FXML
-    private ComboBox<Course> comboBoxTeachersCourses;
-    @FXML
-    private ComboBox<Course> comboBoxStudentsCourses;
-    @FXML
-    private Label lblStudentName;
-
-    @FXML
-    private TextField lblSearchField;
-    @FXML
     private Label lblstudentname;
-    @FXML
-    private TableColumn<?, ?> absence1;
-    @FXML
-    private SplitMenuButton comboBoxStudentCourses;
     @FXML
     private BarChart<?, ?> barChart;
     @FXML
@@ -67,24 +54,24 @@ public class TeacherStudentAttendanceController implements Initializable {
     private Label lblTotalOfStudents;
     @FXML
     private Label lblRequestCount;
+    @FXML
+    private TableColumn<?, ?> lessonCount;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //  get models
-        this.studentModel = StudentModel.getInstance();
-        //this.courseModel = CourseModel.getInstance();
-        //  load lists from backend
-        studentModel.loadAllStudents();
+//      get models
+//      this.studentModel = StudentModel.getInstance();
+//      this.courseModel = CourseModel.getInstance();
 
+//      load lists from backend
+//        studentModel.loadAllStudents();
 //        courseModel.loadAllCourses();
         //  setters
 //        setCoursesIntoComboBox();
-        setTableViews();
-
-        
+//        setTableViews();
     }
 
     private void setTableViews() {
@@ -95,9 +82,7 @@ public class TeacherStudentAttendanceController implements Initializable {
     }
 
     private void setCoursesIntoComboBox() {
-
         comboBoxCourses.getItems().clear();
-
         comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
 
     }

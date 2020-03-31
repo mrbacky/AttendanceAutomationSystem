@@ -54,20 +54,23 @@ public class ChooseSubjectAfterLoginController implements Initializable {
      *
      * @param url
      */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         this.courseModel = CourseModel.getInstance();
-        this.userModel = UserModel.getInstance();
+        userModel = UserModel.getInstance();
         setUser();
 
         courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
-
+        
+        
     }
 
     private void setUser() {
         try {
+
             this.user = userModel.getCurrentUser();
         } catch (ModelException ex) {
             Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
