@@ -30,7 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-public class TeacherStudentAttendanceController implements Initializable {
+public class TeacherDashboardController implements Initializable {
 
     @FXML
     private TableView<Student> tbvStudentAbsence;
