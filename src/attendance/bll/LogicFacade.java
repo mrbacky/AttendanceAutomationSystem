@@ -5,6 +5,7 @@ import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LogicFacade {
@@ -17,12 +18,12 @@ public interface LogicFacade {
 
     List<Student> getAbsentStudents();
 
-    double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay);
-
     List<Course> getCourses(int userId);
 
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
     void createRecord(int userId, Lesson lessonToUpdate);
+
+    List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current);
 
 }

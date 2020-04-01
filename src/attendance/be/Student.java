@@ -1,7 +1,7 @@
 package attendance.be;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  *
@@ -9,22 +9,22 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Student extends User {
 
-    private final DoubleProperty absence = new SimpleDoubleProperty();
-    
-    public Student(int id, String name, double absence) {// absence to INT
+    private final IntegerProperty absence = new SimpleIntegerProperty();
+
+    public Student(int id, String name, int absence) {
         super(id, name, UserType.STUDENT);
         this.absence.set(absence);
     }
 
-    public double getAbsence() {
+    public int getAbsence() {
         return absence.get();
     }
 
-    public void setAbsence(double value) {
+    public void setAbsence(int value) {
         absence.set(value);
     }
 
-    public DoubleProperty absenceProperty() {
+    public IntegerProperty absenceProperty() {
         return absence;
     }
 

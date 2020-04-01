@@ -15,6 +15,7 @@ import attendance.dal.DAO.ICourseDAO;
 import attendance.dal.DAO.IStudentDAO;
 import attendance.dal.DAO.StudentDAO;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -78,6 +79,16 @@ public class DalManager implements DalFacade {
     @Override
     public void createRecord(int userId, Lesson lessonToUpdate) {
         studentDAO.createRecord(userId, lessonToUpdate);
+    }
+
+    @Override
+    public List<Student> getNumberOfAbsentLessons(int courseId) {
+        return studentDAO.getNumberOfAbsentLessons(courseId);
+    }
+
+    @Override
+    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
+        return courseDAO.getNumberOfConductedLessons(courseId, current);
     }
 
 }
