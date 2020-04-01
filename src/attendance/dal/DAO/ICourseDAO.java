@@ -38,4 +38,17 @@ public interface ICourseDAO {
      * @return The number of conducted lessons.
      */
     int getNumberOfConductedLessons(int courseId, LocalDateTime current);
+
+    public boolean hasNewData();
+
+    public String getNewData();
+
+    /**
+     * Gets the number of students present for the current lesson.
+     *
+     * @param courseId The id of the course.
+     * @param current The current date and time.
+     * @return The number of students present.
+     */
+    int getAttendanceForLesson(int courseId, LocalDateTime current);
 }

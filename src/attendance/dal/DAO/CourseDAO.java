@@ -199,4 +199,46 @@ public class CourseDAO implements ICourseDAO {
         }
         return 0;
     }
+
+    @Override
+    public boolean hasNewData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getNewData() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getAttendanceForLesson(int courseId, LocalDateTime current) {
+        String sql
+                = "SELECT TOP 1 CC.startTime, AR.courseCalendarId, COUNT(AR.courseCalendarId) AS attendanceCount "
+                + "	FROM AttendanceRecord AR "
+                + "	JOIN CourseCalendar CC "
+                + "		ON AR.courseCalendarId = CC.id "
+                + "	WHERE CC.courseId = ? "
+                + "		AND AR.status = 'PRESENT' "
+                + "		AND	CC.startTime <= ? "
+                + "		AND CC.endTime > ? "
+                + "	GROUP BY CC.startTime, AR.courseCalendarId "
+                + "	ORDER BY startTime DESC";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setTimestamp(2, Timestamp.valueOf(current));
+            pstmt.setDate(3, Date.valueOf(current.toLocalDate()));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(3);
+                return count;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }
