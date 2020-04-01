@@ -37,7 +37,7 @@ public class TeacherStudentAttendanceController implements Initializable {
     @FXML
     private TableColumn<Student, String> studentName;
     @FXML
-    private TableColumn<Student, Double> absence;
+    private TableColumn<Student, Integer> absence;
 
     private StudentModel studentModel;
     private CourseModel courseModel;

@@ -4,19 +4,23 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
+import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.dal.DalException;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 public class LogicManager implements LogicFacade {
 
     private final DalFacade dalFacade;
+    private final AbsencePercentageCalculator calculator;
 
     public LogicManager() {
         dalFacade = new DalManager();
+        calculator = new AbsencePercentageCalculator();
     }
 
     public User auth(String insertedUsername, String password) {
@@ -42,15 +46,9 @@ public class LogicManager implements LogicFacade {
     @Override
     public List<Student> getAbsentStudents() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }    
 
     @Override
-    public double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
-        //          Presence % = lessons attended / lessons until today * 100
-        //          Absence % = 100 - Presence%
-        return 88.14;
-    }
-
     public List<Course> getCourses(int userId) {
         return dalFacade.getCourses(userId);
     }
@@ -65,4 +63,17 @@ public class LogicManager implements LogicFacade {
         dalFacade.createRecord(userId, lessonToUpdate);
     }
 
+    @Override
+    public List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current) {
+        int conductedLesson = dalFacade.getNumberOfConductedLessons(courseId, current);
+
+        List<Student> students = dalFacade.getNumberOfAbsentLessons(courseId);
+
+        for (Student s : students) {
+            System.out.println("before" + s.getAbsenceCount());
+            s.setAbsenceCount(calculator.calculateAbsence(s.getAbsenceCount(), conductedLesson));
+            System.out.println("after" + s.getAbsenceCount());
+        }
+        return students;
+    }
 }

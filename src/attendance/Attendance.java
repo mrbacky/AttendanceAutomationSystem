@@ -5,7 +5,9 @@
  */
 package attendance;
 
+import attendance.bll.LogicManager;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +20,8 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
+        LogicManager l = new LogicManager();
+        l.calculateAbsencePercentage(1, LocalDateTime.parse("2020-03-09T14:29:00"));
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         showLogin();
