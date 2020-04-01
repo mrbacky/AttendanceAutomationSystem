@@ -46,7 +46,7 @@ public class LogicManager implements LogicFacade {
     @Override
     public List<Student> getAbsentStudents() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }    
+    }
 
     @Override
     public List<Course> getCourses(int userId) {
@@ -70,9 +70,7 @@ public class LogicManager implements LogicFacade {
         List<Student> students = dalFacade.getNumberOfAbsentLessons(courseId);
 
         for (Student s : students) {
-            System.out.println("before" + s.getAbsence());
-            s.setAbsence(calculator.calculateAbsence(s.getAbsence(), conductedLesson));
-            System.out.println("after" + s.getAbsence());
+            s.setAbsence(calculator.calculatePercentage(s.getAbsence(), conductedLesson));
         }
         return students;
     }
