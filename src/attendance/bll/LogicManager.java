@@ -70,9 +70,9 @@ public class LogicManager implements LogicFacade {
         List<Student> students = dalFacade.getNumberOfAbsentLessons(courseId);
 
         for (Student s : students) {
-            System.out.println("before" + s.getAbsenceCount());
-            s.setAbsenceCount(calculator.calculateAbsence(s.getAbsenceCount(), conductedLesson));
-            System.out.println("after" + s.getAbsenceCount());
+            System.out.println("before" + s.getAbsence());
+            s.setAbsence(calculator.calculateAbsence(s.getAbsence(), conductedLesson));
+            System.out.println("after" + s.getAbsence());
         }
         return students;
     }
