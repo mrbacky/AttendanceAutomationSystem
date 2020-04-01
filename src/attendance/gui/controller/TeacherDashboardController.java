@@ -9,10 +9,14 @@ import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.gui.model.CourseModel;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.StudentModel;
+import attendance.gui.model.UserModel;
 import com.sun.jdi.connect.Connector;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,11 +45,10 @@ public class TeacherDashboardController implements Initializable {
 
     private StudentModel studentModel;
     private CourseModel courseModel;
+    @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
     private Label lblstudentname;
-    @FXML
-    private BarChart<?, ?> barChart;
     @FXML
     private Label lblStudentsPresent;
     @FXML
@@ -56,7 +59,8 @@ public class TeacherDashboardController implements Initializable {
     private Label lblRequestCount;
     @FXML
     private TableColumn<?, ?> lessonCount;
-
+    private User user;
+    private UserModel userModel;
     /**
      * Initializes the controller class.
      */
@@ -64,14 +68,16 @@ public class TeacherDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //      get models
 //      this.studentModel = StudentModel.getInstance();
-//      this.courseModel = CourseModel.getInstance();
+       this.userModel = UserModel.getInstance();
+      this.courseModel = CourseModel.getInstance();
 
 //      load lists from backend
 //        studentModel.loadAllStudents();
-//        courseModel.loadAllCourses();
+        courseModel.loadAllCourses(user.getId());
         //  setters
-//        setCoursesIntoComboBox();
-//        setTableViews();
+       setUser();
+       setCoursesIntoComboBox();
+       setTableViews();
     }
 
     private void setTableViews() {
@@ -94,4 +100,15 @@ public class TeacherDashboardController implements Initializable {
             lblstudentname.setText(selectedStudent.getName());
         }
     }
+  
+     private void setUser() {
+        try {
+
+            this.user = userModel.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          
+    }
+
 }
