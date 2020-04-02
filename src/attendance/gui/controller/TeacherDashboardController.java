@@ -15,6 +15,7 @@ import attendance.gui.model.StudentModel;
 import attendance.gui.model.UserModel;
 import com.sun.jdi.connect.Connector;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +44,8 @@ public class TeacherDashboardController implements Initializable {
     private TableColumn<Student, String> studentName;
     @FXML
     private TableColumn<Student, Integer> absence;
+    @FXML
+    private TableColumn<Student, Integer> lessonCount;
 
     private StudentModel studentModel;
     private CourseModel courseModel;
@@ -58,8 +61,7 @@ public class TeacherDashboardController implements Initializable {
     private Label lblTotalOfStudents;
     @FXML
     private Label lblRequestCount;
-    @FXML
-    private TableColumn<Student, Integer> lessonCount;
+
     private User user;
     private UserModel userModel;
 
@@ -69,31 +71,41 @@ public class TeacherDashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //      get models
-     this.studentModel = StudentModel.getInstance();
-       this.userModel = UserModel.getInstance();
-      this.courseModel = CourseModel.getInstance();
+        this.studentModel = StudentModel.getInstance();
+        this.userModel = UserModel.getInstance();
+        this.courseModel = CourseModel.getInstance();
 
 //      load lists from backend
 //        studentModel.loadAllStudents();
-      //  courseModel.loadAllCourses(user.getId());
+        //  courseModel.loadAllCourses(user.getId());
         //  setters
-       setUser();
-       courseModel.loadAllCourses(user.getId());
-      setCoursesIntoComboBox();
-       setTableViews();
-       
+        setUser();
+        courseModel.loadAllCourses(user.getId());
+        setCoursesIntoComboBox();
+        setTableViews();
+
     }
 
     private void setTableViews() {
-               
 
         studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        absence.setCellValueFactory(new PropertyValueFactory<>("absence"));
-        lessonCount.setCellValueFactory(new PropertyValueFactory<>("lessonCount"));
-      
-        //  set student observable list into tableview
-        studentModel.loadAllStudents();
+        absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
+        lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
+
+        // set student observable list into tableview
+        // provide the method with the correct parameters.
+        // change the column text.
+        // TODO: change the to using current date LATER.
+        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem().getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        changeSelection();
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
+    }
+
+    private void changeSelection() {
+        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
+                -> {
+            studentModel.loadAllStudents(newVal.getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        });
     }
 
     private void setCoursesIntoComboBox() {
@@ -110,15 +122,15 @@ public class TeacherDashboardController implements Initializable {
             lblstudentname.setText(selectedStudent.getName());
         }
     }
-  
-     private void setUser() {
+
+    private void setUser() {
         try {
 
-            this.user =userModel.getCurrentUser();
+            this.user = userModel.getCurrentUser();
         } catch (ModelException ex) {
             Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
-          
+
     }
 
 }

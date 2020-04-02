@@ -24,8 +24,8 @@
       <TableView id="TeacherStudentBorders" fx:id="tbvStudentAbsence" layoutX="382.0" layoutY="80.0" onMouseClicked="#getSelectedStudent" prefHeight="191.0" prefWidth="356.0" stylesheets="@../css/style.css">
         <columns>
           <TableColumn fx:id="studentName" prefWidth="134.0" sortType="DESCENDING" text="Student Name" />
-          <TableColumn fx:id="absence" text="Absence %" />
-            <TableColumn fx:id="lessonCount" prefWidth="135.0" text="Lessons Attended" />
+          <TableColumn fx:id="absence" prefWidth="81.33331298828125" text="Absence %" />
+            <TableColumn fx:id="lessonCount" prefWidth="134.0" text="Absent Lessons" />
         </columns>
       </TableView>
       <Label id="Dashboard" layoutX="62.0" layoutY="10.0" prefHeight="22.0" prefWidth="128.0" stylesheets="@../css/style.css" text="Dashboard">

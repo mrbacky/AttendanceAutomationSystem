@@ -63,8 +63,7 @@ public class StudentDAO implements IStudentDAO {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 int absentCount = rs.getInt("absentLessons");
-                int lessonCount = rs.getInt("lessonCount");
-                students.add(new Student(id, name, absentCount, lessonCount));
+                students.add(new Student(id, name, absentCount));
             }
             return students;
         } catch (SQLServerException ex) {

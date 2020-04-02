@@ -15,38 +15,35 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class Student extends User {
 
-    private final IntegerProperty absence = new SimpleIntegerProperty();
-    private IntegerProperty lessonCount = new SimpleIntegerProperty();
-    public Student(int id, String name, int absence, int lessonCount) {
+    private final IntegerProperty absenceCount = new SimpleIntegerProperty();
+    private final IntegerProperty absencePercentage = new SimpleIntegerProperty();
+
+    public Student(int id, String name, int absentLessons) {
         super(id, name, UserType.STUDENT);
-        this.absence.set(absence);
-        this.lessonCount.set(lessonCount);
+        this.absenceCount.set(absentLessons);
     }
 
-    public int getAbsence() {
-        return absence.get();
+    public int getAbsenceCount() {
+        return absenceCount.get();
     }
 
-    public void setAbsence(int value) {
-        absence.set(value);
+    public void setAbsenceCount(int value) {
+        absenceCount.set(value);
     }
 
-    public IntegerProperty absenceProperty() {
-        return absence;
+    public IntegerProperty absenceCountProperty() {
+        return absenceCount;
     }
 
-    public IntegerProperty getLessonCount() {
-        return lessonCount;
+    public int getAbsencePercentage() {
+        return absencePercentage.get();
     }
 
-    public void setLessonCount(IntegerProperty lessonCount) {
-        this.lessonCount = lessonCount;
+    public void setAbsencePercentage(int value) {
+        absencePercentage.set(value);
     }
 
-    public IntegerProperty lessonCountProperty() {
-         return   lessonCount;
+    public IntegerProperty absencePercentageProperty() {
+        return absencePercentage;
     }
-    
-    
-    
 }

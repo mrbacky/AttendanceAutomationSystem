@@ -14,7 +14,7 @@ public interface LogicFacade {
 
     User getUser(String username, String password) throws LogicException;
 
-    public void markAttendance(User currentUser, String currentTask);
+    void markAttendance(User currentUser, String currentTask);
 
     List<Student> getAbsentStudents();
 
@@ -25,5 +25,7 @@ public interface LogicFacade {
     void createRecord(int userId, Lesson lessonToUpdate);
 
     List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current);
+
+    int studentsEnrolledInCourse();
 
 }

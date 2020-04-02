@@ -58,17 +58,17 @@ public class MockCourseDAO {
     }
 
     void createSCOstudents() {
-        scoStudents.add(new Student(88, "Rado", 15,30));
-        scoStudents.add(new Student(88, "John", 3,50));
-        scoStudents.add(new Student(88, "Mike", 99,50));
+        scoStudents.add(new Student(88, "Rado", 15));
+        scoStudents.add(new Student(88, "John", 3));
+        scoStudents.add(new Student(88, "Mike", 99));
 
     }
 
     void createSDEstudents() {
-        scoStudents.add(new Student(88, "Rado", 15,80));
-        scoStudents.add(new Student(88, "Kim", 3,50));
-        scoStudents.add(new Student(88, "Kanye", 99,80));
-        scoStudents.add(new Student(88, "Tvoj Tatko", 99,80));
+        scoStudents.add(new Student(88, "Rado", 15));
+        scoStudents.add(new Student(88, "Kim", 3));
+        scoStudents.add(new Student(88, "Kanye", 99));
+        scoStudents.add(new Student(88, "Tvoj Tatko", 99));
 
     }
 

@@ -17,6 +17,7 @@ public class LogicManager implements LogicFacade {
 
     private final DalFacade dalFacade;
     private final AbsencePercentageCalculator calculator;
+    private List<Student> students;
 
     public LogicManager() {
         dalFacade = new DalManager();
@@ -67,11 +68,21 @@ public class LogicManager implements LogicFacade {
     public List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current) {
         int conductedLesson = dalFacade.getNumberOfConductedLessons(courseId, current);
 
-        List<Student> students = dalFacade.getNumberOfAbsentLessons(courseId);
+        students = dalFacade.getNumberOfAbsentLessons(courseId);
 
         for (Student s : students) {
-            s.setAbsence(calculator.calculatePercentage(s.getAbsence(), conductedLesson));
+            s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLesson));
+            System.out.println("#: " + s.getAbsenceCount());
+            System.out.println("%: " + s.getAbsencePercentage());
+            System.out.println("!: " + conductedLesson);
         }
         return students;
+    }
+
+    @Override
+    public int studentsEnrolledInCourse() {
+        //Make sure the method above is called first, otherwise the list will be empty.
+        System.out.println(students.size());
+        return students.size();
     }
 }
