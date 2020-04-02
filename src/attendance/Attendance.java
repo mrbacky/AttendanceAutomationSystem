@@ -18,7 +18,6 @@ public class Attendance extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("EASV Attendance");
         showLogin();

@@ -47,7 +47,7 @@ public class MockCourseDAO {
     private List<Course> courseList = FXCollections.observableArrayList();
 
     public MockCourseDAO() {
-//        createCourses();
+    // createCourses();
         createSCOstudents();
         createSDEstudents();
         System.out.println("coursesss in mock classss    " + courseList);
@@ -72,10 +72,9 @@ public class MockCourseDAO {
 
     }
 
-//    private void createCourses() {
-//        courseList.add(new Course(2, "SCO", scoStudents));
-//        courseList.add(new Course(5, "SDE", sdeStudents));
-//
-//    }
+  /* private void createCourses() {
+       courseList.add(new Course(2, "SCO", scoStudents));
+      courseList.add(new Course(5, "SDE", sdeStudents));
+    }*/
 
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherStudentAttendanceController">
+<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherDashboardController">
    <children>
       <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="62.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -24,8 +24,8 @@
       <TableView id="TeacherStudentBorders" fx:id="tbvStudentAbsence" layoutX="382.0" layoutY="80.0" onMouseClicked="#getSelectedStudent" prefHeight="191.0" prefWidth="356.0" stylesheets="@../css/style.css">
         <columns>
           <TableColumn fx:id="studentName" prefWidth="134.0" sortType="DESCENDING" text="Student Name" />
-          <TableColumn fx:id="absence" text="Absence %" />
-            <TableColumn fx:id="lessonCount" prefWidth="135.0" text="Lessons Attended" />
+          <TableColumn fx:id="absence" prefWidth="81.33331298828125" text="Absence %" />
+            <TableColumn fx:id="lessonCount" prefWidth="134.0" text="Absent Lessons" />
         </columns>
       </TableView>
       <Label id="Dashboard" layoutX="62.0" layoutY="10.0" prefHeight="22.0" prefWidth="128.0" stylesheets="@../css/style.css" text="Dashboard">
@@ -43,14 +43,6 @@
             <TableColumn prefWidth="97.0" text="Attendance" />
         </columns>
       </TableView>
-      <BarChart id="PaneColorsTeacherView" fx:id="barChart" layoutX="409.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
-        <xAxis>
-          <CategoryAxis prefHeight="25.0" prefWidth="246.0" side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
       <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="185.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
          <children>
             <Label id="StudentCount" fx:id="lblStudentsPresent" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
@@ -86,6 +78,14 @@
             </ImageView>
          </children>
       </Pane>
-      <ComboBox id="CourseCombobox" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" promptText="SDE2.B.20" stylesheets="@../css/style.css" />
+      <ComboBox id="CourseCombobox" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
+      <BarChart id="TeacherStudentBorders" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
    </children>
 </AnchorPane>

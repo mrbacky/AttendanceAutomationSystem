@@ -3,6 +3,7 @@ package attendance.gui.model;
 import attendance.be.Student;
 import attendance.bll.LogicManager;
 import attendance.dal.Mock.MockStudentDAO;
+import java.time.LocalDateTime;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,8 +33,8 @@ public class StudentModel {
 
     }
 
-    public void loadAllStudents() {// calculate absence here
-        List<Student> allStudents = mockStudentDAO.getStudents();
+    public void loadAllStudents(int courseId, LocalDateTime current) {// calculate absence here
+        List<Student> allStudents = logicManager.calculateAbsencePercentage(courseId, current);
         studentList.clear();
         studentList.addAll(allStudents);
     }

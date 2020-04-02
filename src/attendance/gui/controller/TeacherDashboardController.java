@@ -7,12 +7,18 @@ package attendance.gui.controller;
 
 import attendance.be.Course;
 import attendance.be.Student;
+import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.model.CourseModel;
+import attendance.gui.model.ModelException;
 import attendance.gui.model.StudentModel;
+import attendance.gui.model.UserModel;
 import com.sun.jdi.connect.Connector;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,22 +36,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-public class TeacherStudentAttendanceController implements Initializable {
+public class TeacherDashboardController implements Initializable {
 
     @FXML
     private TableView<Student> tbvStudentAbsence;
     @FXML
     private TableColumn<Student, String> studentName;
     @FXML
-    private TableColumn<Student, Double> absence;
+    private TableColumn<Student, Integer> absence;
+    @FXML
+    private TableColumn<Student, Integer> lessonCount;
 
     private StudentModel studentModel;
     private CourseModel courseModel;
+    @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
     private Label lblstudentname;
-    @FXML
-    private BarChart<?, ?> barChart;
     @FXML
     private Label lblStudentsPresent;
     @FXML
@@ -54,8 +61,9 @@ public class TeacherStudentAttendanceController implements Initializable {
     private Label lblTotalOfStudents;
     @FXML
     private Label lblRequestCount;
-    @FXML
-    private TableColumn<?, ?> lessonCount;
+
+    private User user;
+    private UserModel userModel;
 
     /**
      * Initializes the controller class.
@@ -63,27 +71,47 @@ public class TeacherStudentAttendanceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //      get models
-//      this.studentModel = StudentModel.getInstance();
-//      this.courseModel = CourseModel.getInstance();
+        this.studentModel = StudentModel.getInstance();
+        this.userModel = UserModel.getInstance();
+        this.courseModel = CourseModel.getInstance();
 
 //      load lists from backend
 //        studentModel.loadAllStudents();
-//        courseModel.loadAllCourses();
+        //  courseModel.loadAllCourses(user.getId());
         //  setters
-//        setCoursesIntoComboBox();
-//        setTableViews();
+        setUser();
+        courseModel.loadAllCourses(user.getId());
+        setCoursesIntoComboBox();
+        setTableViews();
+
     }
 
     private void setTableViews() {
-        studentName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        absence.setCellValueFactory(cellData -> cellData.getValue().absenceProperty().asObject());
-        //  set student observable list into tableview
+
+        studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
+        lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
+
+        // set student observable list into tableview
+        // provide the method with the correct parameters.
+        // change the column text.
+        // TODO: change the to using current date LATER.
+        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem().getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        changeSelection();
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
+    }
+
+    private void changeSelection() {
+        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
+                -> {
+            studentModel.loadAllStudents(newVal.getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        });
     }
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
         comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+        comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
 
     }
 
@@ -94,4 +122,15 @@ public class TeacherStudentAttendanceController implements Initializable {
             lblstudentname.setText(selectedStudent.getName());
         }
     }
+
+    private void setUser() {
+        try {
+
+            this.user = userModel.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }

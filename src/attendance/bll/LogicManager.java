@@ -4,19 +4,24 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
+import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.dal.DalException;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 public class LogicManager implements LogicFacade {
 
     private final DalFacade dalFacade;
+    private final AbsencePercentageCalculator calculator;
+    private List<Student> students;
 
     public LogicManager() {
         dalFacade = new DalManager();
+        calculator = new AbsencePercentageCalculator();
     }
 
     public User auth(String insertedUsername, String password) {
@@ -45,12 +50,6 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public double calculateAbsence(Course selectedCourse, int lessonsAttended, int lessonsToDate, LocalDate currentDay) {
-        //          Presence % = lessons attended / lessons until today * 100
-        //          Absence % = 100 - Presence%
-        return 88.14;
-    }
-
     public List<Course> getCourses(int userId) {
         return dalFacade.getCourses(userId);
     }
@@ -65,4 +64,25 @@ public class LogicManager implements LogicFacade {
         dalFacade.createRecord(userId, lessonToUpdate);
     }
 
+    @Override
+    public List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current) {
+        int conductedLesson = dalFacade.getNumberOfConductedLessons(courseId, current);
+
+        students = dalFacade.getNumberOfAbsentLessons(courseId);
+
+        for (Student s : students) {
+            s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLesson));
+            System.out.println("#: " + s.getAbsenceCount());
+            System.out.println("%: " + s.getAbsencePercentage());
+            System.out.println("!: " + conductedLesson);
+        }
+        return students;
+    }
+
+    @Override
+    public int studentsEnrolledInCourse() {
+        //Make sure the method above is called first, otherwise the list will be empty.
+        System.out.println(students.size());
+        return students.size();
+    }
 }

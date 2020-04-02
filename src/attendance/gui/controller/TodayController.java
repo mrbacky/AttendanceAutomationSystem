@@ -15,6 +15,7 @@ import attendance.gui.model.UserModel;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
+import java.awt.Color;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Paint;
 
 public class TodayController implements Initializable {
 
@@ -108,6 +111,7 @@ public class TodayController implements Initializable {
 
         if (tbRegister.isSelected()) {
             tbRegister.setText("Present");
+            tbRegister.setDisable(true);
 
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
             //int userId, int courseCalenderId, Lesson.StatusType status
@@ -125,21 +129,69 @@ public class TodayController implements Initializable {
 
     }
 
-    private void loadLessonsToCB() {
-
-        comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
-
-//        Lesson lessonNow = lessonModel.getObsLessons();
-        List<Lesson> lessonList = lessonModel.getObsLessons();
-        for (Lesson lesson : lessonList) {
-            if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
-                comboBoxCal.getSelectionModel().select(lesson);
-
-            }
+    private void tbStatusSet() {
+        Lesson lessonItem = comboBoxCal.getSelectionModel().getSelectedItem();
+        tbRegister.setDisable(true);
+        tbRegister.getStyleClass().removeAll("redTB", "greenTB");
+        if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
+            tbRegister.setText("Absent");
+            tbRegister.setSelected(true);
+            setTBColors("Absent");
+        } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
+            tbRegister.setText("Present");
+            tbRegister.setSelected(true);
+            setTBColors("Present");
+        } else {
+            tbRegister.setText("Unregistered");
+            tbRegister.setSelected(false);
+            tbRegister.setDisable(false);
         }
     }
 
-//        Thread thread = new Thread() {
+    private void setTBColors(String type) {
+        if (type.equals("Absent")) {
+            tbRegister.setToggleColor(Paint.valueOf("#E5162F"));
+            tbRegister.setToggleLineColor(Paint.valueOf("#FFB2BB"));
+
+        } else if (type.equals("Present")) {
+            tbRegister.setToggleColor(Paint.valueOf("#16b130"));
+            tbRegister.setToggleLineColor(Paint.valueOf("#98f2a7"));
+        }
+    }
+
+    @FXML
+    private void subjectStatusCheck(ActionEvent event) {
+        tbStatusSet();
+
+    }
+
+    private void loadLessonsToCB() {
+        comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
+        List<Lesson> lessonList = lessonModel.getObsLessons();
+        tbRegister.setDisable(true);
+        //  select last one
+        for (Lesson lesson : lessonList) {
+            if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
+                comboBoxCal.getSelectionModel().select(lesson);
+            } else {
+                comboBoxCal.getSelectionModel().select(0);
+            }
+        }
+        tbStatusSet();
+
+    }
+
+    public void onFinish(Thread thread) {
+        try {
+            if (threadRun) {
+                thread.wait(1000, 0);// This is wrong. Check correct usage.
+                thread.run();
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TodayController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        //        Thread thread = new Thread() {
 //            public void run() {
 //
 //                //Go to bll
@@ -159,45 +211,11 @@ public class TodayController implements Initializable {
 //            }
 //
 //        };
-    //thread.run();
-    //threadRun=false;
-    public void onFinish(Thread thread) {
-        try {
-            if (threadRun) {
-                thread.wait(1000, 0);// This is wrong. Check correct usage.
-                thread.run();
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(TodayController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
+        //thread.run();
+        //threadRun=false;
     }
 
     private void checkCurrentSelection() {
         //for current selected item in combo box. Modify tbRegister to represent current status.
     }
-
-    @FXML
-    private void subjectStatusCheck(Event event) {
-        System.out.println("ISCALLED");
-        System.out.println("obs: " + lessonModel.getObsLessons());
-        Lesson lessonItem = comboBoxCal.getSelectionModel().getSelectedItem();
-        tbRegister.setDisable(false);
-        if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
-            tbRegister.setText("Absent");
-            tbRegister.setDisable(true);
-            tbRegister.setSelected(true);
-            //  later style button
-
-        } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
-            tbRegister.setText("Present");
-            tbRegister.setSelected(true);
-        } else {
-            tbRegister.setText("Unregistered");
-            tbRegister.setSelected(false);
-        }
-
-    }
-
-    //  combobox.
 }

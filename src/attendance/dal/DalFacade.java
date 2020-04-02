@@ -5,6 +5,7 @@ import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -27,4 +28,9 @@ public interface DalFacade {
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
     public void createRecord(int userId, Lesson lessonToUpdate);
+
+    public List<Student> getNumberOfAbsentLessons(int courseId);
+
+    int getNumberOfConductedLessons(int courseId, LocalDateTime current);
+    
 }
