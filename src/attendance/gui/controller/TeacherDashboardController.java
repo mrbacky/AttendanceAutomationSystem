@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,6 +66,8 @@ public class TeacherDashboardController implements Initializable {
 
     private User user;
     private UserModel userModel;
+    @FXML
+    private ComboBox<Course> comboBoxCourses1;
 
     /**
      * Initializes the controller class.
@@ -78,12 +82,22 @@ public class TeacherDashboardController implements Initializable {
 //      load lists from backend
 //        studentModel.loadAllStudents();
         //  courseModel.loadAllCourses(user.getId());
-        //  setters
+        //  
+        comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
+        
         setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
         setTableViews();
-
+        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+            @Override
+            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
+               comboBoxCourses1.setValue(newValue);
+               
+            }
+        });
+        
+        
     }
 
     private void setTableViews() {
