@@ -6,6 +6,7 @@
 package attendance.gui.controller;
 
 import attendance.be.Course;
+import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.controller.LoginController;
 import attendance.gui.model.CourseModel;
@@ -45,7 +46,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     @FXML
     private JFXComboBox<Course> comboboxS;
 
-    @FXML
     private CourseModel courseModel;
     private User user;
 
@@ -110,6 +110,13 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     private void btnTeacherLogin(ActionEvent event) {
         showRoot(ROOT_TEACHER);
         closeLogin();
+    }
+
+    @FXML
+    private void setSelectedCourse(ActionEvent event) {
+        //comboboxS.setSelectionModel(value);
+
+        user.setCurrentSelectedCourse(comboboxS.getSelectionModel().getSelectedIndex());
     }
 
 }

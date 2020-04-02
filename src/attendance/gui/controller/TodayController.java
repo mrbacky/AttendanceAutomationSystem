@@ -154,8 +154,8 @@ public class TodayController implements Initializable {
             tbRegister.setToggleLineColor(Paint.valueOf("#FFB2BB"));
 
         } else if (type.equals("Present")) {
-            tbRegister.setToggleColor(Paint.valueOf("#15D870"));
-            tbRegister.setToggleLineColor(Paint.valueOf("#B2FFD6"));
+            tbRegister.setToggleColor(Paint.valueOf("#16b130"));
+            tbRegister.setToggleLineColor(Paint.valueOf("#98f2a7"));
         }
     }
 
