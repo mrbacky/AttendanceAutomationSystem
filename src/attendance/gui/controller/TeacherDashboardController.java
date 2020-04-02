@@ -58,38 +58,43 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private Label lblRequestCount;
     @FXML
-    private TableColumn<?, ?> lessonCount;
+    private TableColumn<Student, Integer> lessonCount;
     private User user;
     private UserModel userModel;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //      get models
-//      this.studentModel = StudentModel.getInstance();
+     this.studentModel = StudentModel.getInstance();
        this.userModel = UserModel.getInstance();
       this.courseModel = CourseModel.getInstance();
 
 //      load lists from backend
 //        studentModel.loadAllStudents();
-        courseModel.loadAllCourses(user.getId());
+      //  courseModel.loadAllCourses(user.getId());
         //  setters
        setUser();
-       setCoursesIntoComboBox();
+       courseModel.loadAllCourses(user.getId());
+      setCoursesIntoComboBox();
        setTableViews();
+       
     }
 
     private void setTableViews() {
         studentName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         absence.setCellValueFactory(cellData -> cellData.getValue().absenceProperty().asObject());
+        lessonCount.setCellValueFactory(cellData -> cellData.getValue().lessonCountProperty().asObject());
         //  set student observable list into tableview
+        studentModel.loadAllStudents();
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
     }
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+       // comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
 
     }
 
