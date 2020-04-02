@@ -122,9 +122,6 @@ public class CourseDAO implements ICourseDAO {
                 }
             }
             for (Lesson c : courses) {
-                System.out.println(c.getId());
-                System.out.println(c.getCourseName());
-                System.out.println(c.getStatusType());
             }
             return courses;
         } catch (SQLServerException ex) {

@@ -3,8 +3,6 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,6 +17,6 @@
       </ImageView>
       <Label id="todaydatelbls" fx:id="lblTodayDate" alignment="CENTER" contentDisplay="CENTER" layoutX="184.0" layoutY="192.0" prefHeight="41.0" prefWidth="460.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
       <JFXComboBox fx:id="comboBoxCal" layoutX="266.0" layoutY="307.0" onAction="#subjectStatusCheck" prefHeight="60.0" prefWidth="200.0" />
-      <JFXToggleButton fx:id="tbRegister" layoutX="466.0" layoutY="308.0" onAction="#handle_registerAttendance" text="Unregistered" />
+      <JFXToggleButton fx:id="tbRegister" layoutX="466.0" layoutY="308.0" onAction="#handle_registerAttendance" styleClass="tbStatus" text="Unregistered" toggleLineColor="#96f2c7" />
    </children>
 </AnchorPane>
