@@ -4,6 +4,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -13,6 +15,7 @@ public class Student extends User {
 
     private final DoubleProperty absence = new SimpleDoubleProperty();
     private IntegerProperty lessonCount = new SimpleIntegerProperty();
+   // private StringProperty name = new SimpleStringProperty();
     
     public Student(int id, String name, double absence, int lessonCount) {// absence to INT
         super(id, name, UserType.STUDENT);

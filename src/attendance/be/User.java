@@ -29,7 +29,15 @@ public class User {
     public UserType getType() {
         return type;
     }
+    private int currentSelectedCourse;
 
+    public int getCurrentSelectedCourse() {
+        return currentSelectedCourse;
+    }
+
+    public void setCurrentSelectedCourse(int currentSelectedCourse) {
+        this.currentSelectedCourse = currentSelectedCourse;
+    }
     public void setType(UserType type) {
         this.type = type;
     }

@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.be.Course;
 import attendance.be.Student;
+import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.model.CourseModel;
 import attendance.gui.model.ModelException;
@@ -84,9 +85,12 @@ public class TeacherDashboardController implements Initializable {
     }
 
     private void setTableViews() {
-        studentName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        absence.setCellValueFactory(cellData -> cellData.getValue().absenceProperty().asObject());
-        lessonCount.setCellValueFactory(cellData -> cellData.getValue().lessonCountProperty().asObject());
+               
+
+        studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        absence.setCellValueFactory(new PropertyValueFactory<>("absence"));
+        lessonCount.setCellValueFactory(new PropertyValueFactory<>("lessonCount"));
+      
         //  set student observable list into tableview
         studentModel.loadAllStudents();
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
@@ -94,7 +98,8 @@ public class TeacherDashboardController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-       // comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+        comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+        comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
 
     }
 
@@ -109,7 +114,7 @@ public class TeacherDashboardController implements Initializable {
      private void setUser() {
         try {
 
-            this.user = userModel.getCurrentUser();
+            this.user =userModel.getCurrentUser();
         } catch (ModelException ex) {
             Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
