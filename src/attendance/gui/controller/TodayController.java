@@ -8,7 +8,6 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.gui.model.AttendanceModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.LessonModel;
 import attendance.gui.model.UserModel;

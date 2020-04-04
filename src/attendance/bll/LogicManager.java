@@ -24,10 +24,6 @@ public class LogicManager implements LogicFacade {
         calculator = new AbsencePercentageCalculator();
     }
 
-    public User auth(String insertedUsername, String password) {
-        return dalFacade.auth(insertedUsername, password);
-    }
-
     @Override
     public User getUser(String username, String password) throws LogicException {
         try {
@@ -36,12 +32,6 @@ public class LogicManager implements LogicFacade {
         } catch (DalException ex) {
             throw new LogicException(ex.getMessage());
         }
-    }
-
-    @Override
-    public void markAttendance(User currentUser, String currentTask) {
-        LocalTime loc = java.time.LocalTime.now();
-        dalFacade.markAttendance(currentUser, currentTask, loc);
     }
 
     @Override
@@ -65,10 +55,10 @@ public class LogicManager implements LogicFacade {
     }
 
     @Override
-    public List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current) {
-        int conductedLesson = dalFacade.getNumberOfConductedLessons(courseId, current);
+    public List<Student> calculateAbsencePercentage(Course course, LocalDateTime current) {
+        int conductedLesson = dalFacade.getNumberOfConductedLessons(course, current);
 
-        students = dalFacade.getNumberOfAbsentLessons(courseId);
+        students = dalFacade.getNumberOfAbsentLessons(course);
 
         for (Student s : students) {
             s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLesson));

@@ -84,41 +84,39 @@ public class TeacherDashboardController implements Initializable {
         //  courseModel.loadAllCourses(user.getId());
         //  
         comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
-        
+
         setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
-        setTableViews();
+
+        setTableViewsForCourseOverview();
+        selectCourseForCourseOverview();
+
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
             @Override
             public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
-               comboBoxCourses1.setValue(newValue);
-               
+                comboBoxCourses1.setValue(newValue);
+
             }
         });
-        
-        
+
     }
 
-    private void setTableViews() {
+    private void setTableViewsForCourseOverview() {
 
         studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        // set student observable list into tableview
-        // provide the method with the correct parameters.
-        // change the column text.
-        // TODO: change the to using current date LATER.
-        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem().getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
-        changeSelection();
+        // TODO: change the method to using current date LATER.
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
+        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem(), LocalDateTime.parse("2020-03-09T14:29:00"));
     }
 
-    private void changeSelection() {
+    private void selectCourseForCourseOverview() {
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
-            studentModel.loadAllStudents(newVal.getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
+            studentModel.loadAllStudents(newVal, LocalDateTime.parse("2020-03-09T14:29:00"));
         });
     }
 
@@ -139,12 +137,10 @@ public class TeacherDashboardController implements Initializable {
 
     private void setUser() {
         try {
-
             this.user = userModel.getCurrentUser();
         } catch (ModelException ex) {
             Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
 }

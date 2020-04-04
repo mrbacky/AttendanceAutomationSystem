@@ -38,10 +38,6 @@ public class DalManager implements DalFacade {
         mockAttendanceDAO = new MockAttendanceDAO();
     }
 
-//    @Override
-//    public User auth(String insertedUsername, String password) {
-//        return UserDAO.auth(insertedUsername, password);
-//    }
     @Override
     public User getUser(String username, String password) throws DalException {
         try {
@@ -49,26 +45,6 @@ public class DalManager implements DalFacade {
         } catch (DalException ex) {
             throw new DalException(ex.getMessage());
         }
-    }
-
-    @Override
-    public void markAttendance(User currentUser, String currentTask, LocalTime loc) {
-        mockAttendanceDAO.markAttendance(currentUser, currentTask, loc);
-    }
-
-    @Override
-    public User auth(String insertedUsername, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Student> getAbsentStudents() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Course> getCourses(int userId) {
-        return courseDAO.getCourses(userId);
     }
 
     @Override
@@ -82,13 +58,18 @@ public class DalManager implements DalFacade {
     }
 
     @Override
-    public List<Student> getNumberOfAbsentLessons(int courseId) {
-        return studentDAO.getNumberOfAbsentLessons(courseId);
+    public List<Course> getCourses(int userId) {
+        return courseDAO.getCourses(userId);
     }
 
     @Override
-    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
-        return courseDAO.getNumberOfConductedLessons(courseId, current);
+    public int getNumberOfConductedLessons(Course course, LocalDateTime current) {
+        return courseDAO.getNumberOfConductedLessons(course, current);
+    }
+
+    @Override
+    public List<Student> getNumberOfAbsentLessons(Course course) {
+        return studentDAO.getNumberOfAbsentLessons(course);
     }
 
 }

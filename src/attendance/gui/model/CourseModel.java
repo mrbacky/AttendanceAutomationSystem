@@ -1,8 +1,7 @@
 package attendance.gui.model;
 
 import attendance.be.Course;
-import attendance.be.User;
-
+import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
 import attendance.dal.Mock.MockCourseDAO;
 import java.util.List;
@@ -18,7 +17,7 @@ public class CourseModel {
     private static CourseModel courseModel;
     private final ObservableList<Course> courseList = FXCollections.observableArrayList();
     private final MockCourseDAO mockCourseDAO;
-    private LogicManager logicManager;
+    private final LogicFacade logicManager;
 
     public static CourseModel getInstance() {
         if (courseModel == null) {
@@ -33,7 +32,7 @@ public class CourseModel {
     }
 
     public void loadAllCourses(int userId) {
-        
+
         List<Course> allCourses = logicManager.getCourses(userId);
         courseList.clear();
         courseList.addAll(allCourses);

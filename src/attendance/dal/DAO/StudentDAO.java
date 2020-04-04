@@ -5,6 +5,7 @@
  */
 package attendance.dal.DAO;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
@@ -30,9 +31,8 @@ public class StudentDAO implements IStudentDAO {
         connection = new DBConnectionProvider();
     }
 
-    //public List<Student> getNumberOfAbsentLessons(Course course) {
     @Override
-    public List<Student> getNumberOfAbsentLessons(int courseId) {
+    public List<Student> getNumberOfAbsentLessons(Course course) {
         List<Student> students = new ArrayList<>();
 
         String sql
@@ -56,8 +56,8 @@ public class StudentDAO implements IStudentDAO {
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, courseId);
-            pstmt.setInt(2, courseId);
+            pstmt.setInt(1, course.getId());
+            pstmt.setInt(2, course.getId());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -74,16 +74,15 @@ public class StudentDAO implements IStudentDAO {
         return null;
     }
 
-    //  update
-    @Override// return Lesson Object and replace in model
-    public void createRecord(int userId, Lesson lessonToInsert) {
+    @Override
+    public void createRecord(int userId, Lesson lesson) {
         String sql = "INSERT INTO AttendanceRecord (userId, courseCalendarId, status, timeRecorded) VALUES (?,?,?,CURRENT_TIMESTAMP)";
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, userId);
-            pstmt.setInt(2, lessonToInsert.getId());
-            pstmt.setString(3, lessonToInsert.getStatusType().toString());
+            pstmt.setInt(2, lesson.getId());
+            pstmt.setString(3, lesson.getStatusType().toString());
 
             pstmt.executeUpdate();
 
@@ -92,28 +91,6 @@ public class StudentDAO implements IStudentDAO {
 
     }
 
-    /*
-    public AttendanceRecord createRecord(String day, String date, String time, String subject, String status) {
-        try (Connection con = cp.getConnection()) {
-            String sql = "INSERT INTO RecordList(day, date, time, subject, status) VALUES (?,?,?,?,?)";
-
-            PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, day);
-            pstmt.setString(2, date);
-            pstmt.setString(3, time);
-            pstmt.setString(4, subject);            // unsure about the table
-            pstmt.setString(5, status);
-            pstmt.executeUpdate();
-
-            AttendanceRecord record = new AttendanceRecord(day, date, time, subject, status);
-
-        } catch (Exception e) {
-        }
-
-        return null;
-    }
-
-     */
     @Override
     public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
         List<Lesson> cc = new ArrayList<>();

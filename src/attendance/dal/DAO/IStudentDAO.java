@@ -1,5 +1,6 @@
 package attendance.dal.DAO;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import java.util.List;
@@ -14,18 +15,17 @@ public interface IStudentDAO {
      * Records the attendance of a lesson for a student in the database.
      *
      * @param userId The id of the student.
-     * @param courseCalenderId The id of the lesson.
-     * @param status The status to be recorded.
+     * @param lesson The lesson to have attendance recorded.
      */
-    void createRecord(int userId, Lesson lessonToUpdate);
+    void createRecord(int userId, Lesson lesson);
 
     /**
      * Gets the number of absent lessons for each student for a course.
      *
-     * @param courseId The id of the course.
+     * @param course The selected course.
      * @return The list of students with absent lesson count.
      */
-    List<Student> getNumberOfAbsentLessons(int courseId);
+    List<Student> getNumberOfAbsentLessons(Course course);
 
     /**
      * Gets the attendance records for all the courses a student is enrolled in.

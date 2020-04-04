@@ -6,7 +6,6 @@ import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -15,22 +14,16 @@ import java.util.List;
  */
 public interface DalFacade {
 
-    User auth(String insertedUsername, String password);
-
     User getUser(String username, String password) throws DalException;
-
-    void markAttendance(User currentUser, String currentTask, LocalTime loc);
-
-    List<Student> getAbsentStudents();
-
-    public List<Course> getCourses(int userId);
 
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
-    public void createRecord(int userId, Lesson lessonToUpdate);
+    public void createRecord(int userId, Lesson lesson);
 
-    public List<Student> getNumberOfAbsentLessons(int courseId);
+    public List<Course> getCourses(int userId);
 
-    int getNumberOfConductedLessons(int courseId, LocalDateTime current);
-    
+    int getNumberOfConductedLessons(Course course, LocalDateTime current);
+
+    List<Student> getNumberOfAbsentLessons(Course course);
+
 }

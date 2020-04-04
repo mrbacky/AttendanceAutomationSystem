@@ -31,29 +31,6 @@ public class CourseDAO implements ICourseDAO {
         connection = new DBConnectionProvider();
     }
 
-    /*
-    @Override
-    public AttendanceRecord createRecord(String day, String date, String time, String subject, String status) {
-        try (Connection con = cp.getConnection()) {
-            String sql = "INSERT INTO RecordList(day, date, time, subject, status) VALUES (?,?,?,?,?)";
-
-            PreparedStatement pstmt = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, day);
-            pstmt.setString(2, date);
-            pstmt.setString(3, time);
-            pstmt.setString(4, subject);            // unsure about the table
-            pstmt.setString(5, status);
-            pstmt.executeUpdate();
-
-            AttendanceRecord record = new AttendanceRecord(day, date, time, subject, status);
-
-        } catch (Exception e) {
-        }
-
-        return null;
-    }
-
-     */
     @Override
     public List<Course> getCourses(int userId) {
         List<Course> courses = new ArrayList<>();
@@ -132,6 +109,27 @@ public class CourseDAO implements ICourseDAO {
         return null;
     }
 
+    /**
+     * The conditions of the SQL PreparedStatement for getLessonsForToday().
+     *
+     * @param sql The SQL PreparedStatement.
+     * @param courses
+     * @return
+     */
+    private String preparedStatement(String sql, List<Course> courses) {
+        boolean firstItem = true;
+        for (Course c : courses) {
+            if (firstItem) {
+                sql += "(CC.courseId = ? ";
+                firstItem = false;
+            } else {
+                sql += " OR CC.courseId = ?";
+            }
+        }
+        sql += ") AND (CC.startTime >= ? AND CC.startTime < ?)";
+        return sql;
+    }
+
     private String checkStatus(int userId, int calId) {
         String sql = "SELECT status "
                 + "FROM AttendanceRecord "
@@ -155,34 +153,13 @@ public class CourseDAO implements ICourseDAO {
         return s;
     }
 
-    /**
-     * The conditions of the SQL PreparedStatement for getLessonsForToday().
-     *
-     * @param sql The SQL PreparedStatement.
-     * @param courses
-     * @return
-     */
-    private String preparedStatement(String sql, List<Course> courses) {
-        boolean firstItem = true;
-        for (Course c : courses) {
-            if (firstItem) {
-                sql += "(CC.courseId = ? ";
-                firstItem = false;
-            } else {
-                sql += " OR CC.courseId = ?";
-            }
-        }
-        sql += ") AND (CC.startTime >= ? AND CC.startTime < ?)";
-        return sql;
-    }
-
     @Override
-    public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
+    public int getNumberOfConductedLessons(Course course, LocalDateTime current) {
         String sql = "SELECT COUNT(id) FROM CourseCalendar WHERE courseId = ? AND endTime <= ?";
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, courseId);
+            pstmt.setInt(1, course.getId());
             pstmt.setTimestamp(2, Timestamp.valueOf(current));
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

@@ -1,11 +1,8 @@
 package attendance.gui.model;
 
 import attendance.be.Lesson;
-import attendance.be.Lesson.StatusType;
-import attendance.be.Student;
+import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
-import attendance.dal.Mock.MockCourseCalDAO;
-import attendance.dal.Mock.MockStudentDAO;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -19,7 +16,7 @@ public class LessonModel {
 
     private static LessonModel lessonModel;
     private final ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
-    private LogicManager logicManager;
+    private LogicFacade logicManager;
 
     public static LessonModel getInstance() {
         if (lessonModel == null) {

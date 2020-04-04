@@ -10,11 +10,7 @@ import java.util.List;
 
 public interface LogicFacade {
 
-    User auth(String insertedUsername, String password);
-
     User getUser(String username, String password) throws LogicException;
-
-    void markAttendance(User currentUser, String currentTask);
 
     List<Student> getAbsentStudents();
 
@@ -24,7 +20,7 @@ public interface LogicFacade {
 
     void createRecord(int userId, Lesson lessonToUpdate);
 
-    List<Student> calculateAbsencePercentage(int courseId, LocalDateTime current);
+    List<Student> calculateAbsencePercentage(Course course, LocalDateTime current);
 
     int studentsEnrolledInCourse();
 

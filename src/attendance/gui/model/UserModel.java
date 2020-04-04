@@ -4,7 +4,6 @@ import attendance.be.User;
 import attendance.bll.LogicException;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
-import attendance.dal.Mock.MockUserDAO;
 
 /**
  *
@@ -12,7 +11,6 @@ import attendance.dal.Mock.MockUserDAO;
  */
 public class UserModel {
 
-    private final MockUserDAO mockUserDAO;
     private static UserModel model;
     private User currentUser;
 
@@ -32,7 +30,6 @@ public class UserModel {
 
     private UserModel() {
         logicManager = new LogicManager();
-        mockUserDAO = new MockUserDAO();
     }
 
     public User getCurrentUser() throws ModelException {

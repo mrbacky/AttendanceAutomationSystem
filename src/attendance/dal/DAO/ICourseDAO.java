@@ -13,6 +13,14 @@ import java.util.List;
 public interface ICourseDAO {
 
     /**
+     * Gets the courses a user is related to.
+     *
+     * @param userId The id of the user.
+     * @return The list of courses.
+     */
+    List<Course> getCourses(int userId);
+
+    /**
      * Gets the CourseCalendar (course lessons) for the current day of a
      * student.
      *
@@ -23,19 +31,11 @@ public interface ICourseDAO {
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
     /**
-     * Gets the courses a user is related to.
-     *
-     * @param userId The id of the user.
-     * @return The list of courses.
-     */
-    List<Course> getCourses(int userId);
-
-    /**
      * Gets the number of lessons conducted in a course.
      *
-     * @param courseId The id of the course.
+     * @param course The selected course.
      * @param current The current date and time.
      * @return The number of conducted lessons.
      */
-    int getNumberOfConductedLessons(int courseId, LocalDateTime current);
+    int getNumberOfConductedLessons(Course course, LocalDateTime current);
 }
