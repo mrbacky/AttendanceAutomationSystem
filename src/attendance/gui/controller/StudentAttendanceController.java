@@ -6,7 +6,6 @@ import attendance.be.User;
 import attendance.gui.model.CourseModel;
 import attendance.gui.model.LessonModel;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.StudentModel;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
@@ -15,6 +14,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -99,6 +99,8 @@ public class StudentAttendanceController implements Initializable {
     }
 
     private void setTableView() {
+        setColumnWidth();
+        
         colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("timeFrame"));
@@ -110,6 +112,15 @@ public class StudentAttendanceController implements Initializable {
         System.out.println("setTableView");
     }
 
+    private void setColumnWidth() {
+        ObservableValue<Number> w = tblAttendance.widthProperty().divide(5);
+        colDay.prefWidthProperty().bind(w);
+        colDate.prefWidthProperty().bind(w);
+        colTime.prefWidthProperty().bind(w);
+        colCourse.prefWidthProperty().bind(w);
+        colStatus.prefWidthProperty().bind(w);
+    }
+    
     private void selectCourse() {
         cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
             if (newVal != null) {
@@ -125,5 +136,5 @@ public class StudentAttendanceController implements Initializable {
             setTableView();
             System.out.println("clearSelection");
         }
-    }
+    }    
 }

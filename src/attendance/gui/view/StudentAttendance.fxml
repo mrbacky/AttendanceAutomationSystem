@@ -11,8 +11,8 @@
    <children>
       <TableView fx:id="tblAttendance" layoutX="67.0" layoutY="70.0" prefHeight="449.0" prefWidth="666.0" styleClass="Tableviewstudentatt" stylesheets="@../css/style.css">
         <columns>
-          <TableColumn fx:id="colDay" prefWidth="121.33330535888672" styleClass="Tableviewcells" text="Day" />
-          <TableColumn fx:id="colDate" prefWidth="128.66673278808594" styleClass="Tableviewcells" text="Date" />
+          <TableColumn fx:id="colDay" prefWidth="65.33331298828125" styleClass="Tableviewcells" text="Day" />
+          <TableColumn fx:id="colDate" prefWidth="185.33334350585938" styleClass="Tableviewcells" text="Date" />
             <TableColumn fx:id="colTime" prefWidth="142.6666259765625" styleClass="Tableviewcells" text="Time" />
             <TableColumn fx:id="colCourse" prefWidth="133.33328247070312" styleClass="Tableviewcells" text="Course" />
             <TableColumn fx:id="colStatus" prefWidth="132.0" styleClass="Tableviewcells" text="Status" />
