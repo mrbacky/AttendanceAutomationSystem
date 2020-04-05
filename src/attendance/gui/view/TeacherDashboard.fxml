@@ -21,7 +21,7 @@
             <Image url="@../assets/icons8-male-user-96.png" />
          </image>
       </ImageView>
-      <TableView id="TeacherStudentBorders" fx:id="tbvStudentAbsence" layoutX="382.0" layoutY="80.0" onMouseClicked="#getSelectedStudent" prefHeight="191.0" prefWidth="356.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="tbvStudentAbsence" layoutX="382.0" layoutY="80.0" onMouseClicked="#getSelectedStudent" prefHeight="191.0" prefWidth="356.0" stylesheets="@../css/style.css">
         <columns>
           <TableColumn fx:id="studentName" prefWidth="134.0" sortType="DESCENDING" text="Student Name" />
           <TableColumn fx:id="absence" prefWidth="81.33331298828125" text="Absence %" />
@@ -36,7 +36,7 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <TableView id="TeacherStudentBorders" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
         <columns>
           <TableColumn prefWidth="122.0" text="Date" />
             <TableColumn prefWidth="109.0" text="Day" />
@@ -78,8 +78,8 @@
             </ImageView>
          </children>
       </Pane>
-      <ComboBox id="CourseCombobox" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <BarChart id="TeacherStudentBorders" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
+      <ComboBox id="PaneColorsTeacherView" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
+      <BarChart id="PaneColorsTeacherView" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -87,6 +87,6 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <ComboBox id="CourseCombobox" fx:id="comboBoxCourses1" layoutX="62.0" layoutY="355.0" prefHeight="25.0" prefWidth="128.0" stylesheets="@../css/style.css" />
+      <ComboBox id="PaneColorsTeacherView" fx:id="comboBoxCourses1" layoutX="62.0" layoutY="355.0" prefHeight="25.0" prefWidth="128.0" stylesheets="@../css/style.css" />
    </children>
 </AnchorPane>
