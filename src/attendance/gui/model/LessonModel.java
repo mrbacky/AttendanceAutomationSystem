@@ -33,6 +33,7 @@ public class LessonModel {
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
         lessonList.addAll(allLessons);
+        System.out.println("print from lesson model > Lessons for student : " + allLessons);
 
     }
 

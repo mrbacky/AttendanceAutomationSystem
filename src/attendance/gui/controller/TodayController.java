@@ -80,7 +80,7 @@ public class TodayController implements Initializable {
         setUser();
         LocalDate currentDate = LocalDate.now();
         lessonModel.loadAllLessons(user.getId(), currentDate);
-
+        System.out.println("print from Today controller > lessons for student: " + lessonModel.getObsLessons());
         showCurrentDate();
         loadLessonsToCB();
 

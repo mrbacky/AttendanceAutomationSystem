@@ -50,6 +50,7 @@ public class CourseDAO implements ICourseDAO {
                 String courseName = rs.getString("name");
                 courses.add(new Course(courseId, courseName));
             }
+            System.out.println("print in CourseDAO > courses for student: " + courses);
             return courses;
         } catch (SQLServerException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -61,7 +62,7 @@ public class CourseDAO implements ICourseDAO {
 
     @Override
     public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
-        List<Lesson> courses = new ArrayList<>();
+        List<Lesson> lessons = new ArrayList<>();
 
         String sql = "SELECT CC.id, C.name, CC.startTime, CC.endTime "
                 + "FROM CourseCalendar CC "
@@ -91,16 +92,17 @@ public class CourseDAO implements ICourseDAO {
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
                 String status = checkStatus(userId, id);
                 if (status.contains("PRESENT")) {
-                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
+                    lessons.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
                 } else if (status.contains("ABSENT")) {
-                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
+                    lessons.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
                 } else {
-                    courses.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
+                    lessons.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
                 }
             }
-            for (Lesson c : courses) {
+            for (Lesson c : lessons) {
             }
-            return courses;
+            System.out.println("Print from CourseDAO > lessons for student: " + lessons);//////////////////////////////////////////////////////////////
+            return lessons;
         } catch (SQLServerException ex) {
             Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
