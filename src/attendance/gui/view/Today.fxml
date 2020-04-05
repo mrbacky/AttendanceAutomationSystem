@@ -9,14 +9,14 @@
 
 <AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="800.0" styleClass="AnchorPane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TodayController">
    <children>
-      <Label id="todaylbls" fx:id="lblUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="45.0" prefHeight="25.0" prefWidth="563.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
-      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="380.0" layoutY="87.0" pickOnBounds="true" preserveRatio="true">
+      <Label id="todaylbls" fx:id="lblUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="46.0" prefHeight="25.0" prefWidth="563.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
+      <ImageView fx:id="imgUser" fitHeight="65.0" fitWidth="70.0" layoutX="368.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="368.0" AnchorPane.rightAnchor="367.0">
          <image>
             <Image url="@../assets/icons8-male-user-96.png" />
          </image>
       </ImageView>
-      <Label id="todaydatelbls" fx:id="lblTodayDate" alignment="CENTER" contentDisplay="CENTER" layoutX="184.0" layoutY="192.0" prefHeight="41.0" prefWidth="460.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
-      <JFXComboBox fx:id="comboBoxCal" layoutX="266.0" layoutY="307.0" onAction="#subjectStatusCheck" prefHeight="60.0" prefWidth="200.0" />
-      <JFXToggleButton fx:id="tbRegister" layoutX="466.0" layoutY="308.0" onAction="#handle_registerAttendance" styleClass="tbStatus" text="Unregistered" toggleLineColor="#96f2c7" />
+      <Label id="todaydatelbls" fx:id="lblTodayDate" alignment="CENTER" contentDisplay="CENTER" layoutX="170.0" layoutY="190.0" prefHeight="41.0" prefWidth="460.0" stylesheets="@../css/style.css" textAlignment="CENTER" />
+      <JFXComboBox fx:id="comboBoxCal" layoutX="248.0" layoutY="308.0" onAction="#subjectStatusCheck" prefHeight="60.0" prefWidth="200.0" />
+      <JFXToggleButton fx:id="tbRegister" layoutX="455.0" layoutY="308.0" onAction="#handle_registerAttendance" styleClass="tbStatus" text="Unregistered" toggleLineColor="#96f2c7" />
    </children>
 </AnchorPane>
