@@ -8,6 +8,7 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
+import attendance.bll.StatusChecker;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.LessonModel;
 import attendance.gui.model.UserModel;
@@ -33,8 +34,13 @@ import java.lang.String;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 
@@ -67,26 +73,61 @@ public class TodayController implements Initializable {
     private JFXToggleButton tbRegister;
 
     private boolean threadRun = true;
+    private StatusChecker statusChecker;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LocalDate currentDate = LocalDate.now();
         //  get models
+
         this.userModel = UserModel.getInstance();
         this.lessonModel = LessonModel.getInstance();
-        //  load objects
+        this.statusChecker = StatusChecker.getInstance();
+
         setUser();
-        LocalDate currentDate = LocalDate.now();
+
         lessonModel.loadAllLessons(user.getId(), currentDate);
-        System.out.println("print from Today controller > lessons for student: " + lessonModel.getObsLessons());
         showCurrentDate();
         loadLessonsToCB();
+        selectLesson();
+        tbStatusSet();
+        setupCheckerThread();
 
     }
 
-    public void showCurrentDate() {
+    public void checker() {
+        for (Lesson lesson : lessonModel.getObsLessons()) {
+            if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
+                if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
+                    lesson.setStatusType(Lesson.StatusType.ABSENT);
+                    lessonModel.createRecord(user.getId(), lesson);
+                }
+            }
+        }
+
+    }
+
+    private void setupCheckerThread() {
+        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        checker();
+                        refreshCombobox();
+                    }
+                });
+            }
+        }, 2, 4, TimeUnit.SECONDS);
+
+    }
+
+    private void showCurrentDate() {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -132,6 +173,7 @@ public class TodayController implements Initializable {
         Lesson lessonItem = comboBoxCal.getSelectionModel().getSelectedItem();
         tbRegister.setDisable(true);
         tbRegister.getStyleClass().removeAll("redTB", "greenTB");
+
         if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
             tbRegister.setText("Absent");
             tbRegister.setSelected(true);
@@ -164,8 +206,19 @@ public class TodayController implements Initializable {
 
     }
 
+    private void refreshCombobox() {
+        int lessonItem = comboBoxCal.getSelectionModel().getSelectedIndex();
+        comboBoxCal.getSelectionModel().select(lessonItem);
+        tbStatusSet();
+    }
+
     private void loadLessonsToCB() {
+        comboBoxCal.getItems().clear();
         comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
+
+    }
+
+    private void selectLesson() {
         List<Lesson> lessonList = lessonModel.getObsLessons();
         tbRegister.setDisable(true);
         //  select last one
@@ -176,11 +229,10 @@ public class TodayController implements Initializable {
                 comboBoxCal.getSelectionModel().select(0);
             }
         }
-        tbStatusSet();
-
     }
 
     public void onFinish(Thread thread) {
+
         try {
             if (threadRun) {
                 thread.wait(1000, 0);// This is wrong. Check correct usage.
@@ -190,6 +242,7 @@ public class TodayController implements Initializable {
             Logger.getLogger(TodayController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
+
         //        Thread thread = new Thread() {
 //            public void run() {
 //

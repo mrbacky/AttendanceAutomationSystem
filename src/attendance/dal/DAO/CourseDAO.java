@@ -99,8 +99,6 @@ public class CourseDAO implements ICourseDAO {
                     lessons.add(new Lesson(id, courseName, start, end, Lesson.StatusType.UNREGISTERED));
                 }
             }
-            for (Lesson c : lessons) {
-            }
             System.out.println("Print from CourseDAO > lessons for student: " + lessons);//////////////////////////////////////////////////////////////
             return lessons;
         } catch (SQLServerException ex) {

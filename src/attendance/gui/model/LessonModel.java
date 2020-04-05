@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
 public class LessonModel {
 
     private static LessonModel lessonModel;
-    private final ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
+    private  ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
     private LogicFacade logicManager;
 
     public static LessonModel getInstance() {
@@ -32,6 +32,7 @@ public class LessonModel {
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
+        lessonList = FXCollections.observableArrayList();
         lessonList.addAll(allLessons);
         System.out.println("print from lesson model > Lessons for student : " + allLessons);
 

@@ -33,7 +33,7 @@ public class Lesson {
     @Override
     public String toString() {
 //        return "CourseCal{" + "courseName=" + courseName + ", startTime=" + startTime + ", endTime=" + endTime + '}';
-        String output = formatTime(startTime.get()) + " - " + formatTime(endTime.get()) + " " + courseName.get();
+        String output = formatTime(startTime.get()) + " - " + formatTime(endTime.get()) + " " + courseName.get() + getStatusType();
         return output;
     }
 
