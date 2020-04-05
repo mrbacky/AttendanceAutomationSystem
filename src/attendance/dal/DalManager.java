@@ -79,6 +79,7 @@ public class DalManager implements DalFacade {
     @Override
     public void createRecord(int userId, Lesson lessonToUpdate) {
         studentDAO.createRecord(userId, lessonToUpdate);
+        
     }
 
     @Override
@@ -89,6 +90,15 @@ public class DalManager implements DalFacade {
     @Override
     public int getNumberOfConductedLessons(int courseId, LocalDateTime current) {
         return courseDAO.getNumberOfConductedLessons(courseId, current);
+    }
+    
+    @Override
+    public boolean hasUpdate(int courseId, LocalDateTime last) 
+    {
+        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
+        System.out.println("hasupdate" + ld);
+        boolean hasUpdate = last.isBefore(ld);
+        return hasUpdate;
     }
 
 }

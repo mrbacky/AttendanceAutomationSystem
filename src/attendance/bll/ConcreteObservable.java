@@ -1,7 +1,12 @@
 package attendance.bll;
 
+import attendance.be.Course;
 import attendance.dal.DAO.CourseDAO;
 import attendance.dal.DAO.ICourseDAO;
+import attendance.dal.DalFacade;
+import attendance.dal.DalManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,14 +19,18 @@ import java.util.logging.Logger;
 public class ConcreteObservable implements DataObservable {
 
     private ICourseDAO cDAO;
+    private DalFacade dalfacade;
     private boolean isRunning = true;
     private List<DataObserver> observers;
-    private String state;
+    private int state;
+    private LocalDateTime lastReceivedUpdate;
 
-    public ConcreteObservable() {
+    public ConcreteObservable(Course c) {
         cDAO = new CourseDAO();
+        dalfacade = new DalManager();
         observers = new ArrayList<>();
-        notifyObserver();
+        lastReceivedUpdate = LocalDateTime.MIN;
+        notifyObserver(c);
     }
 
     @Override
@@ -35,14 +44,18 @@ public class ConcreteObservable implements DataObservable {
     }
 
     @Override
-    public void notifyObserver() {
+    public void notifyObserver(Course c) {
+        System.out.println("????");
         Thread t = new Thread(() -> {
             while (isRunning) {
-                if (cDAO.hasNewData()) {
-                    setState(cDAO.getNewData());
+                System.out.println(dalfacade.hasUpdate(c.getId(),lastReceivedUpdate));
+            if (dalfacade.hasUpdate(c.getId(),lastReceivedUpdate)) {
+                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));
+                    System.out.println("state: " + getState());
                     for (DataObserver o : observers) {
-                        o.update();
+                        o.update(c);
                     }
+                    lastReceivedUpdate = LocalDateTime.now();
                 }
                 try {
                     Thread.sleep(2000);
@@ -59,11 +72,11 @@ public class ConcreteObservable implements DataObservable {
         this.isRunning = isRunning;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    private void setState(String newState) {
+    private void setState(int newState) {
         state = newState;
     }
 

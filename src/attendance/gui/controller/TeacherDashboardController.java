@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -83,7 +84,19 @@ public class TeacherDashboardController implements Initializable {
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
         setTableViews();
+        setTotalStudentLabel();
+        setPresentStudentLabel();
 
+    }
+
+    private void setTotalStudentLabel(){
+        lblTotalOfStudents.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));        
+    }
+    
+    private void setPresentStudentLabel() {
+        lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
+        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
+        System.out.println("call?");
     }
 
     private void setTableViews() {

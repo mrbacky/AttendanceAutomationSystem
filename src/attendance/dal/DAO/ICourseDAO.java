@@ -39,9 +39,9 @@ public interface ICourseDAO {
      */
     int getNumberOfConductedLessons(int courseId, LocalDateTime current);
 
-    public boolean hasNewData();
+    public LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current);
 
-    public String getNewData();
+    public int getNewData();
 
     /**
      * Gets the number of students present for the current lesson.
