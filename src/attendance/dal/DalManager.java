@@ -72,4 +72,14 @@ public class DalManager implements DalFacade {
         return studentDAO.getNumberOfAbsentLessons(course);
     }
 
+    @Override
+    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
+        return studentDAO.getAttendanceRecordsForAllCourses(userId);      
+    }
+    
+    @Override
+    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
+        return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
+    }  
+    
 }

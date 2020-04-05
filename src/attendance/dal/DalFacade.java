@@ -26,4 +26,8 @@ public interface DalFacade {
 
     List<Student> getNumberOfAbsentLessons(Course course);
 
+    List<Lesson> getAttendanceRecordsForAllCourses(int userId);
+
+    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
+
 }

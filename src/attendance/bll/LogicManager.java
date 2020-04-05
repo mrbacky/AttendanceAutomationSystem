@@ -75,4 +75,14 @@ public class LogicManager implements LogicFacade {
         System.out.println(students.size());
         return students.size();
     }
+
+    @Override
+    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
+        return dalFacade.getAttendanceRecordsForAllCourses(userId);
+    }
+    
+    @Override
+    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
+        return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+    }    
 }

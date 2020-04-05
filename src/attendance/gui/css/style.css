@@ -78,18 +78,43 @@
 
 }
 
-#Tableviewstudentatt{
-    -fx-border-style: solid;
-    -fx-background-color: white;
+#rectangle{
+    -fx-stroke: #5A6DA9;
+    -fx-stroke-width: 2;
+    -fx-fill: white;
+}
 
+#lblAbsence, #lblAbsence1, #lblAbsence2{
+    -fx-font-size: 12.5;
+}
 
+#tblAttendance{
+    -fx-border-style: dashed;
+    -fx-border-width: 2;
+    -fx-background-color: whitesmoke;
+    -fx-border-color: #5A6DA9;
+    -fx-selection-bar: #A31621;
+}
+
+.table-row-cell:selected .text {
+       -fx-fill: #A31621;
 
 }
-.Tableviewcells{
-    -fx-background-color: lightgrey;
-    -fx-border-style: solid;
-    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);       
 
+.label{
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 12
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: #EBB140;
+}
+
+.Tableviewcells{
+    -fx-background-color: whitesmoke;
+    -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);       
 }
 
 
@@ -182,7 +207,7 @@
 }
 
 .redTB{
-    
+
     -fx-background-color: red;
 }
 
