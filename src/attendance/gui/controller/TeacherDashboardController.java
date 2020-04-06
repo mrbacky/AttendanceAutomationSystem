@@ -67,6 +67,14 @@ public class TeacherDashboardController implements Initializable {
     private UserModel userModel;
     @FXML
     private ComboBox<Course> comboBoxCourses1;
+    @FXML
+    private TableView<?> secondTableView;
+    @FXML
+    private TableColumn<?, ?> dateColumn;
+    @FXML
+    private TableColumn<?, ?> dayColumn;
+    @FXML
+    private TableColumn<?, ?> attendanceColumn;
 
     /**
      * Initializes the controller class.

@@ -46,4 +46,5 @@ public class Student extends User {
     public IntegerProperty absencePercentageProperty() {
         return absencePercentage;
     }
+
 }

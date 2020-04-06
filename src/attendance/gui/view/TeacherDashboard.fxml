@@ -36,11 +36,11 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-      <TableView id="PaneColorsTeacherView" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="secondTableView" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
         <columns>
-          <TableColumn prefWidth="122.0" text="Date" />
-            <TableColumn prefWidth="109.0" text="Day" />
-            <TableColumn prefWidth="97.0" text="Attendance" />
+          <TableColumn fx:id="dateColumn" prefWidth="122.0" text="Date" />
+            <TableColumn fx:id="dayColumn" prefWidth="109.0" text="Day" />
+            <TableColumn fx:id="attendanceColumn" prefWidth="97.0" text="Attendance" />
         </columns>
       </TableView>
       <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="185.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
