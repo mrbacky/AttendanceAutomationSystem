@@ -10,7 +10,6 @@ import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 public class LogicManager implements LogicFacade {
@@ -75,4 +74,14 @@ public class LogicManager implements LogicFacade {
         System.out.println(students.size());
         return students.size();
     }
+
+    @Override
+    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
+        return dalFacade.getAttendanceRecordsForAllCourses(userId);
+    }
+    
+    @Override
+    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
+        return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+    }    
 }

@@ -1,76 +1,125 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
-import attendance.be.MockAttendanceRecord;
-import attendance.be.MockSubjectAttendance;
+import attendance.be.Course;
+import attendance.be.Lesson;
 import attendance.be.User;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
+import attendance.gui.model.CourseModel;
+import attendance.gui.model.LessonModel;
+import attendance.gui.model.ModelException;
+import attendance.gui.model.UserModel;
+import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 /**
- * FXML Controller class
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author annem
  */
 public class StudentAttendanceController implements Initializable {
 
     @FXML
-    private TableView<MockAttendanceRecord> StudentAttTable;
+    private TableView<Lesson> tblAttendance;
     @FXML
-    private TableColumn<?, ?> DayCellTableview;
+    private TableColumn<Lesson, String> colDay;
     @FXML
-    private TableColumn<?, ?> DateCellTableview;
+    private TableColumn<Lesson, String> colDate;
     @FXML
-    private TableColumn<?, ?> TimeCell;
+    private TableColumn<Lesson, String> colTime;
     @FXML
-    private TableColumn<?, ?> SubjectCell;
+    private TableColumn<Lesson, String> colCourse;
     @FXML
-    private TableColumn<?, ?> StatusCell;
+    private TableColumn<Lesson, Lesson.StatusType> colStatus;
     @FXML
-    private JFXButton DayBtn;
+    private Label lblAbsence;
     @FXML
-    private JFXButton WeekBtn;
-    @FXML
-    private JFXButton MonthBtn;
-    @FXML
-    private JFXButton OverallBtn;
-    @FXML
-    private MenuButton MenuStudentAtt;
-    @FXML
-    private JFXDatePicker DatePickerStudenAtt;
+    private JFXComboBox<Course> cboCourses;
+
+    private User user;
+    private UserModel userModel;
+    private CourseModel courseModel;
+    private LessonModel lessonModel;
 
     /**
      * Initializes the controller class.
      */
-//    ObservableList<AttendanceRecord> StudentAttendance = FXCollections.observableArrayList(
-//            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-//            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-//            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present"),
-//            new AttendanceRecord("Monday","10-02-2020","3","SCO","Present")
-//            );
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.userModel = UserModel.getInstance();
+        this.courseModel = CourseModel.getInstance();
+        this.lessonModel = LessonModel.getInstance();
+
+        setUser();
+        setCoursesIntoComboBox();
+        setTableView();
+        selectCourse();
+        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
+    }
+
+    private void setUser() {
+        try {
+            this.user = userModel.getCurrentUser();
+        } catch (ModelException ex) {
+            Logger.getLogger(StudentAttendanceController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void setCoursesIntoComboBox() {
+        courseModel.loadAllCourses(user.getId());
+        cboCourses.getItems().clear();
+        cboCourses.getItems().addAll(courseModel.getObsCourses());
+    }
+
+    private void setTableView() {
+        setColumnWidth();
         
+        colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colTime.setCellValueFactory(new PropertyValueFactory<>("timeFrame"));
+        colCourse.setCellValueFactory(new PropertyValueFactory<>("courseName"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
+
+        tblAttendance.setItems(lessonModel.getObsRecords());
+        lessonModel.loadAllRecords(user.getId());
+        System.out.println("setTableView");
     }
 
-//    public void displayAttendance() {
-//        StudentAttTable.setItems(StudentAttendance);
-//    }
-
-    void setUser(User usr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void setColumnWidth() {
+        ObservableValue<Number> w = tblAttendance.widthProperty().divide(5);
+        colDay.prefWidthProperty().bind(w);
+        colDate.prefWidthProperty().bind(w);
+        colTime.prefWidthProperty().bind(w);
+        colCourse.prefWidthProperty().bind(w);
+        colStatus.prefWidthProperty().bind(w);
     }
+    
+    private void selectCourse() {
+        cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
+            if (newVal != null) {
+                lessonModel.filterByCourse(user.getId(), newVal.getId());
+            }
+        });
+    }
+
+    @FXML
+    private void clearSelection(MouseEvent event) {
+        if (!cboCourses.getSelectionModel().isEmpty()) {
+            cboCourses.getSelectionModel().clearSelection();
+            setTableView();
+            System.out.println("clearSelection");
+        }
+    }    
 }

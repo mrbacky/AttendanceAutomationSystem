@@ -27,4 +27,9 @@ public interface DalFacade {
     List<Student> getNumberOfAbsentLessons(Course course);
     
     boolean hasUpdate(int courseId, LocalDateTime last);
+
+    List<Lesson> getAttendanceRecordsForAllCourses(int userId);
+
+    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
+
 }

@@ -78,4 +78,15 @@ public class DalManager implements DalFacade {
         boolean hasUpdate = last.isBefore(ld);
         return hasUpdate;
     }
+
+    @Override
+    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
+        return studentDAO.getAttendanceRecordsForAllCourses(userId);      
+    }
+    
+    @Override
+    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
+        return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
+    }  
+    
 }
