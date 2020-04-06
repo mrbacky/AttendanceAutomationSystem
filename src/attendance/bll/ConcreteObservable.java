@@ -48,10 +48,8 @@ public class ConcreteObservable implements DataObservable {
         System.out.println("????");
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println(dalfacade.hasUpdate(c.getId(),lastReceivedUpdate));
             if (dalfacade.hasUpdate(c.getId(),lastReceivedUpdate)) {
-                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));
-                    System.out.println("state: " + getState());
+                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));                    
                     for (DataObserver o : observers) {
                         o.update(c);
                     }

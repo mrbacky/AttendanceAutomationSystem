@@ -44,12 +44,11 @@ public class StudentModel {
         attendanceCountProperty = new SimpleIntegerProperty();
     }
 
-    public void loadAllStudents(int courseId, LocalDateTime current) {// calculate absence here
+    public void loadAllStudents(int courseId, LocalDateTime current) {
         List<Student> allStudents = logicManager.calculateAbsencePercentage(courseId, current);
         studentList.clear();
         studentList.addAll(allStudents);
         enrolledStudentsLabel.setValue(allStudents.size());
-        System.out.println("loadAllStudents: " + enrolledStudentsLabel.getValue());
     }
 
     public ObservableList<Student> getObsStudents() {
@@ -69,7 +68,6 @@ public class StudentModel {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        System.out.println("obs " + attendanceCountProperty.toString());
                         attendanceCountProperty.setValue(bllComponent.getState());
                         
                     }

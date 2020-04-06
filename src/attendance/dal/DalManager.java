@@ -95,8 +95,7 @@ public class DalManager implements DalFacade {
     @Override
     public boolean hasUpdate(int courseId, LocalDateTime last) 
     {
-        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
-        System.out.println("hasupdate" + ld);
+        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());        
         boolean hasUpdate = last.isBefore(ld);
         return hasUpdate;
     }

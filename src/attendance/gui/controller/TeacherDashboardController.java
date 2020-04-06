@@ -95,10 +95,7 @@ public class TeacherDashboardController implements Initializable {
     
     private void setPresentStudentLabel() {
         lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
-        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
-        System.out.println("call?");
-        
-        
+        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());           
     }
 
     private void setTableViews() {
@@ -107,9 +104,6 @@ public class TeacherDashboardController implements Initializable {
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        // set student observable list into tableview
-        // provide the method with the correct parameters.
-        // change the column text.
         // TODO: change the to using current date LATER.
         studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem().getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
