@@ -42,6 +42,14 @@ public class LessonModel {
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
+        
+        lessonList.addAll(allLessons);
+    }
+    
+     public void loadAllStudenLessons(int userId, int id) {// calculate absence here
+        List<Lesson> allLessons = logicManager.getAttendanceRecordsForACourse(userId, id);
+        lessonList.clear();
+        
         lessonList.addAll(allLessons);
     }
 
