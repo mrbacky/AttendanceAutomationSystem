@@ -86,7 +86,7 @@ public class TeacherDashboardController implements Initializable {
         setTableViews();
         setTotalStudentLabel();
         setPresentStudentLabel();
-
+        listenToCourseSelection();        
     }
 
     private void setTotalStudentLabel(){
@@ -97,6 +97,8 @@ public class TeacherDashboardController implements Initializable {
         lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
         studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
         System.out.println("call?");
+        
+        
     }
 
     private void setTableViews() {
@@ -110,15 +112,15 @@ public class TeacherDashboardController implements Initializable {
         // change the column text.
         // TODO: change the to using current date LATER.
         studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem().getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
-        changeSelection();
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
     }
 
-    private void changeSelection() {
+    private void listenToCourseSelection() {
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
             studentModel.loadAllStudents(newVal.getId(), LocalDateTime.parse("2020-03-09T14:29:00"));
-        });
+            studentModel.startObserving(newVal);
+        });        
     }
 
     private void setCoursesIntoComboBox() {
