@@ -173,4 +173,64 @@ public class CourseDAO implements ICourseDAO {
         }
         return 0;
     }
+
+    @Override
+    public LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current) {
+        String sql = "SELECT TOP 1 AR.timeRecorded "
+                + "FROM AttendanceRecord AR "
+                + "JOIN CourseCalendar CC "
+                + "ON AR.courseCalendarId = CC.id "
+                + "WHERE CC.courseId = ? "
+                + "AND (CC.startTime >= ? AND CC.startTime < ?) "
+                + "ORDER BY AR.timeRecorded DESC";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setDate(2, Date.valueOf(current));
+            pstmt.setDate(3, Date.valueOf(current.plusDays(1)));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                LocalDateTime timeRecorded = rs.getTimestamp("timeRecorded").toLocalDateTime();
+                return timeRecorded;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public int getAttendanceForLesson(int courseId, LocalDateTime current) {
+        String sql
+                = "SELECT TOP 1 CC.startTime, AR.courseCalendarId, COUNT(AR.courseCalendarId) AS attendanceCount "
+                + "	FROM AttendanceRecord AR "
+                + "	JOIN CourseCalendar CC "
+                + "		ON AR.courseCalendarId = CC.id "
+                + "	WHERE CC.courseId = ? "
+                + "		AND AR.status = 'PRESENT' "
+                + "		AND	CC.startTime <= ? "
+                + "		AND CC.endTime > ? "
+                + "	GROUP BY CC.startTime, AR.courseCalendarId "
+                + "	ORDER BY startTime DESC";
+
+        try (Connection con = connection.getConnection()) {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, courseId);
+            pstmt.setTimestamp(2, Timestamp.valueOf(current));
+            pstmt.setDate(3, Date.valueOf(current.toLocalDate()));
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(3);
+                return count;
+            }
+        } catch (SQLServerException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }

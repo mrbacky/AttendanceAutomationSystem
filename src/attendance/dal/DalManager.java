@@ -9,7 +9,6 @@ import attendance.dal.DAO.IUserDAO;
 import attendance.dal.DAO.UserDAO;
 import attendance.dal.Mock.MockAttendanceDAO;
 import attendance.dal.Mock.MockUserDAO;
-import java.time.LocalTime;
 import java.util.List;
 import attendance.dal.DAO.ICourseDAO;
 import attendance.dal.DAO.IStudentDAO;
@@ -71,5 +70,12 @@ public class DalManager implements DalFacade {
     public List<Student> getNumberOfAbsentLessons(Course course) {
         return studentDAO.getNumberOfAbsentLessons(course);
     }
-
+    
+    @Override
+    public boolean hasUpdate(int courseId, LocalDateTime last) 
+    {
+        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());        
+        boolean hasUpdate = last.isBefore(ld);
+        return hasUpdate;
+    }
 }

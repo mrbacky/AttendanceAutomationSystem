@@ -18,12 +18,13 @@ public interface DalFacade {
 
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
 
-    public void createRecord(int userId, Lesson lesson);
+    void createRecord(int userId, Lesson lesson);
 
-    public List<Course> getCourses(int userId);
+    List<Course> getCourses(int userId);
 
     int getNumberOfConductedLessons(Course course, LocalDateTime current);
 
     List<Student> getNumberOfAbsentLessons(Course course);
-
+    
+    boolean hasUpdate(int courseId, LocalDateTime last);
 }

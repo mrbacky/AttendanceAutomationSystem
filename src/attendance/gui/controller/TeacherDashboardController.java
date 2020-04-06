@@ -7,19 +7,18 @@ package attendance.gui.controller;
 
 import attendance.be.Course;
 import attendance.be.Student;
-import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.model.CourseModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.StudentModel;
 import attendance.gui.model.UserModel;
-import com.sun.jdi.connect.Connector;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -90,7 +89,9 @@ public class TeacherDashboardController implements Initializable {
         setCoursesIntoComboBox();
 
         setTableViewsForCourseOverview();
-        selectCourseForCourseOverview();
+        setTotalStudentLabel();
+        setPresentStudentLabel();
+        listenToCourseSelection();
 
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
             @Override
@@ -99,7 +100,15 @@ public class TeacherDashboardController implements Initializable {
 
             }
         });
+    }
 
+    private void setTotalStudentLabel() {
+        lblTotalOfStudents.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));
+    }
+
+    private void setPresentStudentLabel() {
+        lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
+        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
     }
 
     private void setTableViewsForCourseOverview() {
@@ -109,14 +118,15 @@ public class TeacherDashboardController implements Initializable {
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
         // TODO: change the method to using current date LATER.
-        tbvStudentAbsence.setItems(studentModel.getObsStudents());
         studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        tbvStudentAbsence.setItems(studentModel.getObsStudents());
     }
 
-    private void selectCourseForCourseOverview() {
+    private void listenToCourseSelection() {
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
             studentModel.loadAllStudents(newVal, LocalDateTime.parse("2020-03-09T14:29:00"));
+            studentModel.startObserving(newVal);
         });
     }
 
