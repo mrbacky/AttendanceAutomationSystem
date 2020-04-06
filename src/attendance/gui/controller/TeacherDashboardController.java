@@ -9,6 +9,7 @@ import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.Teacher;
 import attendance.be.User;
+import attendance.bll.LogicManager;
 import attendance.gui.model.CourseModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.StudentModel;
@@ -16,16 +17,22 @@ import attendance.gui.model.UserModel;
 import com.sun.jdi.connect.Connector;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
@@ -68,6 +75,9 @@ public class TeacherDashboardController implements Initializable {
     private UserModel userModel;
     @FXML
     private ComboBox<Course> comboBoxCourses1;
+   
+    @FXML
+    private BarChart<String, Integer> barChartWeekdayAbsence;
 
     /**
      * Initializes the controller class.
@@ -78,7 +88,7 @@ public class TeacherDashboardController implements Initializable {
         this.studentModel = StudentModel.getInstance();
         this.userModel = UserModel.getInstance();
         this.courseModel = CourseModel.getInstance();
-
+                
 //      load lists from backend
 //        studentModel.loadAllStudents();
         //  courseModel.loadAllCourses(user.getId());
@@ -97,7 +107,7 @@ public class TeacherDashboardController implements Initializable {
             }
         });
         
-        
+        setBarChart();
     }
 
     private void setTableViews() {
@@ -146,5 +156,29 @@ public class TeacherDashboardController implements Initializable {
         }
 
     }
+
+    private void setBarChart() {
+        List<Integer> lst = studentModel.getObsWeekdayAbsenceCount();
+        //TODO: change to use real parameters from ComboBox and selection of TableView.
+        studentModel.loadAllWeekdayAbsenceCount(9, 1);
+       
+        barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
+        
+        XYChart.Series dataQuery1 = new XYChart.Series();
+        dataQuery1.setName("Absence");           
+        dataQuery1.getData().add(new XYChart.Data("Monday", lst.get(0)));
+        dataQuery1.getData().add(new XYChart.Data("Tuesday", lst.get(1)));
+        dataQuery1.getData().add(new XYChart.Data("Wednesday", lst.get(2)));
+        dataQuery1.getData().add(new XYChart.Data("Thursday", lst.get(3)));
+        dataQuery1.getData().add(new XYChart.Data("Friday", lst.get(4)));
+        barChartWeekdayAbsence.getData().add(dataQuery1);
+        
+        //TODO: make method to listen to ComboBox selection.
+        //comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
+        //        -> {
+        //    studentModel.loadAllWeekdayAbsenceCount(tbvStudentAbsence.getSelectionModel().getSelectedItem().getId(), newVal.getId());
+        //});
+    }
+    
 
 }

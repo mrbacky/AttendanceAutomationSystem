@@ -18,6 +18,8 @@ public class StudentModel {
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();
     private final MockStudentDAO mockStudentDAO;
     private LogicManager logicManager;
+   
+    private final ObservableList<Integer> absencePerWeekday = FXCollections.observableArrayList();
 
     public static StudentModel getInstance() {
         if (studentModel == null) {
@@ -43,4 +45,13 @@ public class StudentModel {
         return studentList;
     }
 
+    public void loadAllWeekdayAbsenceCount(int userId, int courseId){
+        List <Integer> lst = logicManager.getWeekdayAbsenceForCourse(userId, courseId);
+        absencePerWeekday.clear();
+        absencePerWeekday.addAll(lst);
+    }
+            
+    public ObservableList<Integer> getObsWeekdayAbsenceCount(){
+        return absencePerWeekday;
+    }
 }

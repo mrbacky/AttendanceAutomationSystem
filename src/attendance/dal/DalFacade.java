@@ -33,4 +33,5 @@ public interface DalFacade {
 
     int getNumberOfConductedLessons(int courseId, LocalDateTime current);
     
+    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
 }

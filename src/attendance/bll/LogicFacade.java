@@ -28,4 +28,7 @@ public interface LogicFacade {
 
     int studentsEnrolledInCourse();
 
+    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
+    
+    List<Integer> getWeekdayAbsenceForCourse (int userId, int courseId);
 }

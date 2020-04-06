@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherDashboardController">
+<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherDashboardController">
    <children>
       <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="62.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -79,7 +79,7 @@
          </children>
       </Pane>
       <ComboBox id="CourseCombobox" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <BarChart id="TeacherStudentBorders" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
+      <BarChart id="TeacherStudentBorders" fx:id="barChartWeekdayAbsence" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
