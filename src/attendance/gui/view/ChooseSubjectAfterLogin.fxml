@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,6 +15,7 @@
          </image>
       </ImageView>
       <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Continue" />
-      <JFXComboBox fx:id="comboboxS" layoutX="225.0" layoutY="212.0" onAction="#setSelectedCourse" prefHeight="27.0" prefWidth="150.0" />
+      <JFXComboBox fx:id="comboboxS" layoutX="215.0" layoutY="210.0" onAction="#setSelectedCourse" prefHeight="31.0" prefWidth="170.0" />
+      <Label fx:id="Warninglbl" layoutX="229.0" layoutY="248.0" text="Please select a course" textFill="RED" visible="false" />
    </children>
 </AnchorPane>
