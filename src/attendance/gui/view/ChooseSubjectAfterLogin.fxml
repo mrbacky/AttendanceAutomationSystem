@@ -6,14 +6,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.ChooseSubjectAfterLoginController">
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.ChooseSubjectAfterLoginController">
    <children>
       <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
-      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Log in" />
+      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Continue" />
       <JFXComboBox fx:id="comboboxS" layoutX="225.0" layoutY="212.0" onAction="#setSelectedCourse" prefHeight="27.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
