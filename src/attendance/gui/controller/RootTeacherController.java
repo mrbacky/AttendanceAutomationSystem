@@ -7,7 +7,10 @@ package attendance.gui.controller;
 
 import attendance.be.User;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.IStudentModel;
+import attendance.gui.model.interfaces.IUserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +30,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class RootTeacherController implements Initializable {
 
     @FXML
@@ -49,19 +47,32 @@ public class RootTeacherController implements Initializable {
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
-    private UserModel model;
+
     @FXML
     private Label lblName;
     @FXML
     private JFXButton btnRequests;
+    private ICourseModel courseModel;
+    private IStudentModel studentModel;
 
     /**
      * Initializes the controller class.Jep
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = UserModel.getInstance();
-        setUser();
+
+    }
+
+    public void injectModels(ICourseModel courseModel, IStudentModel studentModel) {
+        this.courseModel = courseModel;
+        this.studentModel = studentModel;
+
+    }
+
+    void setUser(User currentUser) {
+        this.user = currentUser;
+        lblName.setText(user.getName());
+        showModule(DashboardModule);
 
     }
 
@@ -73,6 +84,10 @@ public class RootTeacherController implements Initializable {
             fxmlLoader.setLocation(url);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
             AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
+
+            TeacherDashboardController controller = (TeacherDashboardController) fxmlLoader.load();
+            controller.setUser(user);
+            controller.injectModels(courseModel, studentModel);
 
             attachable.getChildren().clear();
             attachable.getChildren().add(page);
@@ -105,20 +120,6 @@ public class RootTeacherController implements Initializable {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    void setUser() {
-        try {
-            user = model.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        showModule(DashboardModule);
-        lblName.setText(user.getName());
-    }
-
-    @FXML
-    private void showRequests(ActionEvent event) {
     }
 
 }

@@ -1,4 +1,4 @@
-package attendance.bll;
+package attendance.bll.util;
 
 import attendance.be.Course;
 

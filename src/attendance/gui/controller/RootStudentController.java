@@ -8,7 +8,7 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.User;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -52,26 +52,30 @@ public class RootStudentController implements Initializable {
 
     private LoginController loginController;
 
-    private User currentUser;
+    private User user;
     @FXML
     private Label lblHello;
     private UserModel model;
 
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        model = UserModel.getInstance();
-        setUser();
-        //  set     and show
-        //
+//        showModule(TodayModule);
     }
 
+    void setUser(User currentUser) {
+        this.user = currentUser;
+
+        lblHello.setText(currentUser.getName());
+
+    }
 //    void setContr(LoginController loginController) {
 //        this.loginController = loginController;
 //    }
+
     private void showModule(String urlToShow) {
         try {
 
@@ -126,15 +130,8 @@ public class RootStudentController implements Initializable {
 
     }
 
-    private void setUser() {
-        try {
-            this.currentUser = model.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        showModule(TodayModule);
-        lblHello.setText(currentUser.getName());
-
+    void setUser(User currentUser) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

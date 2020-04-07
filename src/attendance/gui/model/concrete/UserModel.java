@@ -1,35 +1,24 @@
-package attendance.gui.model;
+package attendance.gui.model.concrete;
 
+import attendance.gui.model.ModelException;
 import attendance.be.User;
-import attendance.bll.LogicException;
-import attendance.bll.LogicFacade;
-import attendance.bll.LogicManager;
+import attendance.bll.util.LogicException;
+import attendance.bll.BLLManager;
+import attendance.gui.model.interfaces.IUserModel;
+import attendance.bll.IBLLFacade;
 
 /**
  *
  * @author Martin
  */
-public class UserModel {
+public class UserModel implements IUserModel {
 
-    private static UserModel model;
     private User currentUser;
 
-    private final LogicFacade logicManager;
+    private IBLLFacade bllManager;
 
-    /**
-     * Create instance of Singleton.
-     *
-     * @return
-     */
-    public static UserModel getInstance() {
-        if (model == null) {
-            model = new UserModel();
-        }
-        return model;
-    }
-
-    private UserModel() {
-        logicManager = new LogicManager();
+    public UserModel(IBLLFacade bllFacade) {
+        this.bllManager = bllFacade;
     }
 
     public User getCurrentUser() throws ModelException {
@@ -49,7 +38,7 @@ public class UserModel {
             throw new ModelException("The password is invalid.");
         } else {
             try {
-                currentUser = logicManager.getUser(username, password);
+                currentUser = bllManager.getUser(username, password);
             } catch (LogicException ex) {
                 throw new ModelException(ex.getMessage());
             }
@@ -58,14 +47,16 @@ public class UserModel {
         return currentUser;
     }
 
-    private boolean usernameCheck(String username) {
+    @Override
+    public boolean usernameCheck(String username) {
         if (username.length() != 8) {
             return false;
         }
         return username.matches(".*([a-zA-Z].*[0-9]|[0-9].*[a-zA-Z]).*");
     }
 
-    private boolean passwordCheck(String username) {
+    @Override
+    public boolean passwordCheck(String username) {
         if (username.length() < 8 || username.length() > 20) {
             return false;
         }

@@ -10,8 +10,8 @@ import attendance.be.Lesson;
 import attendance.be.User;
 import attendance.bll.StatusChecker;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.LessonModel;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.LessonModel;
+import attendance.gui.model.concrete.UserModel;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
@@ -48,7 +48,6 @@ public class TodayController implements Initializable {
 
     public static final String IN_TODAY_COURSE_VIEW_PATH = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
 
-    private Attendance attendance;
     @FXML
     private Label lblUsername;
     @FXML
@@ -73,7 +72,6 @@ public class TodayController implements Initializable {
     private JFXToggleButton tbRegister;
 
     private boolean threadRun = true;
-    private StatusChecker statusChecker;
 
     /**
      * Initializes the controller class.
@@ -85,7 +83,6 @@ public class TodayController implements Initializable {
 
         this.userModel = UserModel.getInstance();
         this.lessonModel = LessonModel.getInstance();
-        this.statusChecker = StatusChecker.getInstance();
 
         setUser();
 

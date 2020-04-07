@@ -3,10 +3,10 @@ package attendance.gui.controller;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.gui.model.CourseModel;
-import attendance.gui.model.LessonModel;
+import attendance.gui.model.concrete.CourseModel;
+import attendance.gui.model.concrete.LessonModel;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -58,23 +58,17 @@ public class StudentAttendanceController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.userModel = UserModel.getInstance();
         this.courseModel = CourseModel.getInstance();
         this.lessonModel = LessonModel.getInstance();
 
-        setUser();
         setCoursesIntoComboBox();
         setTableView();
         selectCourse();
         lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
     }
 
-    private void setUser() {
-        try {
-            this.user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(StudentAttendanceController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void setUser(User currentUser) {
+        this.user = currentUser;
     }
 
     private void setCoursesIntoComboBox() {
@@ -85,7 +79,7 @@ public class StudentAttendanceController implements Initializable {
 
     private void setTableView() {
         setColumnWidth();
-        
+
         colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colTime.setCellValueFactory(new PropertyValueFactory<>("timeFrame"));
@@ -105,7 +99,7 @@ public class StudentAttendanceController implements Initializable {
         colCourse.prefWidthProperty().bind(w);
         colStatus.prefWidthProperty().bind(w);
     }
-    
+
     private void selectCourse() {
         cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
             if (newVal != null) {
@@ -121,5 +115,5 @@ public class StudentAttendanceController implements Initializable {
             setTableView();
             System.out.println("clearSelection");
         }
-    }    
+    }
 }

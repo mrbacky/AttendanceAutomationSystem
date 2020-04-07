@@ -1,15 +1,15 @@
-package attendance.bll;
+package attendance.bll.util;
 
 import attendance.be.Course;
+import attendance.dal.DALManager;
 import attendance.dal.DAO.CourseDAO;
 import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import attendance.dal.IDALFacade;
 
 /**
  *
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public final class ConcreteObservable implements DataObservable {
 
     private final ICourseDAO cDAO;
-    private final DalFacade dalfacade;
+    private final IDALFacade dalfacade;
     private boolean isRunning = true;
     private final List<DataObserver> observers;    
     private LocalDateTime lastReceivedUpdate;
@@ -26,7 +26,7 @@ public final class ConcreteObservable implements DataObservable {
 
     public ConcreteObservable(Course c) {
         cDAO = new CourseDAO();
-        dalfacade = new DalManager();
+        dalfacade = new DALManager();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(c);

@@ -9,9 +9,12 @@ import attendance.be.Course;
 import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.controller.LoginController;
-import attendance.gui.model.CourseModel;
+import attendance.gui.model.ModelCreator;
+import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
@@ -41,40 +44,25 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
-    private UserModel userModel;
     public LoginController loginController;
     @FXML
     private JFXComboBox<Course> comboboxS;
 
-    private CourseModel courseModel;
+    private ICourseModel courseModel;
     private User user;
-
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     */
+    private IStudentModel studentModel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        this.courseModel = CourseModel.getInstance();
-        userModel = UserModel.getInstance();
-        setUser();
-
-        courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
-        
-        
     }
 
-    private void setUser() {
-        try {
+    public void setUser(User currentUser) {
+        this.user = currentUser;
+    }
 
-            this.user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    void injectModel(ICourseModel courseModel) {
+        this.courseModel = courseModel;
 
     }
 
@@ -84,6 +72,12 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
             Parent root = fxmlLoader.load();
+
+            RootTeacherController controller = (RootTeacherController) fxmlLoader.load();
+            studentModel = ModelCreator.getInstance().getStudentModel();
+            controller.setUser(user);
+            controller.injectModels(courseModel, studentModel);
+
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -103,7 +97,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private void loadCoursesInCombobox() {
         comboboxS.getItems().clear();
-        comboboxS.getItems().addAll(courseModel.getObsCourses());
+        comboboxS.getItems().addAll(courseModel.loadAllCourses(user.getId()));
     }
 
     @FXML
@@ -115,7 +109,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     @FXML
     private void setSelectedCourse(ActionEvent event) {
         //comboboxS.setSelectionModel(value);
-
         user.setCurrentSelectedCourse(comboboxS.getSelectionModel().getSelectedIndex());
     }
 

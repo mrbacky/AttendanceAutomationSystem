@@ -1,25 +1,26 @@
 package attendance.bll;
 
+import attendance.bll.util.LogicException;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.dal.DalException;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
+import attendance.dal.DALManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import attendance.dal.IDALFacade;
 
-public class LogicManager implements LogicFacade {
+public class BLLManager implements IBLLFacade {
 
-    private final DalFacade dalFacade;
+    private final IDALFacade bllManager;
     private final AbsencePercentageCalculator calculator;
     private List<Student> students;
 
-    public LogicManager() {
-        dalFacade = new DalManager();
+    public BLLManager(IDALFacade bllManager) {
+        this.bllManager = bllManager;
         calculator = new AbsencePercentageCalculator();
     }
 
@@ -27,7 +28,7 @@ public class LogicManager implements LogicFacade {
     public User getUser(String username, String password) throws LogicException {
         try {
             //hash password here. create a tool in a utility folder and call method from there.
-            return dalFacade.getUser(username, password);
+            return bllManager.getUser(username, password);
         } catch (DalException ex) {
             throw new LogicException(ex.getMessage());
         }
@@ -40,24 +41,24 @@ public class LogicManager implements LogicFacade {
 
     @Override
     public List<Course> getCourses(int userId) {
-        return dalFacade.getCourses(userId);
+        return bllManager.getCourses(userId);
     }
 
     @Override
     public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
-        return dalFacade.getLessonsForToday(userId, current);
+        return bllManager.getLessonsForToday(userId, current);
     }
 
     @Override
     public void createRecord(int userId, Lesson lessonToUpdate) {
-        dalFacade.createRecord(userId, lessonToUpdate);
+        bllManager.createRecord(userId, lessonToUpdate);
     }
 
     @Override
     public List<Student> calculateAbsencePercentage(Course course, LocalDateTime current) {
-        int conductedLesson = dalFacade.getNumberOfConductedLessons(course, current);
+        int conductedLesson = bllManager.getNumberOfConductedLessons(course, current);
 
-        students = dalFacade.getNumberOfAbsentLessons(course);
+        students = bllManager.getNumberOfAbsentLessons(course);
 
         for (Student s : students) {
             s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLesson));
@@ -77,11 +78,11 @@ public class LogicManager implements LogicFacade {
 
     @Override
     public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
-        return dalFacade.getAttendanceRecordsForAllCourses(userId);
+        return bllManager.getAttendanceRecordsForAllCourses(userId);
     }
     
     @Override
     public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
-        return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+        return bllManager.getAttendanceRecordsForACourse(userId, courseId);
     }    
 }

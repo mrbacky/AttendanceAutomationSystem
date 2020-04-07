@@ -8,10 +8,12 @@ package attendance.gui.controller;
 import attendance.be.Course;
 import attendance.be.Student;
 import attendance.be.User;
-import attendance.gui.model.CourseModel;
+import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.StudentModel;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.StudentModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.IStudentModel;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -21,6 +23,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,8 +51,8 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private TableColumn<Student, Integer> lessonCount;
 
-    private StudentModel studentModel;
-    private CourseModel courseModel;
+    private IStudentModel studentModel;
+    private ICourseModel courseModel;
     @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
@@ -64,7 +67,6 @@ public class TeacherDashboardController implements Initializable {
     private Label lblRequestCount;
 
     private User user;
-    private UserModel userModel;
     @FXML
     private ComboBox<Course> comboBoxCourses1;
 
@@ -74,9 +76,9 @@ public class TeacherDashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 //      get models
-        this.studentModel = StudentModel.getInstance();
-        this.userModel = UserModel.getInstance();
-        this.courseModel = CourseModel.getInstance();
+//        this.studentModel = StudentModel.getInstance();
+//        this.userModel = UserModel.getInstance();
+//        this.courseModel = CourseModel.getInstance();
 
 //      load lists from backend
 //        studentModel.loadAllStudents();
@@ -84,7 +86,6 @@ public class TeacherDashboardController implements Initializable {
         //  
         comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
 
-        setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
 
@@ -100,6 +101,16 @@ public class TeacherDashboardController implements Initializable {
 
             }
         });
+    }
+
+    public void injectModels(ICourseModel courseModel, IStudentModel studentModel) {
+        this.courseModel = courseModel;
+        this.studentModel = studentModel;
+
+    }
+
+    void setUser(User currentUser) {
+        this.user = currentUser;
     }
 
     private void setTotalStudentLabel() {
@@ -132,7 +143,7 @@ public class TeacherDashboardController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+        comboBoxCourses.getItems().addAll(FXCollections.observableArrayList(courseModel.loadAllCourses(user.getId())));
         comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
 
     }
@@ -142,14 +153,6 @@ public class TeacherDashboardController implements Initializable {
         Student selectedStudent = tbvStudentAbsence.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             lblstudentname.setText(selectedStudent.getName());
-        }
-    }
-
-    private void setUser() {
-        try {
-            this.user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

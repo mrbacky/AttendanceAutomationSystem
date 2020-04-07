@@ -8,8 +8,12 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.User;
 import attendance.dal.Mock.MockUserDAO;
+import attendance.gui.model.ModelCreator;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.CourseModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.IUserModel;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
@@ -59,7 +63,7 @@ public class LoginController implements Initializable {
     private User currentUser;
     @FXML
     private Label wrongPassword;
-    private UserModel model;
+    private IUserModel userModel;
     private Attendance attendance;
     @FXML
     private JFXTextField usernameField;
@@ -68,31 +72,39 @@ public class LoginController implements Initializable {
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
     private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
-    private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
     private User user;
+    private ICourseModel courseModel;
+
+    public LoginController() {
+        this.userModel = ModelCreator.getInstance().getUserModel();
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = UserModel.getInstance();
-
         fieldValidator();
-
     }
 
-    public void setMainApp(Attendance attendance) {
-        this.attendance = attendance;
-    }
-
-    public void showRoot(String rootToShow) {
+    private void showRoot(String rootToShow) {
         try {
             URL url = getClass().getResource(rootToShow);
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(url);
             Parent root = fxmlLoader.load();
+
+            if (rootToShow.equals(ROOT_STUDENT)) {
+                RootStudentController controller = (RootStudentController) fxmlLoader.getController();
+                controller.setUser(currentUser);
+            }
+            if (rootToShow.equals(SUBJECT_CHOOSER)) {
+                courseModel = ModelCreator.getInstance().getCourseModel();
+                ChooseSubjectAfterLoginController controller = (ChooseSubjectAfterLoginController) fxmlLoader.getController();
+                controller.setUser(currentUser);
+                controller.injectModel(courseModel);
+            }
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
@@ -107,30 +119,25 @@ public class LoginController implements Initializable {
     private void fieldValidator() {//   could be also decoupled 
         RequiredFieldValidator usernameValidator = new RequiredFieldValidator();
         RequiredFieldValidator passwordValidator = new RequiredFieldValidator();
-
         usernameField.getValidators().add(usernameValidator);
         usernameValidator.setMessage("Please fill out username.");
-
         passwordField.getValidators().add(passwordValidator);
         passwordValidator.setMessage("Please fill out password");
-
         usernameField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue) {
                 usernameField.validate();
             }
         });
-
         passwordField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (!newValue) {
                 passwordField.validate();
             }
         });
-
     }
 
     private void authentification() {
         try {
-            user = model.login(usernameField.getText(), passwordField.getText());
+            user = userModel.login(usernameField.getText(), passwordField.getText());
         } catch (ModelException ex) {
             showAlert(ex);
         }
@@ -147,17 +154,17 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void showAlert(Exception ex){
+    private void showAlert(Exception ex) {
         Alert a = new Alert(Alert.AlertType.ERROR, "An error occured: " + ex.getMessage(), ButtonType.OK);
-        
+
         a.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         a.show();
         //change so whole message shows
-        if (a.getResult() == ButtonType.OK){
-            
+        if (a.getResult() == ButtonType.OK) {
+
         }
     }
-    
+
     @FXML//   could be also decoupled 
     private void BtnPressed(ActionEvent event) throws IOException {
         authentification();
