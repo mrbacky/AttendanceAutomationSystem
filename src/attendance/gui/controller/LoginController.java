@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 import java.awt.SystemTray;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Region;
@@ -59,7 +60,7 @@ public class LoginController implements Initializable {
 
     private RootStudentController rootStudentController;
 
-    private User currentUser;
+    
     @FXML
     private Label wrongPassword;
     private IUserModel userModel;
@@ -78,6 +79,10 @@ public class LoginController implements Initializable {
 
     public LoginController() {
         this.userModel = ModelCreator.getInstance().getUserModel();
+        this.courseModel = ModelCreator.getInstance().getCourseModel();
+        this.lessonModel = ModelCreator.getInstance().getLessonModel();
+        
+        
     }
 
     /**
@@ -97,13 +102,12 @@ public class LoginController implements Initializable {
 
             if (rootToShow.equals(ROOT_STUDENT)) {
                 RootStudentController controller = (RootStudentController) fxmlLoader.getController();
-                controller.setUser(currentUser);
+                controller.setUser(user);
                 controller.injectModels(courseModel, lessonModel);
             }
             if (rootToShow.equals(SUBJECT_CHOOSER)) {
-                courseModel = ModelCreator.getInstance().getCourseModel();
                 ChooseSubjectAfterLoginController controller = (ChooseSubjectAfterLoginController) fxmlLoader.getController();
-                controller.setUser(currentUser);
+                controller.setUser(user);
                 controller.injectModel(courseModel);
             }
 
@@ -113,7 +117,7 @@ public class LoginController implements Initializable {
             stage.show();
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e + "here is null ????????????????");
         }
     }
 
@@ -138,7 +142,7 @@ public class LoginController implements Initializable {
 
     private void authentification() {
         try {
-            user = userModel.login(usernameField.getText(), passwordField.getText());
+            this.user = userModel.login(usernameField.getText(), passwordField.getText());
         } catch (ModelException ex) {
             showAlert(ex);
         }
@@ -184,4 +188,6 @@ public class LoginController implements Initializable {
         loginStage = (Stage) loginButton.getScene().getWindow();
         loginStage.close();
     }
+
+    
 }

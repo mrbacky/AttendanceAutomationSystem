@@ -19,32 +19,40 @@ import attendance.gui.model.interfaces.IStudentModel;
 public class ModelCreator {
 
     private static ModelCreator instance;
-    private static IBLLFacade bllManager = BLLFacadeFactory.getInstance().createFacade(BLLFacadeFactory.FacadeType.PRODUCTION);
+    private IBLLFacade bllFacade;
 
-    public ModelCreator(IBLLFacade bllManager) {
-        this.bllManager = bllManager;
+    private ModelCreator() {
+        bllFacade = BLLFacadeFactory.getInstance().createFacade(BLLFacadeFactory.FacadeType.PRODUCTION);
     }
 
     public static synchronized ModelCreator getInstance() {// singleton or just static methods?
         if (instance == null) {
-            instance = new ModelCreator(bllManager);
+            instance = new ModelCreator();
         }
+        System.out.println("instance of ModelCreator: " + instance + " ...........................FROM SINGLETONS");
         return instance;
     }
 
     public IUserModel getUserModel() {
-        return new UserModel(bllManager);
+        System.out.println("created user Model");
+        return new UserModel(bllFacade);
     }
 
     public IStudentModel getStudentModel() {
-        return new StudentModel(bllManager);
+        System.out.println("created student Model");
+
+        return new StudentModel(bllFacade);
     }
 
     public ILessonModel getLessonModel() {
-        return new LessonModel(bllManager);
+        System.out.println("created lesson Model");
+
+        return new LessonModel(bllFacade);
     }
 
     public ICourseModel getCourseModel() {
-        return new CourseModel(bllManager);
+        System.out.println("created course Model");
+
+        return new CourseModel(bllFacade);
     }
 }

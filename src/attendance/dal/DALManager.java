@@ -38,7 +38,7 @@ public class DALManager implements IDALFacade {
         try {
             return userDAO.getUser(username, password);
         } catch (DalException ex) {
-            throw new DalException(ex.getMessage());
+            throw new DalException(ex.getMessage() + "error from DAL Manager");
         }
     }
 

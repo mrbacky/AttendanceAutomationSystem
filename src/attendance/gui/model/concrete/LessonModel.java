@@ -19,7 +19,7 @@ import attendance.bll.IBLLFacade;
  */
 public class LessonModel implements ILessonModel {
 
-    private final IBLLFacade bllManager;
+    private final IBLLFacade bllFacade;
     private final ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
     private final ObservableList<Lesson> recordList = FXCollections.observableArrayList();
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
@@ -27,7 +27,7 @@ public class LessonModel implements ILessonModel {
     private final AbsencePercentageCalculator aCalc;
 
     public LessonModel(IBLLFacade bllManager) {
-        this.bllManager = bllManager;
+        this.bllFacade = bllManager;
         aCounter = new AbsenceCounter();
         aCalc = new AbsencePercentageCalculator();
     }
@@ -39,7 +39,7 @@ public class LessonModel implements ILessonModel {
      */
     @Override
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
-        List<Lesson> allLessons = bllManager.getLessonsForToday(userId, current);
+        List<Lesson> allLessons = bllFacade.getLessonsForToday(userId, current);
         lessonList.clear();
         lessonList.addAll(allLessons);
     }
@@ -60,7 +60,7 @@ public class LessonModel implements ILessonModel {
      */
     @Override
     public void createRecord(int userId, Lesson lessonToInsert) {
-        bllManager.createRecord(userId, lessonToInsert);
+        bllFacade.createRecord(userId, lessonToInsert);
         int index = lessonList.indexOf(lessonToInsert);
         lessonList.set(index, lessonToInsert);
     }
@@ -71,7 +71,7 @@ public class LessonModel implements ILessonModel {
      */
     @Override
     public void loadAllRecords(int userId) {
-        List<Lesson> allRecords = bllManager.getAttendanceRecordsForAllCourses(userId);
+        List<Lesson> allRecords = bllFacade.getAttendanceRecordsForAllCourses(userId);
         for (Lesson record : allRecords) {
             record.setDay();
             record.setDate();
@@ -89,7 +89,7 @@ public class LessonModel implements ILessonModel {
      */
     @Override
     public void filterByCourse(int userId, int courseId) {
-        List<Lesson> temp = bllManager.getAttendanceRecordsForACourse(userId, courseId);
+        List<Lesson> temp = bllFacade.getAttendanceRecordsForACourse(userId, courseId);
         for (Lesson record : temp) {
             record.setDay();
             record.setDate();

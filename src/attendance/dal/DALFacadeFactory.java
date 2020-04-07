@@ -19,13 +19,18 @@ public class DALFacadeFactory {
         if (instance == null) {
             instance = new DALFacadeFactory();
         }
+        System.out.println("instance of DALFacadeFactory: " + instance.toString() + " ...........................FROM SINGLETONS");
         return instance;
+
     }
 
     public IDALFacade createFacade(FacadeType type) {
         switch (type) {
             case DATABASE:
-                return new DALManager();
+                IDALFacade dalFacade = new DALManager();
+                System.out.println("BLLManager obj from BLLFacadeFactory: " + dalFacade);
+                return dalFacade;
+
             default:
                 return new DALManager();
         }

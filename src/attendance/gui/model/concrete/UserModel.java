@@ -15,10 +15,10 @@ public class UserModel implements IUserModel {
 
     private User currentUser;
 
-    private IBLLFacade bllManager;
+    private IBLLFacade bllFacade;
 
     public UserModel(IBLLFacade bllFacade) {
-        this.bllManager = bllFacade;
+        this.bllFacade = bllFacade;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserModel implements IUserModel {
             throw new ModelException("The password is invalid.");
         } else {
             try {
-                currentUser = bllManager.getUser(username, password);
+                this.currentUser = bllFacade.getUser(username, password);    // this                                       d ddd dd
             } catch (LogicException ex) {
                 throw new ModelException(ex.getMessage());
             }
