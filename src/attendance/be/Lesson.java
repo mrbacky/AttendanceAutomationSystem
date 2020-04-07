@@ -34,6 +34,8 @@ public class Lesson {
         this.startTime.set(startTime);
         this.endTime.set(endTime);
         this.statusType = statusType;
+        setDay();
+        setDate();
 
     }
 
