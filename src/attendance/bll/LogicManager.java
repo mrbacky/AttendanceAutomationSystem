@@ -84,4 +84,6 @@ public class LogicManager implements LogicFacade {
     public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
         return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
     }    
+
+   
 }
