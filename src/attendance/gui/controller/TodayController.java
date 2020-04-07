@@ -8,10 +8,10 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.bll.StatusChecker;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.LessonModel;
 import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ILessonModel;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
@@ -61,8 +61,7 @@ public class TodayController implements Initializable {
     private User user;
 
     private String UsernameLabel;
-    private UserModel userModel;
-    private LessonModel lessonModel;
+    private ILessonModel lessonModel;
     @FXML
     private AnchorPane anchorPane;
 
@@ -81,11 +80,8 @@ public class TodayController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         //  get models
 
-        this.userModel = UserModel.getInstance();
-        this.lessonModel = LessonModel.getInstance();
-
-        setUser();
-
+//        this.userModel = UserModel.getInstance();
+//        this.lessonModel = LessonModel.getInstance();
         lessonModel.loadAllLessons(user.getId(), currentDate);
         showCurrentDate();
         loadLessonsToCB();
@@ -95,8 +91,17 @@ public class TodayController implements Initializable {
 
     }
 
+    void setUser(User currentUser) {
+        this.user = currentUser;
+        lblUsername.setText("Hello " + user.getName());
+    }
+
+    void injectModel(ILessonModel lessonModel) {
+        this.lessonModel = lessonModel;
+    }
+
     public void checker() {
-        for (Lesson lesson : lessonModel.getObsLessons()) {
+        for (Lesson lesson : lessonModel.getObservableLessonList()) {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                     lesson.setStatusType(Lesson.StatusType.ABSENT);
@@ -129,17 +134,6 @@ public class TodayController implements Initializable {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
         lblTodayDate.setText("Date: " + dateFormat.format(cal.getTime()));
-    }
-
-    private void setUser() {
-        try {
-            user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        lblUsername.setText("Hello " + user.getName());
-
     }
 
     @FXML
@@ -211,12 +205,12 @@ public class TodayController implements Initializable {
 
     private void loadLessonsToCB() {
         comboBoxCal.getItems().clear();
-        comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
+        comboBoxCal.getItems().setAll(lessonModel.getObservableLessonList());
 
     }
 
     private void selectLesson() {
-        List<Lesson> lessonList = lessonModel.getObsLessons();
+        List<Lesson> lessonList = lessonModel.getObservableLessonList();
         tbRegister.setDisable(true);
         //  select last one
         for (Lesson lesson : lessonList) {
@@ -267,4 +261,5 @@ public class TodayController implements Initializable {
     private void checkCurrentSelection() {
         //for current selected item in combo box. Modify tbRegister to represent current status.
     }
+
 }

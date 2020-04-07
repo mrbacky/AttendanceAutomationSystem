@@ -13,6 +13,7 @@ import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IUserModel;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -58,8 +59,6 @@ public class LoginController implements Initializable {
 
     private RootStudentController rootStudentController;
 
-    public LoginController loginController;
-
     private User currentUser;
     @FXML
     private Label wrongPassword;
@@ -75,6 +74,7 @@ public class LoginController implements Initializable {
 
     private User user;
     private ICourseModel courseModel;
+    private ILessonModel lessonModel;
 
     public LoginController() {
         this.userModel = ModelCreator.getInstance().getUserModel();
@@ -98,6 +98,7 @@ public class LoginController implements Initializable {
             if (rootToShow.equals(ROOT_STUDENT)) {
                 RootStudentController controller = (RootStudentController) fxmlLoader.getController();
                 controller.setUser(currentUser);
+                controller.injectModels(courseModel, lessonModel);
             }
             if (rootToShow.equals(SUBJECT_CHOOSER)) {
                 courseModel = ModelCreator.getInstance().getCourseModel();

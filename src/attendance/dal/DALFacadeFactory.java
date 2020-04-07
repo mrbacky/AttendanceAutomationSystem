@@ -1,19 +1,16 @@
 package attendance.dal;
 
-import attendance.dal.IDALFacade;
-
 /**
  *
  * @author rado
  */
 public class DALFacadeFactory {
+
     public enum FacadeType {
         DATABASE
     }
-    
-    private static DALFacadeFactory instance;
 
-    
+    private static DALFacadeFactory instance;
 
     private DALFacadeFactory() {
     }

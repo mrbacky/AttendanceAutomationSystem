@@ -75,15 +75,6 @@ public class TeacherDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//      get models
-//        this.studentModel = StudentModel.getInstance();
-//        this.userModel = UserModel.getInstance();
-//        this.courseModel = CourseModel.getInstance();
-
-//      load lists from backend
-//        studentModel.loadAllStudents();
-        //  courseModel.loadAllCourses(user.getId());
-        //  
         comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
 
         courseModel.loadAllCourses(user.getId());
@@ -143,7 +134,7 @@ public class TeacherDashboardController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(FXCollections.observableArrayList(courseModel.loadAllCourses(user.getId())));
+        comboBoxCourses.getItems().addAll(courseModel.getObservableCourseList());
         comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
 
     }

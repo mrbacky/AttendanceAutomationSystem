@@ -7,8 +7,11 @@ import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.concrete.LessonModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -49,17 +52,14 @@ public class StudentAttendanceController implements Initializable {
     private JFXComboBox<Course> cboCourses;
 
     private User user;
-    private UserModel userModel;
-    private CourseModel courseModel;
-    private LessonModel lessonModel;
+    private ICourseModel courseModel;
+    private ILessonModel lessonModel;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.courseModel = CourseModel.getInstance();
-        this.lessonModel = LessonModel.getInstance();
 
         setCoursesIntoComboBox();
         setTableView();
@@ -67,14 +67,20 @@ public class StudentAttendanceController implements Initializable {
         lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
     }
 
-    private void setUser(User currentUser) {
+    public void injectModels(ICourseModel courseModel, ILessonModel lessonModel) {
+        this.courseModel = courseModel;
+        this.lessonModel = lessonModel;
+
+    }
+
+    public void setUser(User currentUser) {
         this.user = currentUser;
     }
 
     private void setCoursesIntoComboBox() {
         courseModel.loadAllCourses(user.getId());
         cboCourses.getItems().clear();
-        cboCourses.getItems().addAll(courseModel.getObsCourses());
+        cboCourses.getItems().addAll(courseModel.getObservableCourseList());
     }
 
     private void setTableView() {
@@ -86,7 +92,7 @@ public class StudentAttendanceController implements Initializable {
         colCourse.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        tblAttendance.setItems(lessonModel.getObsRecords());
+        tblAttendance.setItems(lessonModel.getObservableLessonList());
         lessonModel.loadAllRecords(user.getId());
         System.out.println("setTableView");
     }
@@ -116,4 +122,5 @@ public class StudentAttendanceController implements Initializable {
             System.out.println("clearSelection");
         }
     }
+
 }

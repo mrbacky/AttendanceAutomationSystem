@@ -19,24 +19,20 @@ public interface ILessonModel {
 
     void loadAllLessons(int userId, LocalDate current);
 
-    ObservableList<Lesson> getObsLessons();
+    ObservableList<Lesson> getObservableLessonList();
 
     void createRecord(int userId, Lesson lessonToInsert);
-    
+
     void loadAllRecords(int userId);
-    
-    ObservableList<Lesson> getObsRecords();
-    
+
     void filterByCourse(int userId, int courseId);
-    
+
     int calculateAbsenceLabel(List<Lesson> list);
-    
+
     int getAbsencePercentageLabel();
-    
+
     void setAbsencePercentageLabel(int value);
-    
+
     IntegerProperty absencePercentageLabelProperty();
-    
-    
-    
+
 }

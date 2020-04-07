@@ -50,7 +50,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private ICourseModel courseModel;
     private User user;
-    private IStudentModel studentModel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -74,9 +73,8 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             Parent root = fxmlLoader.load();
 
             RootTeacherController controller = (RootTeacherController) fxmlLoader.load();
-            studentModel = ModelCreator.getInstance().getStudentModel();
             controller.setUser(user);
-            controller.injectModels(courseModel, studentModel);
+            controller.injectModel(courseModel);
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
@@ -97,7 +95,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private void loadCoursesInCombobox() {
         comboboxS.getItems().clear();
-        comboboxS.getItems().addAll(courseModel.loadAllCourses(user.getId()));
+        comboboxS.getItems().addAll(courseModel.getObservableCourseList());
     }
 
     @FXML

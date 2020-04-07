@@ -22,19 +22,15 @@ import java.time.LocalDateTime;
  */
 public class DALManager implements IDALFacade {
 
-    private final MockUserDAO UserDAO;
-    private final MockAttendanceDAO mockAttendanceDAO;
-
     private final IUserDAO userDAO;
     private final ICourseDAO courseDAO;
     private final IStudentDAO studentDAO;
 
     public DALManager() {
-        UserDAO = new MockUserDAO();
+
         studentDAO = new StudentDAO();
         userDAO = new UserDAO();
         courseDAO = new CourseDAO();
-        mockAttendanceDAO = new MockAttendanceDAO();
     }
 
     @Override
@@ -70,23 +66,22 @@ public class DALManager implements IDALFacade {
     public List<Student> getNumberOfAbsentLessons(Course course) {
         return studentDAO.getNumberOfAbsentLessons(course);
     }
-    
+
     @Override
-    public boolean hasUpdate(int courseId, LocalDateTime last) 
-    {
-        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());        
+    public boolean hasUpdate(int courseId, LocalDateTime last) {
+        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
         boolean hasUpdate = last.isBefore(ld);
         return hasUpdate;
     }
 
     @Override
     public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
-        return studentDAO.getAttendanceRecordsForAllCourses(userId);      
+        return studentDAO.getAttendanceRecordsForAllCourses(userId);
     }
-    
+
     @Override
     public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
         return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
-    }  
-    
+    }
+
 }

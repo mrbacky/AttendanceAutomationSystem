@@ -19,10 +19,9 @@ import attendance.bll.IBLLFacade;
  */
 public class LessonModel implements ILessonModel {
 
-    private static LessonModel lessonModel;
     private final IBLLFacade bllManager;
     private final ObservableList<Lesson> lessonList = FXCollections.observableArrayList();
-    private final ObservableList<Lesson> recordsList = FXCollections.observableArrayList();
+    private final ObservableList<Lesson> recordList = FXCollections.observableArrayList();
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
     private final AbsenceCounter aCounter;
     private final AbsencePercentageCalculator aCalc;
@@ -50,7 +49,7 @@ public class LessonModel implements ILessonModel {
      * @return
      */
     @Override
-    public ObservableList<Lesson> getObsLessons() {
+    public ObservableList<Lesson> getObservableLessonList() {
         return lessonList;
     }
 
@@ -78,19 +77,9 @@ public class LessonModel implements ILessonModel {
             record.setDate();
             record.setTimeFrame();
         }
-        recordsList.clear();
-        recordsList.addAll(allRecords);
+        recordList.clear();
+        recordList.addAll(allRecords);
         absencePercentageLabel.setValue(calculateAbsenceLabel(allRecords));
-        System.out.println("loadAllRecords: " + absencePercentageLabel.getValue());
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public ObservableList<Lesson> getObsRecords() {
-        return recordsList;
     }
 
     /**
@@ -106,8 +95,8 @@ public class LessonModel implements ILessonModel {
             record.setDate();
             record.setTimeFrame();
         }
-        recordsList.clear();
-        recordsList.addAll(temp);
+        recordList.clear();
+        recordList.addAll(temp);
         absencePercentageLabel.setValue(calculateAbsenceLabel(temp));
         System.out.println("filterByCourse" + absencePercentageLabel.getValue());
     }

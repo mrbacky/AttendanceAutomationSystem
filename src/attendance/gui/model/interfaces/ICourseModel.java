@@ -15,6 +15,9 @@ import javafx.collections.ObservableList;
  */
 public interface ICourseModel {
 
-    List<Course> loadAllCourses(int userId);
+    void loadAllCourses(int userId);
+    
+    ObservableList<Course> getObservableCourseList();
+    
 
 }

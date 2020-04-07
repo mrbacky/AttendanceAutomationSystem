@@ -19,15 +19,15 @@ import attendance.gui.model.interfaces.IStudentModel;
 public class ModelCreator {
 
     private static ModelCreator instance;
-    private IBLLFacade bllManager;
+    private static IBLLFacade bllManager = BLLFacadeFactory.getInstance().createFacade(BLLFacadeFactory.FacadeType.PRODUCTION);
 
-    public ModelCreator() {
-        bllManager = BLLFacadeFactory.getInstance().createFacade(BLLFacadeFactory.FacadeType.PRODUCTION);
+    public ModelCreator(IBLLFacade bllManager) {
+        this.bllManager = bllManager;
     }
 
     public static synchronized ModelCreator getInstance() {// singleton or just static methods?
         if (instance == null) {
-            instance = new ModelCreator();
+            instance = new ModelCreator(bllManager);
         }
         return instance;
     }

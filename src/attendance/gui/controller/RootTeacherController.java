@@ -63,9 +63,8 @@ public class RootTeacherController implements Initializable {
 
     }
 
-    public void injectModels(ICourseModel courseModel, IStudentModel studentModel) {
+    public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        this.studentModel = studentModel;
 
     }
 

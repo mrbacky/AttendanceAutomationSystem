@@ -21,7 +21,8 @@ public class UserModel implements IUserModel {
         this.bllManager = bllFacade;
     }
 
-    public User getCurrentUser() throws ModelException {
+    @Override
+    public User getCurrentUser() throws ModelException {    // not used
         //check parameter example
         if (currentUser.getId() < 1) {
             throw new ModelException("There is no such user.");
@@ -29,6 +30,14 @@ public class UserModel implements IUserModel {
         return currentUser;
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws ModelException
+     */
+    @Override
     public User login(String username, String password) throws ModelException {
         //check username, password
         if (!usernameCheck(username)) {

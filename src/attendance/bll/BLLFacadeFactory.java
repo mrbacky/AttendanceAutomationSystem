@@ -14,15 +14,15 @@ public class BLLFacadeFactory {
     }
 
     private static BLLFacadeFactory instance;
-    private IDALFacade dalFacade;
+    private static IDALFacade dalManager = DALFacadeFactory.getInstance().createFacade(DALFacadeFactory.FacadeType.DATABASE);
 
-    private BLLFacadeFactory() {
-        dalFacade = DALFacadeFactory.getInstance().createFacade(DALFacadeFactory.FacadeType.DATABASE);
+    private BLLFacadeFactory(IDALFacade dalManager) {
+        this.dalManager = dalManager;
     }
 
     public static synchronized BLLFacadeFactory getInstance() {
         if (instance == null) {
-            instance = new BLLFacadeFactory();
+            instance = new BLLFacadeFactory(dalManager);
         }
         return instance;
     }
@@ -30,9 +30,9 @@ public class BLLFacadeFactory {
     public IBLLFacade createFacade(FacadeType type) {
         switch (type) {
             case PRODUCTION:
-                return new BLLManager(dalFacade);
+                return new BLLManager(dalManager);
             default:
-                return new BLLManager(dalFacade);
+                return new BLLManager(dalManager);
 
         }
 
