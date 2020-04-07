@@ -79,7 +79,7 @@
          </children>
       </Pane>
       <ComboBox id="PaneColorsTeacherView" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <BarChart id="PaneColorsTeacherView" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
+      <BarChart id="PaneColorsTeacherView" fx:id="barChartWeekdayAbsence" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>

@@ -29,7 +29,6 @@ public interface DalFacade {
     boolean hasUpdate(int courseId, LocalDateTime last);
 
     List<Lesson> getAttendanceRecordsForAllCourses(int userId);
-
+    
     List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
-
 }

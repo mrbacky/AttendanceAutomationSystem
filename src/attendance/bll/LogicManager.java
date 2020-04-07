@@ -5,6 +5,7 @@ import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.bll.util.AbsencePercentageCalculator;
+import attendance.bll.util.DailyAbsenceCounter;
 import attendance.dal.DalException;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
@@ -17,10 +18,12 @@ public class LogicManager implements LogicFacade {
     private final DalFacade dalFacade;
     private final AbsencePercentageCalculator calculator;
     private List<Student> students;
+    private DailyAbsenceCounter dailyAbsenceCounter;
 
     public LogicManager() {
         dalFacade = new DalManager();
         calculator = new AbsencePercentageCalculator();
+        dailyAbsenceCounter = new DailyAbsenceCounter();
     }
 
     @Override
@@ -31,11 +34,6 @@ public class LogicManager implements LogicFacade {
         } catch (DalException ex) {
             throw new LogicException(ex.getMessage());
         }
-    }
-
-    @Override
-    public List<Student> getAbsentStudents() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -85,5 +83,10 @@ public class LogicManager implements LogicFacade {
         return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
     }    
 
-   
+    @Override
+    public List<Integer> getWeekdayAbsenceForCourse(int userId, int courseId) {
+        List<Lesson> cc = dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+        return dailyAbsenceCounter.getWeekdayAbsence(cc);
+    }
+
 }

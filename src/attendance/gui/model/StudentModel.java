@@ -25,7 +25,8 @@ public class StudentModel {
     private static StudentModel studentModel;
     private final MockStudentDAO mockStudentDAO;
     private final LogicFacade logicManager;
-    private final ObservableList<Student> studentList = FXCollections.observableArrayList();
+    private final ObservableList<Student> studentList = FXCollections.observableArrayList();  
+    private final ObservableList<Integer> absencePerWeekday = FXCollections.observableArrayList();
 
     private final IntegerProperty enrolledStudentsLabel = new SimpleIntegerProperty();
     private final IntegerProperty attendanceCountProperty;
@@ -87,5 +88,15 @@ public class StudentModel {
 
     public IntegerProperty enrolledStudentsLabelProperty() {
         return enrolledStudentsLabel;
+    }
+    
+    public void loadAllWeekdayAbsenceCount(int userId, int courseId){
+        List <Integer> lst = logicManager.getWeekdayAbsenceForCourse(userId, courseId);
+        absencePerWeekday.clear();
+        absencePerWeekday.addAll(lst);
+    }
+            
+    public ObservableList<Integer> getObsWeekdayAbsenceCount(){
+        return absencePerWeekday;
     }
 }

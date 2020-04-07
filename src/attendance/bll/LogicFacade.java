@@ -12,8 +12,6 @@ public interface LogicFacade {
 
     User getUser(String username, String password) throws LogicException;
 
-    List<Student> getAbsentStudents();
-
     List<Course> getCourses(int userId);
 
     List<Lesson> getLessonsForToday(int userId, LocalDate current);
@@ -27,7 +25,6 @@ public interface LogicFacade {
     List<Lesson> getAttendanceRecordsForAllCourses(int userId);
 
     List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
-
     
-
+    List<Integer> getWeekdayAbsenceForCourse (int userId, int courseId);
 }
