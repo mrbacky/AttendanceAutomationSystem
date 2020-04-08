@@ -87,7 +87,7 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private TableColumn<Lesson, String> attendanceColumn;
     private LessonModel lessonModel;
-   
+
     @FXML
     private BarChart<String, Integer> barChartWeekdayAbsence;
 
@@ -124,8 +124,7 @@ public class TeacherDashboardController implements Initializable {
 
             }
         });
-        
-        setBarChart();
+
     }
 
     private void setTotalStudentLabel() {
@@ -199,6 +198,7 @@ public class TeacherDashboardController implements Initializable {
     private void loadInSecondTableViewData(Student stud, Course curs) {
         lessonModel.loadAllStudenLessons(stud.getId(), curs.getId());
         secondTableView.setItems(lessonModel.getObsLessons());
+        setBarChart(stud);
     }
 
     private void setUser() {
@@ -218,28 +218,21 @@ public class TeacherDashboardController implements Initializable {
         }
     }
 
-    private void setBarChart() {
-        List<Integer> lst = studentModel.getObsWeekdayAbsenceCount();
-        //TODO: change to use real parameters from ComboBox and selection of TableView.
-        studentModel.loadAllWeekdayAbsenceCount(9, 1);
-       
+    private void setBarChart(Student selectedStudent) {
+        barChartWeekdayAbsence.setAnimated(false);
         barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
-        
+        List<Integer> lst = studentModel.getObsWeekdayAbsenceCount();
+        studentModel.loadAllWeekdayAbsenceCount(selectedStudent.getId(), comboBoxCourses1.getSelectionModel().getSelectedItem().getId());
+        barChartWeekdayAbsence.getData().clear();
         XYChart.Series dataQuery1 = new XYChart.Series();
-        dataQuery1.setName("Absence");           
+        dataQuery1.setName("Absence");
         dataQuery1.getData().add(new XYChart.Data("Monday", lst.get(0)));
         dataQuery1.getData().add(new XYChart.Data("Tuesday", lst.get(1)));
         dataQuery1.getData().add(new XYChart.Data("Wednesday", lst.get(2)));
         dataQuery1.getData().add(new XYChart.Data("Thursday", lst.get(3)));
         dataQuery1.getData().add(new XYChart.Data("Friday", lst.get(4)));
         barChartWeekdayAbsence.getData().add(dataQuery1);
-        
-        //TODO: make method to listen to ComboBox selection.
-        //comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
-        //        -> {
-        //    studentModel.loadAllWeekdayAbsenceCount(tbvStudentAbsence.getSelectionModel().getSelectedItem().getId(), newVal.getId());
-        //});
+
     }
-    
 
 }
