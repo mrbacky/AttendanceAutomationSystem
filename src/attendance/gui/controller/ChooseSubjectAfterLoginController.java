@@ -27,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 /**
@@ -48,6 +49,8 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private CourseModel courseModel;
     private User user;
+    @FXML
+    private Label Warninglbl;
 
     /**
      * Initializes the controller class.
@@ -96,9 +99,11 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     private void closeLogin() {
+          
         Stage chooseStage;
         chooseStage = (Stage) loginButton.getScene().getWindow();
         chooseStage.close();
+           
     }
 
     private void loadCoursesInCombobox() {
@@ -107,10 +112,9 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     @FXML
-    private void btnTeacherLogin(ActionEvent event) {
+    private void btnTeacherLogin(ActionEvent event) {   
         showRoot(ROOT_TEACHER);
         closeLogin();
-    }
 
     @FXML
     private void setSelectedCourse(ActionEvent event) {

@@ -131,7 +131,7 @@ public class TodayController implements Initializable {
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
-        lblTodayDate.setText("Date: " + dateFormat.format(cal.getTime()));
+        lblTodayDate.setText(dateFormat.format(cal.getTime()));
     }
 
     private void setUser() {
@@ -141,7 +141,7 @@ public class TodayController implements Initializable {
             Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        lblUsername.setText("Hello " + user.getName());
+        lblUsername.setText("Hello " + user.getName() + "!");
 
     }
 
