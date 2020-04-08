@@ -3,11 +3,10 @@ package attendance.gui.model;
 import attendance.be.Course;
 import attendance.be.Student;
 import attendance.bll.ConcreteObservable;
+import attendance.bll.ConcreteObservable2;
 import attendance.bll.DataObserver;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
-import attendance.dal.Mock.MockStudentDAO;
-import java.time.LocalDateTime;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -23,14 +22,14 @@ import javafx.collections.ObservableList;
 public class StudentModel {
 
     private static StudentModel studentModel;
-    private final MockStudentDAO mockStudentDAO;
     private final LogicFacade logicManager;
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();  
     private final ObservableList<Integer> absencePerWeekday = FXCollections.observableArrayList();
 
-    private final IntegerProperty enrolledStudentsLabel = new SimpleIntegerProperty();
+    private final IntegerProperty enrolledStudentsLabel;
     private final IntegerProperty attendanceCountProperty;
     private ConcreteObservable bllComponent;
+    private ConcreteObservable2 bllComponent2;
 
     public static StudentModel getInstance() {
         if (studentModel == null) {
@@ -40,16 +39,9 @@ public class StudentModel {
     }
 
     private StudentModel() {
-        mockStudentDAO = new MockStudentDAO();
         logicManager = new LogicManager();
-        attendanceCountProperty = new SimpleIntegerProperty();
-    }
-
-    public void loadAllStudents(Course course, LocalDateTime current) {// calculate absence here
-        List<Student> allStudents = logicManager.calculateAbsencePercentage(course, current);
-        studentList.clear();
-        studentList.addAll(allStudents);
-        enrolledStudentsLabel.setValue(allStudents.size());
+        enrolledStudentsLabel = new SimpleIntegerProperty();
+        attendanceCountProperty = new SimpleIntegerProperty();        
     }
 
     public ObservableList<Student> getObsStudents() {
@@ -62,7 +54,7 @@ public class StudentModel {
 
     public void startObserving(Course c) {
         bllComponent = new ConcreteObservable(c);
-        System.out.println("startObserving");
+        bllComponent2 = new ConcreteObservable2(c);
         DataObserver observer = new DataObserver() {
             @Override
             public void update(Course c) {
@@ -70,12 +62,17 @@ public class StudentModel {
                     @Override
                     public void run() {
                         attendanceCountProperty.setValue(bllComponent.getState());
-
+                        List<Student> s = bllComponent2.getState();
+                        if (s != null) {
+                            studentList.setAll(s);
+                            enrolledStudentsLabel.setValue(s.size());
+                        }                    
                     }
                 });
             }
         };
         bllComponent.attach(observer);
+        bllComponent2.attach(observer);
     }
 
     public int getEnrolledStudentsLabel() {

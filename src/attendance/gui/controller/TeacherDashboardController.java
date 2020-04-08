@@ -113,6 +113,7 @@ public class TeacherDashboardController implements Initializable {
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
         setPresentStudentLabel();
+        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
         listenToCourseSelection();
         setSecondTableView();
 
@@ -133,7 +134,6 @@ public class TeacherDashboardController implements Initializable {
 
     private void setPresentStudentLabel() {
         lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
-        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
     }
 
     private void setTableViewsForCourseOverview() {
@@ -142,8 +142,6 @@ public class TeacherDashboardController implements Initializable {
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        // TODO: change the method to using current date LATER.
-        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem(), LocalDateTime.parse("2020-03-09T14:29:00"));
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
     }
 
@@ -159,7 +157,6 @@ public class TeacherDashboardController implements Initializable {
     private void listenToCourseSelection() {
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
-            studentModel.loadAllStudents(newVal, LocalDateTime.parse("2020-03-09T14:29:00"));
             studentModel.startObserving(newVal);
         });
     }

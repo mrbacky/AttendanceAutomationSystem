@@ -181,14 +181,14 @@ public class CourseDAO implements ICourseDAO {
                 + "JOIN CourseCalendar CC "
                 + "ON AR.courseCalendarId = CC.id "
                 + "WHERE CC.courseId = ? "
-                + "AND (CC.startTime >= ? AND CC.startTime < ?) "
+                //+ "AND (CC.startTime >= ? AND CC.startTime < ?) "
                 + "ORDER BY AR.timeRecorded DESC";
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, courseId);
-            pstmt.setDate(2, Date.valueOf(current));
-            pstmt.setDate(3, Date.valueOf(current.plusDays(1)));
+//            pstmt.setDate(2, Date.valueOf(current));
+//            pstmt.setDate(3, Date.valueOf(current.plusDays(1)));
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 LocalDateTime timeRecorded = rs.getTimestamp("timeRecorded").toLocalDateTime();

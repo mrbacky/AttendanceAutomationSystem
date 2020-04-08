@@ -70,23 +70,22 @@ public class DalManager implements DalFacade {
     public List<Student> getNumberOfAbsentLessons(Course course) {
         return studentDAO.getNumberOfAbsentLessons(course);
     }
-    
+
     @Override
-    public boolean hasUpdate(int courseId, LocalDateTime last) 
-    {
-        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());        
-        boolean hasUpdate = last.isBefore(ld);
+    public boolean hasUpdate(int courseId, LocalDateTime lastReceivedUpdate) {
+        LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
+        boolean hasUpdate = lastReceivedUpdate.isBefore(ld);
         return hasUpdate;
     }
 
     @Override
     public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
-        return studentDAO.getAttendanceRecordsForAllCourses(userId);      
+        return studentDAO.getAttendanceRecordsForAllCourses(userId);
     }
-    
+
     @Override
     public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
         return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
-    }  
-    
+    }
+
 }

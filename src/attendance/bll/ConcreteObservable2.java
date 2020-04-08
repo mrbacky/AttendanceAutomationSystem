@@ -1,8 +1,12 @@
 package attendance.bll;
 
 import attendance.be.Course;
+import attendance.be.Student;
+import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.dal.DAO.CourseDAO;
 import attendance.dal.DAO.ICourseDAO;
+import attendance.dal.DAO.IStudentDAO;
+import attendance.dal.DAO.StudentDAO;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDateTime;
@@ -15,18 +19,22 @@ import java.util.logging.Logger;
  *
  * @author annem
  */
-public final class ConcreteObservable implements DataObservable {
+public class ConcreteObservable2 implements DataObservable {
 
     private final ICourseDAO cDAO;
+    private final IStudentDAO sDAO;
     private final DalFacade dalfacade;
+    private final AbsencePercentageCalculator calculator;
     private boolean isRunning = true;
     private final List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
-    private int state;
+    private List<Student> state;
 
-    public ConcreteObservable(Course c) {
+    public ConcreteObservable2(Course c) {
         cDAO = new CourseDAO();
+        sDAO = new StudentDAO();
         dalfacade = new DalManager();
+        calculator = new AbsencePercentageCalculator();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(c);
@@ -47,7 +55,14 @@ public final class ConcreteObservable implements DataObservable {
         Thread t = new Thread(() -> {
             while (isRunning) {
                 if (dalfacade.hasUpdate(c.getId(), lastReceivedUpdate)) {
-                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));
+                    int conductedLessons = dalfacade.getNumberOfConductedLessons(c, LocalDateTime.now());
+
+                    List<Student> students = dalfacade.getNumberOfAbsentLessons(c);
+
+                    for (Student s : students) {
+                        s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));
+                    }
+                    setState(students);
                     for (DataObserver o : observers) {
                         o.update(c);
                     }
@@ -56,7 +71,7 @@ public final class ConcreteObservable implements DataObservable {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ConcreteObservable.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ConcreteObservable2.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -68,12 +83,12 @@ public final class ConcreteObservable implements DataObservable {
         this.isRunning = isRunning;
     }
 
-    public int getState() {
+    public List<Student> getState() {
         return state;
     }
 
-    private void setState(int newState) {
-        state = newState;
+    public void setState(List<Student> state) {
+        this.state = state;
     }
 
 }
