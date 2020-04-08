@@ -112,15 +112,9 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     @FXML
-    private void btnTeacherLogin(ActionEvent event) {
-          if(comboboxS!=null){
+    private void btnTeacherLogin(ActionEvent event) {   
         showRoot(ROOT_TEACHER);
         closeLogin();
-    }else{
-                Warninglbl.setText("Please select a course");
-            }
-            loginButton.pressedProperty();
-    }
 
     @FXML
     private void setSelectedCourse(ActionEvent event) {
