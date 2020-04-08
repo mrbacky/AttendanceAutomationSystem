@@ -46,6 +46,7 @@ public final class ConcreteObservable implements DataObservable {
     public void notifyObserver(Course c) {
         Thread t = new Thread(() -> {
             while (isRunning) {
+                System.out.println("Concrete1");
             if (dalfacade.hasUpdate(c.getId(),lastReceivedUpdate)) {
                     setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));                    
                     for (DataObserver o : observers) {
