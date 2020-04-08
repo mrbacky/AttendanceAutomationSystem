@@ -90,6 +90,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
 
         } catch (Exception e) {
