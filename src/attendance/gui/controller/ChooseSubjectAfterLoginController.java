@@ -114,7 +114,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @FXML
     private void btnTeacherLogin(ActionEvent event) {   
-        if(comboboxS.isArmed()){
+        if(comboboxS!=null){
         showRoot(ROOT_TEACHER);
         closeLogin();
         }else{
