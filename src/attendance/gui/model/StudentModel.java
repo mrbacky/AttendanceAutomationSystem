@@ -29,7 +29,7 @@ public class StudentModel {
     private final MockStudentDAO mockStudentDAO;
     private final LogicFacade logicManager;
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();
-   
+
     private final IntegerProperty enrolledStudentsLabel = new SimpleIntegerProperty();
     private final IntegerProperty attendanceCountProperty;
     private ConcreteObservable bllComponent;
@@ -54,7 +54,6 @@ public class StudentModel {
 //        studentList.addAll(allStudents);
 //        enrolledStudentsLabel.setValue(allStudents.size());
 //    }
-
     public ObservableList<Student> getObsStudents() {
         return studentList;
     }
@@ -62,7 +61,7 @@ public class StudentModel {
     public ObservableValue<Number> getAttendanceCountProperty() {
         return attendanceCountProperty;
     }
-    
+
     public void startObserving(Course c) {
         bllComponent = new ConcreteObservable(c);
         bllComponent2 = new ConcreteObservable2(c);
@@ -75,14 +74,10 @@ public class StudentModel {
                     public void run() {
                         attendanceCountProperty.setValue(bllComponent.getState());
                         List<Student> s = bllComponent2.getState();
-                                               
-                        studentList.clear();
-                        studentList.addAll(s);
-//                        ObservableList<Student> os = FXCollections.observableArrayList(s);
-//                        studentList.setAll(os);
-                        //studentList.clear();
-                        //studentList.addAll(bllComponent2.getState());
-                        enrolledStudentsLabel.setValue(s.size());
+                        if (s != null) {
+                            studentList.setAll(s);
+                            enrolledStudentsLabel.setValue(s.size());
+                        }                    
                     }
                 });
             }
