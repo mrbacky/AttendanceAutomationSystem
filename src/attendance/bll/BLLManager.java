@@ -21,17 +21,14 @@ public class BLLManager implements IBLLFacade {
 
     public BLLManager(IDALFacade dalFacade) {
         this.dalFacade = dalFacade;
-        System.out.println("dalfacade obj: " + dalFacade);
         calculator = new AbsencePercentageCalculator();
     }
 
     @Override
     public User getUser(String username, String password) throws LogicException {
         try {
-            User newUser = dalFacade.getUser(username, password);
-            System.out.println("user in BLLManager: " + newUser.getName() + newUser.getId() + newUser);
             //hash password here. create a tool in a utility folder and call method from there.
-            return newUser;
+            return dalFacade.getUser(username, password);
         } catch (DalException ex) {
             throw new LogicException(ex.getMessage() + "this ?");
         }

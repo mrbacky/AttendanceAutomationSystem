@@ -53,7 +53,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadCoursesInCombobox();
+//        loadCoursesInCombobox();
     }
 
     public void setUser(User currentUser) {
@@ -62,6 +62,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
+        System.out.println("courseModel model:" + this.courseModel);
 
     }
 

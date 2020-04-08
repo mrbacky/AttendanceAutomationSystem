@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -54,6 +55,12 @@ public class StudentAttendanceController implements Initializable {
     private User user;
     private ICourseModel courseModel;
     private ILessonModel lessonModel;
+    @FXML
+    private Rectangle rectangle;
+    @FXML
+    private Label lblAbsence1;
+    @FXML
+    private Label lblAbsence2;
 
     /**
      * Initializes the controller class.
@@ -61,26 +68,37 @@ public class StudentAttendanceController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        setCoursesIntoComboBox();
-        setTableView();
-        selectCourse();
-        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
+//        setCoursesIntoComboBox();
+//        setTableView();
+//        selectCourse();
+//        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
     }
 
     public void injectModels(ICourseModel courseModel, ILessonModel lessonModel) {
         this.courseModel = courseModel;
         this.lessonModel = lessonModel;
-
+        System.out.println("lessonModel in Overview: " + this.lessonModel);
+        System.out.println("courseModel in OverView: " + this.courseModel);
     }
 
     public void setUser(User currentUser) {
         this.user = currentUser;
     }
 
+    void initializeOverviewModule() {
+        setCoursesIntoComboBox();
+        setTableView();
+        selectCourse();
+        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
+    }
+
     private void setCoursesIntoComboBox() {
-        courseModel.loadAllCourses(user.getId());
-        cboCourses.getItems().clear();
-        cboCourses.getItems().addAll(courseModel.getObservableCourseList());
+        if (courseModel.getObservableCourseList() != null) {
+            courseModel.loadAllCourses(user.getId());
+            cboCourses.getItems().clear();
+            cboCourses.getItems().addAll(courseModel.getObservableCourseList());
+        }
+
     }
 
     private void setTableView() {
@@ -92,7 +110,7 @@ public class StudentAttendanceController implements Initializable {
         colCourse.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        tblAttendance.setItems(lessonModel.getObservableLessonList());
+        tblAttendance.setItems(lessonModel.getObservableRecordList());
         lessonModel.loadAllRecords(user.getId());
         System.out.println("setTableView");
     }

@@ -7,6 +7,7 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
+import attendance.gui.model.ModelCreator;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
@@ -29,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -53,67 +55,69 @@ public class RootStudentController implements Initializable {
     private final String STUDENT_ATTENDANCE_MODULE = "/attendance/gui/view/StudentAttendance.fxml";
     private final String LOGIN_VIEW = "/attendance/gui/view/Login.fxml";
 
-    private LoginController loginController;
-
     private User user;
     @FXML
     private Label lblHello;
-    private IUserModel model;
     private ICourseModel courseModel;
     private ILessonModel lessonModel;
+    @FXML
+    private BorderPane borderPane;
+
+    public RootStudentController() {
+        this.lessonModel = ModelCreator.getInstance().getLessonModel();
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        showModule(TodayModule);
+//        showModule(TODAY_MODULE);
+//        System.out.println("im in root student contr.");
     }
 
-    public void injectModels(ICourseModel courseModel, ILessonModel lessonModel) {
+    public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        this.lessonModel = lessonModel;
+        System.out.println("courseModel model injected to root student:" + this.courseModel);
+        System.out.println("courseModel model injected to root student *para*:" + courseModel);
 
     }
 
     public void setUser(User currentUser) {
         this.user = currentUser;
-        lblHello.setText(currentUser.getName());
+        lblHello.setText(user.getName());
+        showModule(TODAY_MODULE);
     }
-//    void setContr(LoginController loginController) {
-//        this.loginController = loginController;
-//    }
 
-    private void showModule(String module) {
+    private void showModule(String MODULE) {
         try {
-
-            URL url = getClass().getResource(module);
+            URL fileUrl = getClass().getResource(MODULE);
             FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
+            fxmlLoader.setLocation(fileUrl);
             fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
+            Parent moduleRoot = fxmlLoader.load(fileUrl.openStream());
 
-            if (module.equals(TODAY_MODULE)) {
-                TodayController controller = (TodayController) fxmlLoader.load();
+            if (MODULE.equals(TODAY_MODULE)) {
+                System.out.println("in TODAY module if");
+                TodayController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModel(lessonModel);
-
+                controller.initializeTodayModule();
             }
-
-            if (module.equals(STUDENT_ATTENDANCE_MODULE)) {
-                StudentAttendanceController controller = (StudentAttendanceController) fxmlLoader.load();
+            if (MODULE.equals(STUDENT_ATTENDANCE_MODULE)) {
+                System.out.println("in OVERVIEW module if");
+                StudentAttendanceController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModels(courseModel, lessonModel);
+                controller.initializeOverviewModule();
             }
-
-            attachable.getChildren().clear();
-            attachable.getChildren().add(page);
-            ///name of pane where you want to put the fxml.
-
-        } catch (Exception e) {
-            System.out.println(e);
+            borderPane.setCenter(moduleRoot);
+//            attachable.getChildren().clear();
+//            attachable.getChildren().setAll(moduleRoot);
+///name of pane where you want to put the fxml.
+        } catch (IOException ex) {
+            Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @FXML
@@ -125,12 +129,6 @@ public class RootStudentController implements Initializable {
     @FXML
     private void showDashboard(ActionEvent event) {
 //        showModule(STUDENT_DASHBOARD_MODULE);
-    }
-
-    @FXML
-    private void showStudentAttendance(ActionEvent event) {
-        showModule(STUDENT_ATTENDANCE_MODULE);
-
     }
 
     @FXML
@@ -149,6 +147,11 @@ public class RootStudentController implements Initializable {
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    @FXML
+    private void showStudentAttendance(ActionEvent event) {
+        showModule(STUDENT_ATTENDANCE_MODULE);
     }
 
 }

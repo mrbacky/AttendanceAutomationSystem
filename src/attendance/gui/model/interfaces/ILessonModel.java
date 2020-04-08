@@ -25,6 +25,8 @@ public interface ILessonModel {
 
     void loadAllRecords(int userId);
 
+    ObservableList<Lesson> getObservableRecordList();
+
     void filterByCourse(int userId, int courseId);
 
     int calculateAbsenceLabel(List<Lesson> list);

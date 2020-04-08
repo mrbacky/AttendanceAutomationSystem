@@ -14,29 +14,26 @@ public class BLLFacadeFactory {
     }
 
     private static BLLFacadeFactory instance;
-    private static IDALFacade daLFacade;
+    private static IDALFacade dalFacade;
 
     private BLLFacadeFactory() {
-        daLFacade = DALFacadeFactory.getInstance().createFacade(DALFacadeFactory.FacadeType.DATABASE);
+        dalFacade = DALFacadeFactory.getInstance().createFacade(DALFacadeFactory.FacadeType.DATABASE);
     }
 
     public static synchronized BLLFacadeFactory getInstance() {
         if (instance == null) {
             instance = new BLLFacadeFactory();
         }
-        System.out.println("instance of BLLFacadeFactory: " + instance + " ...........................FROM SINGLETONS");
         return instance;
     }
 
     public IBLLFacade createFacade(FacadeType type) {
         switch (type) {
             case PRODUCTION:
-                IBLLFacade bllManager = new BLLManager(daLFacade);
-                System.out.println("BLLManager obj from BLLFacadeFactory: " + bllManager);
-                return bllManager;
+                return new BLLManager(dalFacade);
 
             default:
-                return new BLLManager(daLFacade);
+                return new BLLManager(dalFacade);
 
         }
 

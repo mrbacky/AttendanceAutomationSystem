@@ -29,30 +29,22 @@ public class ModelCreator {
         if (instance == null) {
             instance = new ModelCreator();
         }
-        System.out.println("instance of ModelCreator: " + instance + " ...........................FROM SINGLETONS");
         return instance;
     }
 
     public IUserModel getUserModel() {
-        System.out.println("created user Model");
         return new UserModel(bllFacade);
     }
 
     public IStudentModel getStudentModel() {
-        System.out.println("created student Model");
-
         return new StudentModel(bllFacade);
     }
 
     public ILessonModel getLessonModel() {
-        System.out.println("created lesson Model");
-
         return new LessonModel(bllFacade);
     }
 
     public ICourseModel getCourseModel() {
-        System.out.println("created course Model");
-
         return new CourseModel(bllFacade);
     }
 }

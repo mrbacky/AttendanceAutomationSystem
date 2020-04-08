@@ -142,4 +142,9 @@ public class LessonModel implements ILessonModel {
     public IntegerProperty absencePercentageLabelProperty() {
         return absencePercentageLabel;
     }
+
+    @Override
+    public ObservableList<Lesson> getObservableRecordList() {
+        return recordList;
+    }
 }

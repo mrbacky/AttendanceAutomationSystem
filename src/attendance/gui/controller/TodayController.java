@@ -77,17 +77,12 @@ public class TodayController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        LocalDate currentDate = LocalDate.now();
-        //  get models
 
-//        this.userModel = UserModel.getInstance();
-//        this.lessonModel = LessonModel.getInstance();
-        lessonModel.loadAllLessons(user.getId(), currentDate);
         showCurrentDate();
-        loadLessonsToCB();
-        selectLesson();
-        tbStatusSet();
-        setupCheckerThread();
+//        loadLessonsToCB();
+//        selectLesson();
+//        tbStatusSet();
+//        setupCheckerThread();
 
     }
 
@@ -98,6 +93,17 @@ public class TodayController implements Initializable {
 
     void injectModel(ILessonModel lessonModel) {
         this.lessonModel = lessonModel;
+        System.out.println("lesson model in today: " + this.lessonModel);
+        System.out.println("lesson model in today *para*: " + lessonModel);
+
+    }
+
+    void initializeTodayModule() {
+        lessonModel.loadAllLessons(user.getId(), LocalDate.now());
+        setLessonsToCB();
+        selectInitialLesson();
+        tbStatusSet();
+        setupCheckerThread();
     }
 
     public void checker() {
@@ -203,20 +209,22 @@ public class TodayController implements Initializable {
         tbStatusSet();
     }
 
-    private void loadLessonsToCB() {
-        comboBoxCal.getItems().clear();
-        comboBoxCal.getItems().setAll(lessonModel.getObservableLessonList());
-
+    private void setLessonsToCB() {
+        if (lessonModel.getObservableLessonList() != null) {
+            comboBoxCal.getItems().clear();
+            comboBoxCal.getItems().setAll(lessonModel.getObservableLessonList());
+        }
     }
 
-    private void selectLesson() {
+    private void selectInitialLesson() {
         List<Lesson> lessonList = lessonModel.getObservableLessonList();
         tbRegister.setDisable(true);
-        //  select last one
         for (Lesson lesson : lessonList) {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
+                //  select current
                 comboBoxCal.getSelectionModel().select(lesson);
             } else {
+                //  select first one
                 comboBoxCal.getSelectionModel().select(0);
             }
         }

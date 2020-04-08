@@ -60,11 +60,10 @@ public class LoginController implements Initializable {
 
     private RootStudentController rootStudentController;
 
-    
     @FXML
     private Label wrongPassword;
     private IUserModel userModel;
-    private Attendance attendance;
+    private ICourseModel courseModel;
     @FXML
     private JFXTextField usernameField;
     @FXML
@@ -74,51 +73,52 @@ public class LoginController implements Initializable {
     private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
 
     private User user;
-    private ICourseModel courseModel;
-    private ILessonModel lessonModel;
 
     public LoginController() {
-        this.userModel = ModelCreator.getInstance().getUserModel();
-        this.courseModel = ModelCreator.getInstance().getCourseModel();
-        this.lessonModel = ModelCreator.getInstance().getLessonModel();
-        
-        
+        userModel = ModelCreator.getInstance().getUserModel();
+        System.out.println("user model from Login contr. " + userModel);
+
+        courseModel = ModelCreator.getInstance().getCourseModel();                       //  getting new course model from ModelCreator
+        System.out.println("course model from Login contr. " + courseModel);
     }
 
     /**
      * Initializes the controller class.
      */
     @Override
+
     public void initialize(URL url, ResourceBundle rb) {
         fieldValidator();
     }
 
-    private void showRoot(String rootToShow) {
-        try {
-            URL url = getClass().getResource(rootToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            Parent root = fxmlLoader.load();
+    private void showRoot(String ROOT_TO_SHOW) {
 
-            if (rootToShow.equals(ROOT_STUDENT)) {
+        try {
+            URL fileURL = getClass().getResource(ROOT_TO_SHOW);
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(fileURL);
+            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+            Parent root = fxmlLoader.load(fileURL.openStream());
+            if (ROOT_TO_SHOW.equals(ROOT_STUDENT)) {
                 RootStudentController controller = (RootStudentController) fxmlLoader.getController();
                 controller.setUser(user);
-                controller.injectModels(courseModel, lessonModel);
-            }
-            if (rootToShow.equals(SUBJECT_CHOOSER)) {
-                ChooseSubjectAfterLoginController controller = (ChooseSubjectAfterLoginController) fxmlLoader.getController();
-                controller.setUser(user);
                 controller.injectModel(courseModel);
+            }
+            if (ROOT_TO_SHOW.equals(SUBJECT_CHOOSER)) {
+                ChooseSubjectAfterLoginController controller = (ChooseSubjectAfterLoginController) fxmlLoader.getController();
+                controller.injectModel(courseModel);
+                controller.setUser(user);
+
             }
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
-        } catch (Exception e) {
-            System.out.println(e + "here is null ????????????????");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     private void fieldValidator() {//   could be also decoupled 
@@ -189,5 +189,4 @@ public class LoginController implements Initializable {
         loginStage.close();
     }
 
-    
 }

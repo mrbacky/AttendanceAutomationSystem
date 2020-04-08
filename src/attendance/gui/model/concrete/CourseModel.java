@@ -36,7 +36,7 @@ public class CourseModel implements ICourseModel {
 
     @Override
     public ObservableList<Course> getObservableCourseList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return courseList;
     }
 
 }

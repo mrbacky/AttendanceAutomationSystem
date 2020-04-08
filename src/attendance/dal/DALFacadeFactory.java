@@ -19,7 +19,6 @@ public class DALFacadeFactory {
         if (instance == null) {
             instance = new DALFacadeFactory();
         }
-        System.out.println("instance of DALFacadeFactory: " + instance.toString() + " ...........................FROM SINGLETONS");
         return instance;
 
     }
@@ -27,10 +26,7 @@ public class DALFacadeFactory {
     public IDALFacade createFacade(FacadeType type) {
         switch (type) {
             case DATABASE:
-                IDALFacade dalFacade = new DALManager();
-                System.out.println("BLLManager obj from BLLFacadeFactory: " + dalFacade);
-                return dalFacade;
-
+                return new DALManager();
             default:
                 return new DALManager();
         }
