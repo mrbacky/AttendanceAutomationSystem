@@ -5,16 +5,10 @@ import attendance.be.Student;
 import attendance.bll.ConcreteObservable;
 import attendance.bll.ConcreteObservable2;
 import attendance.bll.DataObserver;
-import attendance.bll.LogicFacade;
-import attendance.bll.LogicManager;
-import attendance.dal.Mock.MockStudentDAO;
-import java.time.LocalDateTime;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,11 +20,9 @@ import javafx.collections.ObservableList;
 public class StudentModel {
 
     private static StudentModel studentModel;
-    private final MockStudentDAO mockStudentDAO;
-    private final LogicFacade logicManager;
     private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
-    private final IntegerProperty enrolledStudentsLabel = new SimpleIntegerProperty();
+    private final IntegerProperty enrolledStudentsLabel;
     private final IntegerProperty attendanceCountProperty;
     private ConcreteObservable bllComponent;
     private ConcreteObservable2 bllComponent2;
@@ -43,17 +35,10 @@ public class StudentModel {
     }
 
     private StudentModel() {
-        mockStudentDAO = new MockStudentDAO();
-        logicManager = new LogicManager();
+        enrolledStudentsLabel = new SimpleIntegerProperty();
         attendanceCountProperty = new SimpleIntegerProperty();
     }
 
-//    public void loadAllStudents(Course course, LocalDateTime current) {// calculate absence here
-//        List<Student> allStudents = logicManager.calculateAbsencePercentage(course, current);
-//        studentList.clear();
-//        studentList.addAll(allStudents);
-//        enrolledStudentsLabel.setValue(allStudents.size());
-//    }
     public ObservableList<Student> getObsStudents() {
         return studentList;
     }
@@ -65,7 +50,6 @@ public class StudentModel {
     public void startObserving(Course c) {
         bllComponent = new ConcreteObservable(c);
         bllComponent2 = new ConcreteObservable2(c);
-        System.out.println("startObserving");
         DataObserver observer = new DataObserver() {
             @Override
             public void update(Course c) {

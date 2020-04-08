@@ -54,7 +54,6 @@ public class ConcreteObservable2 implements DataObservable {
     public void notifyObserver(Course c) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println("Concrete2");
                 if (dalfacade.hasUpdate(c.getId(), lastReceivedUpdate)) {
                     int conductedLessons = dalfacade.getNumberOfConductedLessons(c, LocalDateTime.now());
 
@@ -62,10 +61,6 @@ public class ConcreteObservable2 implements DataObservable {
 
                     for (Student s : students) {
                         s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));
-                        System.out.println("name: " + s.getName());
-                        System.out.println("#: " + s.getAbsenceCount());
-                        System.out.println("%: " + s.getAbsencePercentage());
-                        System.out.println("!: " + conductedLessons);
                     }
                     setState(students);
                     for (DataObserver o : observers) {

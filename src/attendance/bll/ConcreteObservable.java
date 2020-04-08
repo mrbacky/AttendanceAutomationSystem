@@ -20,7 +20,7 @@ public final class ConcreteObservable implements DataObservable {
     private final ICourseDAO cDAO;
     private final DalFacade dalfacade;
     private boolean isRunning = true;
-    private final List<DataObserver> observers;    
+    private final List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
     private int state;
 
@@ -46,9 +46,8 @@ public final class ConcreteObservable implements DataObservable {
     public void notifyObserver(Course c) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println("Concrete1");
-            if (dalfacade.hasUpdate(c.getId(),lastReceivedUpdate)) {
-                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));                    
+                if (dalfacade.hasUpdate(c.getId(), lastReceivedUpdate)) {
+                    setState(cDAO.getAttendanceForLesson(c.getId(), LocalDateTime.now()));
                     for (DataObserver o : observers) {
                         o.update(c);
                     }
