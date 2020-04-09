@@ -13,6 +13,7 @@ import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.StudentModel;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -53,6 +54,7 @@ public class TeacherDashboardController implements Initializable {
 
     private IStudentModel studentModel;
     private ICourseModel courseModel;
+    private ILessonModel lessonModel;
     @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
@@ -75,16 +77,43 @@ public class TeacherDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
+//        comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
 
+//        courseModel.loadAllCourses(user.getId());
+//        setCoursesIntoComboBox();
+//        setTableViewsForCourseOverview();
+//        setTotalStudentLabel();
+//        setPresentStudentLabel();
+//        listenToCourseSelection();
+
+//        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
+//                comboBoxCourses1.setValue(newValue);
+//
+//            }
+//        });
+    }
+
+    void injectModels(ICourseModel courseModel, IStudentModel studentModel, ILessonModel lessonModel) {
+        this.courseModel = courseModel;
+        this.studentModel = studentModel;
+        this.lessonModel = lessonModel;
+        System.out.println("courseModel in TeacherDashboard: "+this.courseModel);
+    }
+
+    void setUser(User currentUser) {
+        this.user = currentUser;
+    }
+
+    void initializeView() {
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
-
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
         setPresentStudentLabel();
         listenToCourseSelection();
-
+        
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
             @Override
             public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
@@ -92,16 +121,7 @@ public class TeacherDashboardController implements Initializable {
 
             }
         });
-    }
-
-    public void injectModels(ICourseModel courseModel, IStudentModel studentModel) {
-        this.courseModel = courseModel;
-        this.studentModel = studentModel;
-
-    }
-
-    void setUser(User currentUser) {
-        this.user = currentUser;
+        
     }
 
     private void setTotalStudentLabel() {
@@ -120,7 +140,7 @@ public class TeacherDashboardController implements Initializable {
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
         // TODO: change the method to using current date LATER.
-        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem(), LocalDateTime.parse("2020-03-09T14:29:00"));
+        studentModel.loadAllStudents(comboBoxCourses.getSelectionModel().getSelectedItem(), LocalDateTime.now());
         tbvStudentAbsence.setItems(studentModel.getObsStudents());
     }
 

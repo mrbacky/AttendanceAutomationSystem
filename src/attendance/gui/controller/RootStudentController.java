@@ -91,11 +91,8 @@ public class RootStudentController implements Initializable {
 
     private void showModule(String MODULE) {
         try {
-            URL fileUrl = getClass().getResource(MODULE);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(fileUrl);
-            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            Parent moduleRoot = fxmlLoader.load(fileUrl.openStream());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(MODULE));
+            Parent moduleRoot = fxmlLoader.load();
 
             if (MODULE.equals(TODAY_MODULE)) {
                 System.out.println("in TODAY module if");

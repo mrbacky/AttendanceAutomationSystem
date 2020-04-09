@@ -78,8 +78,8 @@ public class LoginController implements Initializable {
         userModel = ModelCreator.getInstance().getUserModel();
         System.out.println("user model from Login contr. " + userModel);
 
-        courseModel = ModelCreator.getInstance().getCourseModel();                       //  getting new course model from ModelCreator
-        System.out.println("course model from Login contr. " + courseModel);
+        //  getting new course model from ModelCreator
+//        System.out.println("course model from Login contr. " + courseModel);
     }
 
     /**
@@ -94,23 +94,20 @@ public class LoginController implements Initializable {
     private void showRoot(String ROOT_TO_SHOW) {
 
         try {
-            URL fileURL = getClass().getResource(ROOT_TO_SHOW);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(fileURL);
-            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            Parent root = fxmlLoader.load(fileURL.openStream());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ROOT_TO_SHOW));
+            Parent root = fxmlLoader.load();
+            courseModel = ModelCreator.getInstance().getCourseModel();
             if (ROOT_TO_SHOW.equals(ROOT_STUDENT)) {
-                RootStudentController controller = (RootStudentController) fxmlLoader.getController();
+                RootStudentController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModel(courseModel);
             }
             if (ROOT_TO_SHOW.equals(SUBJECT_CHOOSER)) {
-                ChooseSubjectAfterLoginController controller = (ChooseSubjectAfterLoginController) fxmlLoader.getController();
-                controller.injectModel(courseModel);
+                ChooseSubjectAfterLoginController controller = fxmlLoader.getController();
                 controller.setUser(user);
-
+                controller.injectModel(courseModel);
+                controller.initializeComboBox();
             }
-
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);

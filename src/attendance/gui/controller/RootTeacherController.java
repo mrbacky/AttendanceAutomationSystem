@@ -6,9 +6,11 @@
 package attendance.gui.controller;
 
 import attendance.be.User;
+import attendance.gui.model.ModelCreator;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import attendance.gui.model.interfaces.IUserModel;
 import com.jfoenix.controls.JFXButton;
@@ -27,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -40,8 +43,6 @@ public class RootTeacherController implements Initializable {
     //   private JFXButton btmStudentAttendance;
     @FXML
     private JFXButton btnLogout;
-    @FXML
-    private AnchorPane attachable;
 
     private final String DashboardModule = "/attendance/gui/view/TeacherDashboard.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
@@ -53,7 +54,8 @@ public class RootTeacherController implements Initializable {
     @FXML
     private JFXButton btnRequests;
     private ICourseModel courseModel;
-    private IStudentModel studentModel;
+    @FXML
+    private BorderPane borderPane;
 
     /**
      * Initializes the controller class.Jep
@@ -65,35 +67,35 @@ public class RootTeacherController implements Initializable {
 
     public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-
+        System.out.println("course model in root teacher: " + this.courseModel);
     }
 
     void setUser(User currentUser) {
         this.user = currentUser;
         lblName.setText(user.getName());
-        showModule(DashboardModule);
 
     }
 
-    private void showModule(String urlToShow) {
+    void initializeView() {
+        showModule(DashboardModule);
+    }
+
+    private void showModule(String MODULE) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(MODULE));
+            Parent moduleRoot = fxmlLoader.load();
 
-            URL url = getClass().getResource(urlToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
-
-            TeacherDashboardController controller = (TeacherDashboardController) fxmlLoader.load();
+            ILessonModel lessonModel = ModelCreator.getInstance().getLessonModel();
+            IStudentModel studentModel = ModelCreator.getInstance().getStudentModel();
+            TeacherDashboardController controller = fxmlLoader.getController();
             controller.setUser(user);
-            controller.injectModels(courseModel, studentModel);
+            controller.injectModels(this.courseModel, studentModel, lessonModel);
+            controller.initializeView();
 
-            attachable.getChildren().clear();
-            attachable.getChildren().add(page);
+            borderPane.setCenter(moduleRoot);
             ///name of pane where you want to put the fxml.
-
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException ex) {
+            Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -110,15 +112,17 @@ public class RootTeacherController implements Initializable {
         logOutStage = (Stage) btnLogout.getScene().getWindow();
         logOutStage.close();
 
-        URL url = getClass().getResource(LoginPage);
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(url);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(LoginPage));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
 
+    }
+
+    @FXML
+    private void showRequests(ActionEvent event) {
     }
 
 }

@@ -17,6 +17,7 @@ import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -53,37 +54,40 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        loadCoursesInCombobox();
     }
 
     public void setUser(User currentUser) {
         this.user = currentUser;
     }
 
-    void injectModel(ICourseModel courseModel) {
+    public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
         System.out.println("courseModel model:" + this.courseModel);
 
     }
 
-    public void showRoot(String rootToShow) {
+    public void initializeComboBox() {
+        courseModel.loadAllCourses(user.getId());
+        loadCoursesInCombobox();
+    }
+
+    private void showRoot(String rootToShow) {
+
         try {
-            URL url = getClass().getResource(rootToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rootToShow));
             Parent root = fxmlLoader.load();
 
-            RootTeacherController controller = (RootTeacherController) fxmlLoader.load();
+            RootTeacherController controller = fxmlLoader.getController();
             controller.setUser(user);
             controller.injectModel(courseModel);
+            controller.initializeView();
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
