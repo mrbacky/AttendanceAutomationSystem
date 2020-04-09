@@ -59,12 +59,6 @@ public class LessonModel {
         lessonList.addAll(allLessons);
     }
 
-//    public void loadAllStudenLessons(int userId, int id) {// calculate absence here
-//        List<Lesson> allLessons = logicManager.getAttendanceRecordsForACourse(userId, id);
-//        lessonList.clear();
-//
-//        lessonList.addAll(allLessons);
-//    }
     public ObservableList<Lesson> getObsLessons() {
         return lessonList;
     }
@@ -78,10 +72,7 @@ public class LessonModel {
     }
 
     public void startObserving(Student s, Course c) {
-        System.out.println("stud: " + s.getName());
-        System.out.println("cour: " + c.getName());
         ObserverEvent e = new ObserverEvent(c, s);
-        System.out.println("startObserving" + e.getCourse().getName() + e.getStudent().getName());
         bllComponent3 = new ConcreteObservable3(e);
         bllComponent4 = new ConcreteObservable4(e);
         DataObserver observer = new DataObserver() {
@@ -90,7 +81,6 @@ public class LessonModel {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        System.out.println("HEREEEEEEEEEEEe");
                         List<Lesson> l = bllComponent3.getState();
                         if (l != null) {
                             studentLessonList.setAll(l);
@@ -98,14 +88,6 @@ public class LessonModel {
                         List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
                         if (i != null) {
                             absencePerWeekday.setAll(i);
-                            for (XYChart.Data<String, Integer> data : i) {                                                           
-                                System.out.println("Concrete4: startObserving " + data.getXValue() +" "+ data.getYValue());                    
-                            }
-                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(0));
-                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(1));
-                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(2));
-                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(3));
-                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(4));
                         }
                     }
                 });
@@ -136,7 +118,6 @@ public class LessonModel {
         recordsList.clear();
         recordsList.addAll(allRecords);
         absencePercentageLabel.setValue(calculateAbsenceLabel(allRecords));
-        System.out.println("loadAllRecords: " + absencePercentageLabel.getValue());
     }
 
     public ObservableList<Lesson> getObsRecords() {
@@ -153,16 +134,12 @@ public class LessonModel {
         recordsList.clear();
         recordsList.addAll(temp);
         absencePercentageLabel.setValue(calculateAbsenceLabel(temp));
-        System.out.println("filterByCourse" + absencePercentageLabel.getValue());
     }
 
     private int calculateAbsenceLabel(List<Lesson> list) {
         int absence = aCounter.count(list);
         int h = list.size();
-        System.out.println("list size: " + h);
-        int t = aCalc.calculatePercentage(absence, h);
-        System.out.println("int label: " + t);
-        return t;
+        return aCalc.calculatePercentage(absence, h);
     }
 
     public int getAbsencePercentageLabel() {

@@ -1,52 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
-import attendance.bll.LogicManager;
 import attendance.gui.model.CourseModel;
 import attendance.gui.model.LessonModel;
 import attendance.gui.model.ModelException;
 import attendance.gui.model.StudentModel;
 import attendance.gui.model.UserModel;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 public class TeacherDashboardController implements Initializable {
 
@@ -87,8 +64,7 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private BarChart<String, Integer> barChartWeekdayAbsence;
 
-    boolean courseStart;
-    boolean first;
+    boolean firstTableViewSelection;
 
     /**
      * Initializes the controller class.
@@ -105,8 +81,7 @@ public class TeacherDashboardController implements Initializable {
 //        studentModel.loadAllStudents();
         //  courseModel.loadAllCourses(user.getId());
         //
-        courseStart = true;
-        first = true;
+        firstTableViewSelection = true;
         setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
@@ -156,18 +131,11 @@ public class TeacherDashboardController implements Initializable {
 
     private void listenToCourseSelection() {
         studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
-        System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
-        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
-                -> {
-            if (first) {
-                studentModel.startObserving(newVal);
-                first = false;
-            }
-            comboBoxCourses1.getItems().clear();
 
+        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
+                -> {
             studentModel.stopObserving();
             studentModel.startObserving(newVal);
-            System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
         });
     }
 
@@ -180,7 +148,7 @@ public class TeacherDashboardController implements Initializable {
     private void listenToOverviewTableViewSelection() {
         tbvStudentAbsence.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (tbvStudentAbsence.getSelectionModel().isEmpty()) {
-                lblstudentname.setText("");                
+                lblstudentname.setText("");
                 comboBoxCourses1.valueProperty().set(null);
                 courseModel.getObsCourses().clear();
                 lessonModel.getObsStudentLessons().clear();
@@ -192,19 +160,15 @@ public class TeacherDashboardController implements Initializable {
                 setBarChart();
                 Course c = comboBoxCourses1.getSelectionModel().getSelectedItem();
                 if (c != null) {
-                    if (courseStart) {
+                    if (firstTableViewSelection) {
                         setBarChart();
                         lessonModel.startObserving(newVal, c);
-                        courseStart = false;
-                        System.out.println("listenToCourseSelectionForSelectedStudent#1 THREAD COUNTTTTTT: " + Thread.activeCount());
+                        firstTableViewSelection = false;
                     }
                     setBarChart();
                     lessonModel.stopObserving();
                     lessonModel.startObserving(newVal, c);
-
-                    System.out.println("listenToCourseSelectionForSelectedStudent#2 THREAD COUNTTTTTT: " + Thread.activeCount());
                 }
-                System.out.println("listenToOverviewTableViewSelection THREAD COUNTTTTTT: " + Thread.activeCount());
             }
         });
     }
@@ -235,19 +199,15 @@ public class TeacherDashboardController implements Initializable {
             }
             Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();
             if (s != null && newVal != null) {
-                if (courseStart) {
+                if (firstTableViewSelection) {
                     setBarChart();
                     lessonModel.startObserving(s, newVal);
-                    courseStart = false;
-                    System.out.println("listenToCourseSelectionForSelectedStudent#1 THREAD COUNTTTTTT: " + Thread.activeCount());
+                    firstTableViewSelection = false;
                 }
                 setBarChart();
                 lessonModel.stopObserving();
                 lessonModel.startObserving(s, newVal);
-
-                System.out.println("listenToCourseSelectionForSelectedStudent#2 THREAD COUNTTTTTT: " + Thread.activeCount());
             }
-            System.out.println("listenToCourseSelectionForSelectedStudent#3 THREAD COUNTTTTTT: " + Thread.activeCount());
         }
         );
     }
@@ -256,18 +216,11 @@ public class TeacherDashboardController implements Initializable {
         barChartWeekdayAbsence.setAnimated(false);
         barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
         ObservableList<BarChart.Data<String, Integer>> data = lessonModel.getObsWeekdayAbsenceCount();
-        //studentModel.loadAllWeekdayAbsenceCount(selectedStudent.getId(), comboBoxCourses1.getSelectionModel().getSelectedItem().getId());
         if (!data.isEmpty()) {
             barChartWeekdayAbsence.getData().clear();
             XYChart.Series<String, Integer> dataQuery1 = new XYChart.Series<>("Absence", data);
-//        dataQuery1.getData().add(new XYChart.Data("Monday", lst.get(0)));
-//        dataQuery1.getData().add(new XYChart.Data("Tuesday", lst.get(1)));
-//        dataQuery1.getData().add(new XYChart.Data("Wednesday", lst.get(2)));
-//        dataQuery1.getData().add(new XYChart.Data("Thursday", lst.get(3)));
-//        dataQuery1.getData().add(new XYChart.Data("Friday", lst.get(4)));
             barChartWeekdayAbsence.getData().setAll(dataQuery1);
         }
-
     }
 
 }

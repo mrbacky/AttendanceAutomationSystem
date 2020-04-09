@@ -1,7 +1,5 @@
 package attendance.bll;
 
-import attendance.be.Course;
-
 /**
  *
  * @author annem

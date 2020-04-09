@@ -1,7 +1,5 @@
 package attendance.bll;
 
-import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.ICourseDAO;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDateTime;
@@ -16,16 +14,14 @@ import java.util.logging.Logger;
  */
 public final class ConcreteObservable implements DataObservable {
 
-    private final ICourseDAO cDAO;
-    private final DalFacade dalfacade;
+    private final DalFacade dalFacade;
     private boolean isRunning = true;
     private final List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
     private int state;
 
     public ConcreteObservable(ObserverEvent e) {
-        cDAO = new CourseDAO();
-        dalfacade = new DalManager();
+        dalFacade = new DalManager();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(e);
@@ -45,9 +41,8 @@ public final class ConcreteObservable implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println("Concrete1");
-                if (dalfacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    setState(cDAO.getAttendanceForLesson(e.getCourse().getId(), LocalDateTime.now()));
+                if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
+                    setState(dalFacade.getAttendanceForLesson(e.getCourse().getId(), LocalDateTime.now()));
                     for (DataObserver o : observers) {
                         o.update(e);
                     }

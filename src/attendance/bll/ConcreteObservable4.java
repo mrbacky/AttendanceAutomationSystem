@@ -46,16 +46,11 @@ public class ConcreteObservable4 implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println("Concrete4");
                 if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    System.out.println("notify id: " + e.getStudent().getId());
                     int userId = e.getStudent().getId();
                     int courseId = e.getCourse().getId();
                     List<Lesson> lessons = dalFacade.getAttendanceRecordsForACourse(userId, courseId);
                     List<XYChart.Data<String, Integer>> weekdayAbsenceForCourse = dailyAbsenceCounter.getWeekdayAbsence(lessons);
-                    for (XYChart.Data<String, Integer> data : weekdayAbsenceForCourse) {
-                        System.out.println("Concrete4 XY: " + data.getXValue() + data.getYValue());
-                    }
                     setState(weekdayAbsenceForCourse);
                     for (DataObserver o : observers) {
                         o.update(e);

@@ -20,9 +20,7 @@ import java.util.logging.Logger;
  */
 public class ConcreteObservable2 implements DataObservable {
 
-    private final ICourseDAO cDAO;
-    private final IStudentDAO sDAO;
-    private final DalFacade dalfacade;
+    private final DalFacade dalFacade;
     private final AbsencePercentageCalculator calculator;
     private boolean isRunning = true;
     private final List<DataObserver> observers;
@@ -30,9 +28,7 @@ public class ConcreteObservable2 implements DataObservable {
     private List<Student> state;
 
     public ConcreteObservable2(ObserverEvent e) {
-        cDAO = new CourseDAO();
-        sDAO = new StudentDAO();
-        dalfacade = new DalManager();
+        dalFacade = new DalManager();
         calculator = new AbsencePercentageCalculator();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
@@ -53,11 +49,10 @@ public class ConcreteObservable2 implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                System.out.println("Concrete2");
-                if (dalfacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    int conductedLessons = dalfacade.getNumberOfConductedLessons(e.getCourse(), LocalDateTime.now());
+                if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
+                    int conductedLessons = dalFacade.getNumberOfConductedLessons(e.getCourse(), LocalDateTime.now());
 
-                    List<Student> students = dalfacade.getNumberOfAbsentLessons(e.getCourse());
+                    List<Student> students = dalFacade.getNumberOfAbsentLessons(e.getCourse());
 
                     for (Student s : students) {
                         s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));

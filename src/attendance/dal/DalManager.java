@@ -76,7 +76,6 @@ public class DalManager implements DalFacade {
         if (courseId != 0 && lastReceivedUpdate != null) {
             LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
             boolean hasUpdate = lastReceivedUpdate.isBefore(ld);
-            System.out.println("hasUpdate" + courseId + hasUpdate);
             return hasUpdate;
         }
         return false;
@@ -90,6 +89,16 @@ public class DalManager implements DalFacade {
     @Override
     public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
         return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
+    }
+
+    @Override
+    public LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current) {
+        return courseDAO.getTimeOfLastUpdate(courseId, current);
+    }
+
+    @Override
+    public int getAttendanceForLesson(int courseId, LocalDateTime current) {
+        return courseDAO.getAttendanceForLesson(courseId, current);
     }
 
 }

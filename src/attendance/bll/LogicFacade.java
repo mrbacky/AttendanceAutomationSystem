@@ -18,13 +18,8 @@ public interface LogicFacade {
 
     void createRecord(int userId, Lesson lessonToUpdate);
 
-    List<Student> calculateAbsencePercentage(Course course, LocalDateTime current);
-
-    int studentsEnrolledInCourse();
-
     List<Lesson> getAttendanceRecordsForAllCourses(int userId);
 
     List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
     
-    List<Integer> getWeekdayAbsenceForCourse (int userId, int courseId);
 }
