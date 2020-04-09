@@ -68,11 +68,7 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private Label lblStudentsPresent;
     @FXML
-    private Button BtnRefreshStudents;
-    @FXML
     private Label lblTotalOfStudents;
-    @FXML
-    private Label lblRequestCount;
 
     private User user;
     private UserModel userModel;
@@ -91,6 +87,8 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private BarChart<String, Integer> barChartWeekdayAbsence;
 
+    boolean courseStart;
+
     /**
      * Initializes the controller class.
      */
@@ -105,7 +103,8 @@ public class TeacherDashboardController implements Initializable {
 //      load lists from backend
 //        studentModel.loadAllStudents();
         //  courseModel.loadAllCourses(user.getId());
-        //  
+        //
+        courseStart = true;
         setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
@@ -113,18 +112,19 @@ public class TeacherDashboardController implements Initializable {
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
         setPresentStudentLabel();
-        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
+
         listenToCourseSelection();
         setSecondTableView();
+        listenToOverviewTableViewSelection();
+        listenToCourseSelectionForSelectedStudent();
 
-        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
-            @Override
-            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
-                comboBoxCourses1.setValue(newValue);
-
-            }
-        });
-
+//        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
+//                comboBoxCourses1.setValue(newValue);
+//
+//            }
+//        });
     }
 
     private void setTotalStudentLabel() {
@@ -136,7 +136,6 @@ public class TeacherDashboardController implements Initializable {
     }
 
     private void setTableViewsForCourseOverview() {
-
         studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
@@ -145,18 +144,21 @@ public class TeacherDashboardController implements Initializable {
     }
 
     private void setSecondTableView() {
-
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
         attendanceColumn.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        // TODO: change the method to using current date LATER.
+        secondTableView.setItems(lessonModel.getObsStudentLessons());
     }
 
     private void listenToCourseSelection() {
+        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
+        System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
+            studentModel.stopObserving();
             studentModel.startObserving(newVal);
+            System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
         });
     }
 
@@ -164,41 +166,23 @@ public class TeacherDashboardController implements Initializable {
         comboBoxCourses.getItems().clear();
         comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
         comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
-
     }
 
-    @FXML
-    private void getSelectedStudent(MouseEvent event) {
-        Student selectedStudent = tbvStudentAbsence.getSelectionModel().getSelectedItem();
-        boolean isNotNull = dataChange(selectedStudent);
-
-        if (isNotNull) {
-            selectFirstCourse();
-            loadInSecondTableViewData(selectedStudent, comboBoxCourses1.getSelectionModel().getSelectedItem());
-        }
+    private void listenToOverviewTableViewSelection() {
+        tbvStudentAbsence.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                lblstudentname.setText(newVal.getName());
+                selectFirstCourse(newVal.getId());
+                System.out.println("listenToOverviewTableViewSelection THREAD COUNTTTTTT: " + Thread.activeCount());
+            }
+        });
     }
 
-    private void selectFirstCourse() {
+    private void selectFirstCourse(int userId) {
         comboBoxCourses1.getItems().clear();
-        courseModel.loadAllCourses(tbvStudentAbsence.getSelectionModel().getSelectedItem().getId());
+        courseModel.loadAllCourses(userId);
         comboBoxCourses1.getItems().addAll(courseModel.getObsCourses());
         comboBoxCourses1.getSelectionModel().select(0);
-    }
-
-    private boolean dataChange(Student selectedStudent) {
-
-        if (selectedStudent != null) {
-            lblstudentname.setText(selectedStudent.getName());
-            return true;
-
-        }
-        return false;
-    }
-
-    private void loadInSecondTableViewData(Student stud, Course curs) {
-        lessonModel.loadAllStudenLessons(stud.getId(), curs.getId());
-        secondTableView.setItems(lessonModel.getObsLessons());
-        setBarChart(stud);
     }
 
     private void setUser() {
@@ -209,13 +193,24 @@ public class TeacherDashboardController implements Initializable {
         }
     }
 
-    @FXML
-    private void changeCourse(ActionEvent event) {
-        Student selectedStudent = tbvStudentAbsence.getSelectionModel().getSelectedItem();
-        boolean isNotNull = dataChange(selectedStudent);
-        if (isNotNull) {
-            loadInSecondTableViewData(selectedStudent, comboBoxCourses1.getSelectionModel().getSelectedItem());
+    private void listenToCourseSelectionForSelectedStudent() {
+        comboBoxCourses1.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
+                -> {
+            Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();
+            if (s != null && newVal != null) {
+                if (courseStart) {
+                    lessonModel.startObserving(s, newVal);
+                    courseStart = false;
+                    System.out.println("listenToCourseSelectionForSelectedStudent#1 THREAD COUNTTTTTT: " + Thread.activeCount());
+                }
+                lessonModel.stopObserving();
+                lessonModel.startObserving(s, newVal);
+                setBarChart(s);
+                System.out.println("listenToCourseSelectionForSelectedStudent#2 THREAD COUNTTTTTT: " + Thread.activeCount());
+            }
+            System.out.println("listenToCourseSelectionForSelectedStudent#3 THREAD COUNTTTTTT: " + Thread.activeCount());
         }
+        );
     }
 
     private void setBarChart(Student selectedStudent) {

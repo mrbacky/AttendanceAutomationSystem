@@ -1,6 +1,5 @@
 package attendance.bll;
 
-import attendance.be.Course;
 import attendance.be.Student;
 import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.dal.DAO.CourseDAO;
@@ -30,14 +29,14 @@ public class ConcreteObservable2 implements DataObservable {
     private LocalDateTime lastReceivedUpdate;
     private List<Student> state;
 
-    public ConcreteObservable2(Course c) {
+    public ConcreteObservable2(ObserverEvent e) {
         cDAO = new CourseDAO();
         sDAO = new StudentDAO();
         dalfacade = new DalManager();
         calculator = new AbsencePercentageCalculator();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
-        notifyObserver(c);
+        notifyObserver(e);
     }
 
     @Override
@@ -51,20 +50,21 @@ public class ConcreteObservable2 implements DataObservable {
     }
 
     @Override
-    public void notifyObserver(Course c) {
+    public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                if (dalfacade.hasUpdate(c.getId(), lastReceivedUpdate)) {
-                    int conductedLessons = dalfacade.getNumberOfConductedLessons(c, LocalDateTime.now());
+                System.out.println("Concrete2");
+                if (dalfacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
+                    int conductedLessons = dalfacade.getNumberOfConductedLessons(e.getCourse(), LocalDateTime.now());
 
-                    List<Student> students = dalfacade.getNumberOfAbsentLessons(c);
+                    List<Student> students = dalfacade.getNumberOfAbsentLessons(e.getCourse());
 
                     for (Student s : students) {
                         s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));
                     }
                     setState(students);
                     for (DataObserver o : observers) {
-                        o.update(c);
+                        o.update(e);
                     }
                     lastReceivedUpdate = LocalDateTime.now();
                 }

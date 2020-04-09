@@ -1,7 +1,5 @@
 package attendance.bll;
 
-import attendance.be.Course;
-
 /**
  * Also known as the subject.
  *
@@ -13,6 +11,6 @@ public interface DataObservable {
 
     void detach(DataObserver o);
 
-    void notifyObserver(Course c);
+    void notifyObserver(ObserverEvent e);
 
 }

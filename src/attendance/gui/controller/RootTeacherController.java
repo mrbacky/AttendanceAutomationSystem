@@ -6,7 +6,9 @@
 package attendance.gui.controller;
 
 import attendance.be.User;
+import attendance.gui.model.LessonModel;
 import attendance.gui.model.ModelException;
+import attendance.gui.model.StudentModel;
 import attendance.gui.model.UserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
@@ -50,6 +52,8 @@ public class RootTeacherController implements Initializable {
 
     private User user;
     private UserModel model;
+    private LessonModel lessonModel;
+    private StudentModel studentModel;
     @FXML
     private Label lblName;
     @FXML
@@ -61,6 +65,8 @@ public class RootTeacherController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.model = UserModel.getInstance();
+        this.lessonModel = LessonModel.getInstance();
+        this.studentModel = StudentModel.getInstance();
         setUser();
 
     }
@@ -91,7 +97,8 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-
+        lessonModel.stopObserving();
+        studentModel.stopObserving();
         Stage logOutStage;
         logOutStage = (Stage) btnLogout.getScene().getWindow();
         logOutStage.close();

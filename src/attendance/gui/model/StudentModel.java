@@ -7,6 +7,7 @@ import attendance.bll.ConcreteObservable2;
 import attendance.bll.DataObserver;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
+import attendance.bll.ObserverEvent;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -53,11 +54,13 @@ public class StudentModel {
     }
 
     public void startObserving(Course c) {
-        bllComponent = new ConcreteObservable(c);
-        bllComponent2 = new ConcreteObservable2(c);
+        System.out.println("startObserving" + c.getName());
+        ObserverEvent e = new ObserverEvent(c);
+        bllComponent = new ConcreteObservable(e);
+        bllComponent2 = new ConcreteObservable2(e);
         DataObserver observer = new DataObserver() {
             @Override
-            public void update(Course c) {
+            public void update(ObserverEvent e) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -75,6 +78,10 @@ public class StudentModel {
         bllComponent2.attach(observer);
     }
 
+    public void stopObserving(){
+        bllComponent.setIsRunning(false);
+        bllComponent2.setIsRunning(false);
+    }
     public int getEnrolledStudentsLabel() {
         return enrolledStudentsLabel.get();
     }

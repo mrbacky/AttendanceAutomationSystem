@@ -1,12 +1,18 @@
 package attendance.gui.model;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
+import attendance.bll.ConcreteObservable3;
+import attendance.bll.DataObserver;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
+import attendance.bll.ObserverEvent;
 import attendance.bll.util.AbsenceCounter;
 import attendance.bll.util.AbsencePercentageCalculator;
 import java.time.LocalDate;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -26,6 +32,9 @@ public class LessonModel {
     private final AbsenceCounter aCounter;
     private final AbsencePercentageCalculator aCalc;
 
+    private final ObservableList<Lesson> studentLessonList = FXCollections.observableArrayList();
+    private ConcreteObservable3 bllComponent3;
+
     public static LessonModel getInstance() {
         if (lessonModel == null) {
             lessonModel = new LessonModel();
@@ -42,19 +51,50 @@ public class LessonModel {
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
-        
-        lessonList.addAll(allLessons);
-    }
-    
-     public void loadAllStudenLessons(int userId, int id) {// calculate absence here
-        List<Lesson> allLessons = logicManager.getAttendanceRecordsForACourse(userId, id);
-        lessonList.clear();
-        
+
         lessonList.addAll(allLessons);
     }
 
+//    public void loadAllStudenLessons(int userId, int id) {// calculate absence here
+//        List<Lesson> allLessons = logicManager.getAttendanceRecordsForACourse(userId, id);
+//        lessonList.clear();
+//
+//        lessonList.addAll(allLessons);
+//    }
     public ObservableList<Lesson> getObsLessons() {
         return lessonList;
+    }
+
+    public ObservableList<Lesson> getObsStudentLessons() {
+        return studentLessonList;
+    }
+
+    public void startObserving(Student s, Course c) {
+        System.out.println("stud: " + s.getName());
+        System.out.println("cour: " + c.getName());
+        ObserverEvent e = new ObserverEvent(c, s);
+        System.out.println("startObserving" + e.getCourse().getName() + e.getStudent().getName());
+        bllComponent3 = new ConcreteObservable3(e);
+        DataObserver observer = new DataObserver() {
+            @Override
+            public void update(ObserverEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("HEREEEEEEEEEEEe");
+                        List<Lesson> l = bllComponent3.getState();                       
+                        if (l != null) {
+                            studentLessonList.setAll(l);
+                        }
+                    }
+                });
+            }
+        };
+        bllComponent3.attach(observer);
+    }
+
+    public void stopObserving() {
+        bllComponent3.setIsRunning(false);
     }
 
     public void createRecord(int userId, Lesson lessonToInsert) {

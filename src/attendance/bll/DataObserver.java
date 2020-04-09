@@ -8,6 +8,6 @@ import attendance.be.Course;
  */
 public interface DataObserver {
 
-    void update(Course c);
+    void update(ObserverEvent e);
 
 }
