@@ -1,4 +1,4 @@
-package attendance.be;
+package attendance.dal.Mock;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

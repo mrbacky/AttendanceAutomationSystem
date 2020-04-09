@@ -9,11 +9,16 @@ import attendance.be.Course;
 import attendance.be.Teacher;
 import attendance.be.User;
 import attendance.gui.controller.LoginController;
-import attendance.gui.model.CourseModel;
+import attendance.gui.model.ModelCreator;
+import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,91 +47,85 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
-    private UserModel userModel;
     public LoginController loginController;
     @FXML
     private JFXComboBox<Course> comboboxS;
 
-    private CourseModel courseModel;
+    private ICourseModel courseModel;
+    private IStudentModel studentModel;
     private User user;
     @FXML
     private Label Wronglbl;
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     */
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    }
 
-        this.courseModel = CourseModel.getInstance();
-        userModel = UserModel.getInstance();
-        setUser();
+    public void setUser(User currentUser) {
+        this.user = currentUser;
+    }
 
+    public void injectModel(ICourseModel courseModel) {
+        this.courseModel = courseModel;
+    }
+
+    public void initializeComboBox() {
         courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
         Wronglbl.setId("Wronglbl");
-        
-    }
-
-    private void setUser() {
-        try {
-
-            this.user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     }
 
-    public void showRoot(String rootToShow) {
+    private void showRoot(String rootToShow) {
+
         try {
-            URL url = getClass().getResource(rootToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rootToShow));
             Parent root = fxmlLoader.load();
+            ILessonModel lessonModel = ModelCreator.getInstance().getLessonModel();
+            IStudentModel studentModel = ModelCreator.getInstance().getStudentModel();
+            RootTeacherController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            controller.injectModel(courseModel, lessonModel, studentModel);
+            controller.initializeView();
+
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setResizable(false);
             stage.show();
-
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
     private void closeLogin() {
-          
+
         Stage chooseStage;
         chooseStage = (Stage) loginButton.getScene().getWindow();
         chooseStage.close();
-           
+
     }
 
     private void loadCoursesInCombobox() {
         comboboxS.getItems().clear();
-        comboboxS.getItems().addAll(courseModel.getObsCourses());
+        comboboxS.getItems().addAll(courseModel.getObservableCourseList());
     }
 
     @FXML
-    private void btnTeacherLogin(ActionEvent event) {   
-        if(comboboxS!=null){
-        showRoot(ROOT_TEACHER);
-        closeLogin();
-        }else{
-         Wronglbl.setText("Please select a course");
+    private void btnTeacherLogin(ActionEvent event) {
+        if (comboboxS != null) {
+            showRoot(ROOT_TEACHER);
+            closeLogin();
+        } else {
+            Wronglbl.setText("Please select a course");
         }
         loginButton.pressedProperty();
     }
-    
+
     @FXML
     private void setSelectedCourse(ActionEvent event) {
         //comboboxS.setSelectionModel(value);
-
         user.setCurrentSelectedCourse(comboboxS.getSelectionModel().getSelectedIndex());
     }
 

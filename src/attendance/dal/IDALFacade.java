@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author annem
  */
-public interface DalFacade {
+public interface IDALFacade {
 
     User getUser(String username, String password) throws DalException;
 

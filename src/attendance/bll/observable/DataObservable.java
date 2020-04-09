@@ -1,4 +1,4 @@
-package attendance.bll;
+package attendance.bll.util;
 
 /**
  * Also known as the subject.

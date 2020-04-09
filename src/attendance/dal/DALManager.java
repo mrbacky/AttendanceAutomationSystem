@@ -20,21 +20,17 @@ import java.time.LocalDateTime;
  *
  * @author annem
  */
-public class DalManager implements DalFacade {
-
-    private final MockUserDAO UserDAO;
-    private final MockAttendanceDAO mockAttendanceDAO;
+public class DALManager implements IDALFacade {
 
     private final IUserDAO userDAO;
     private final ICourseDAO courseDAO;
     private final IStudentDAO studentDAO;
 
-    public DalManager() {
-        UserDAO = new MockUserDAO();
+    public DALManager() {
+
         studentDAO = new StudentDAO();
         userDAO = new UserDAO();
         courseDAO = new CourseDAO();
-        mockAttendanceDAO = new MockAttendanceDAO();
     }
 
     @Override

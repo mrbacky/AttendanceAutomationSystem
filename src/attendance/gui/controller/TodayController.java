@@ -8,10 +8,10 @@ package attendance.gui.controller;
 import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.bll.StatusChecker;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.LessonModel;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.LessonModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ILessonModel;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
@@ -46,9 +46,6 @@ import javafx.scene.paint.Paint;
 
 public class TodayController implements Initializable {
 
-    public static final String IN_TODAY_COURSE_VIEW_PATH = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
-
-    private Attendance attendance;
     @FXML
     private Label lblUsername;
     @FXML
@@ -62,8 +59,7 @@ public class TodayController implements Initializable {
     private User user;
 
     private String UsernameLabel;
-    private UserModel userModel;
-    private LessonModel lessonModel;
+    private ILessonModel lessonModel;
     @FXML
     private AnchorPane anchorPane;
 
@@ -73,33 +69,35 @@ public class TodayController implements Initializable {
     private JFXToggleButton tbRegister;
 
     private boolean threadRun = true;
-    private StatusChecker statusChecker;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        LocalDate currentDate = LocalDate.now();
-        //  get models
+    }
 
-        this.userModel = UserModel.getInstance();
-        this.lessonModel = LessonModel.getInstance();
-        this.statusChecker = StatusChecker.getInstance();
+    void setUser(User currentUser) {
+        this.user = currentUser;
+        lblUsername.setText("Hello " + user.getName());
+    }
 
-        setUser();
-
-        lessonModel.loadAllLessons(user.getId(), currentDate);
-        showCurrentDate();
-        loadLessonsToCB();
-        selectLesson();
-        tbStatusSet();
-        setupCheckerThread();
+    void injectModel(ILessonModel lessonModel) {
+        this.lessonModel = lessonModel;
 
     }
 
+    void initializeTodayModule() {
+        lessonModel.loadAllLessons(user.getId(), LocalDate.now());
+        setLessonsToCB();
+        selectInitialLesson();
+        tbStatusSet();
+        setupCheckerThread();
+        showCurrentDate();
+    }
+
     public void checker() {
-        for (Lesson lesson : lessonModel.getObsLessons()) {
+        for (Lesson lesson : lessonModel.getObservableLessonList()) {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                     lesson.setStatusType(Lesson.StatusType.ABSENT);
@@ -134,17 +132,6 @@ public class TodayController implements Initializable {
         lblTodayDate.setText(dateFormat.format(cal.getTime()));
     }
 
-    private void setUser() {
-        try {
-            user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(TodayController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        lblUsername.setText("Hello " + user.getName() + "!");
-
-    }
-
     @FXML
     private void handle_registerAttendance(ActionEvent event) {
         Lesson lessonToUpdate = comboBoxCal.getSelectionModel().getSelectedItem();
@@ -152,21 +139,11 @@ public class TodayController implements Initializable {
         if (tbRegister.isSelected()) {
             tbRegister.setText("Present");
             tbRegister.setDisable(true);
-
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
-            //int userId, int courseCalenderId, Lesson.StatusType status
             lessonModel.createRecord(user.getId(), lessonToUpdate);
-
-            //   createRecords returns status PRESENT - set present but
-            //      if Lesson.getstatus == PRESENT && tb is not selected 
-            //    is selected(true)
-            // register method, send coursecal obj, send user ()
-            // if endtime of subject <= currentTime. MARK... get it in BLL
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
-//            lesson.setStatusType(Lesson.StatusType.UNREGISTERED);
         }
-
     }
 
     private void tbStatusSet() {
@@ -212,20 +189,22 @@ public class TodayController implements Initializable {
         tbStatusSet();
     }
 
-    private void loadLessonsToCB() {
-        comboBoxCal.getItems().clear();
-        comboBoxCal.getItems().setAll(lessonModel.getObsLessons());
-
+    private void setLessonsToCB() {
+        if (lessonModel.getObservableLessonList() != null) {
+            comboBoxCal.getItems().clear();
+            comboBoxCal.getItems().setAll(lessonModel.getObservableLessonList());
+        }
     }
 
-    private void selectLesson() {
-        List<Lesson> lessonList = lessonModel.getObsLessons();
+    private void selectInitialLesson() {
+        List<Lesson> lessonList = lessonModel.getObservableLessonList();
         tbRegister.setDisable(true);
-        //  select last one
         for (Lesson lesson : lessonList) {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
+                //  select current
                 comboBoxCal.getSelectionModel().select(lesson);
             } else {
+                //  select first one
                 comboBoxCal.getSelectionModel().select(0);
             }
         }
@@ -242,32 +221,5 @@ public class TodayController implements Initializable {
             Logger.getLogger(TodayController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-
-        //        Thread thread = new Thread() {
-//            public void run() {
-//
-//                //Go to bll
-//                // take this : comboBoxCal.getItems()
-//                // do for each loop
-//                //Check if its unregistered and if enddate > current date
-//                //If it is . Set absent for single item
-//                //Return modified list
-//                //get current selected item index (So it doesnt interupt user)
-//                //clear list
-//                //add list again using modified list 
-//                //set previously chosen item index
-//                //call checkCurrentSelection()  -- modify TB to absent (maybe dont need)
-//                //sleep for 1 min (give or take)
-//                //Repeat (GOOGLE :D)
-//                onFinish(currentThread());
-//            }
-//
-//        };
-        //thread.run();
-        //threadRun=false;
-    }
-
-    private void checkCurrentSelection() {
-        //for current selected item in combo box. Modify tbRegister to represent current status.
     }
 }

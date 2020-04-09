@@ -4,15 +4,11 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
-import attendance.gui.model.CourseModel;
-import attendance.gui.model.LessonModel;
-import attendance.gui.model.ModelException;
-import attendance.gui.model.StudentModel;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IStudentModel;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -36,8 +32,9 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private TableColumn<Student, Integer> lessonCount;
 
-    private StudentModel studentModel;
-    private CourseModel courseModel;
+    private IStudentModel studentModel;
+    private ICourseModel courseModel;
+    private ILessonModel lessonModel;
     @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
@@ -48,7 +45,6 @@ public class TeacherDashboardController implements Initializable {
     private Label lblTotalOfStudents;
 
     private User user;
-    private UserModel userModel;
     @FXML
     private ComboBox<Course> comboBoxCourses1;
     @FXML
@@ -59,7 +55,6 @@ public class TeacherDashboardController implements Initializable {
     private TableColumn<Lesson, String> dayColumn;
     @FXML
     private TableColumn<Lesson, String> attendanceColumn;
-    private LessonModel lessonModel;
 
     @FXML
     private BarChart<String, Integer> barChartWeekdayAbsence;
@@ -71,38 +66,31 @@ public class TeacherDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//      get models
-        this.studentModel = StudentModel.getInstance();
-        this.userModel = UserModel.getInstance();
-        this.courseModel = CourseModel.getInstance();
-        this.lessonModel = LessonModel.getInstance();
+    }
 
-//      load lists from backend
-//        studentModel.loadAllStudents();
-        //  courseModel.loadAllCourses(user.getId());
-        //
+    void injectModels(ICourseModel courseModel, IStudentModel studentModel, ILessonModel lessonModel) {
+        this.courseModel = courseModel;
+        this.studentModel = studentModel;
+        this.lessonModel = lessonModel;
+    }
+
+    void setUser(User currentUser) {
+        this.user = currentUser;
+    }
+
+    void initializeView() {
         firstTableViewSelection = true;
-        setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
-
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
         setPresentStudentLabel();
-
         listenToCourseSelection();
         setSecondTableView();
         setBarChart();
         listenToOverviewTableViewSelection();
         listenToCourseSelectionForSelectedStudent();
 
-//        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
-//                comboBoxCourses1.setValue(newValue);
-//
-//            }
-//        });
     }
 
     private void setTotalStudentLabel() {
@@ -118,7 +106,7 @@ public class TeacherDashboardController implements Initializable {
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        tbvStudentAbsence.setItems(studentModel.getObsStudents());
+        tbvStudentAbsence.setItems(studentModel.getObservableStudentList());
     }
 
     private void setSecondTableView() {
@@ -126,7 +114,7 @@ public class TeacherDashboardController implements Initializable {
         dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
         attendanceColumn.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        secondTableView.setItems(lessonModel.getObsStudentLessons());
+        secondTableView.setItems(lessonModel.getObservableRecordList());
     }
 
     private void listenToCourseSelection() {
@@ -141,7 +129,7 @@ public class TeacherDashboardController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(courseModel.getObsCourses());
+        comboBoxCourses.getItems().addAll(courseModel.getObservableCourseList());
         comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
     }
 
@@ -150,8 +138,8 @@ public class TeacherDashboardController implements Initializable {
             if (tbvStudentAbsence.getSelectionModel().isEmpty()) {
                 lblstudentname.setText("");
                 comboBoxCourses1.valueProperty().set(null);
-                courseModel.getObsCourses().clear();
-                lessonModel.getObsStudentLessons().clear();
+                courseModel.getObservableCourseList().clear();
+                lessonModel.getObservableRecordList().clear();
                 lessonModel.getObsWeekdayAbsenceCount().clear();
             }
             if (newVal != null) {
@@ -177,24 +165,17 @@ public class TeacherDashboardController implements Initializable {
         if (student != null) {
             comboBoxCourses1.getItems().clear();
             courseModel.loadAllCourses(student.getId());
-            comboBoxCourses1.getItems().addAll(courseModel.getObsCourses());
+            comboBoxCourses1.getItems().addAll(courseModel.getObservableCourseList());
             comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
         }
     }
 
-    private void setUser() {
-        try {
-            this.user = userModel.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(TeacherDashboardController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     private void listenToCourseSelectionForSelectedStudent() {
         comboBoxCourses1.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
             if (comboBoxCourses1.getSelectionModel().isEmpty()) {
-                lessonModel.getObsStudentLessons().clear();
+                lessonModel.getObservableRecordList().clear();
                 lessonModel.getObsWeekdayAbsenceCount().clear();
             }
             Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();

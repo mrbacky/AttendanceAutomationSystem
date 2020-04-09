@@ -1,38 +1,28 @@
-package attendance.gui.model;
+package attendance.gui.model.concrete;
 
+import attendance.gui.model.ModelException;
 import attendance.be.User;
-import attendance.bll.LogicException;
-import attendance.bll.LogicFacade;
-import attendance.bll.LogicManager;
+import attendance.bll.util.LogicException;
+import attendance.bll.BLLManager;
+import attendance.gui.model.interfaces.IUserModel;
+import attendance.bll.IBLLFacade;
 
 /**
  *
  * @author Martin
  */
-public class UserModel {
+public class UserModel implements IUserModel {
 
-    private static UserModel model;
     private User currentUser;
 
-    private final LogicFacade logicManager;
+    private IBLLFacade bllFacade;
 
-    /**
-     * Create instance of Singleton.
-     *
-     * @return
-     */
-    public static UserModel getInstance() {
-        if (model == null) {
-            model = new UserModel();
-        }
-        return model;
+    public UserModel(IBLLFacade bllFacade) {
+        this.bllFacade = bllFacade;
     }
 
-    private UserModel() {
-        logicManager = new LogicManager();
-    }
-
-    public User getCurrentUser() throws ModelException {
+    @Override
+    public User getCurrentUser() throws ModelException {    // not used
         //check parameter example
         if (currentUser.getId() < 1) {
             throw new ModelException("There is no such user.");
@@ -40,6 +30,14 @@ public class UserModel {
         return currentUser;
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws ModelException
+     */
+    @Override
     public User login(String username, String password) throws ModelException {
         //check username, password
         if (!usernameCheck(username)) {
@@ -49,7 +47,7 @@ public class UserModel {
             throw new ModelException("The password is invalid.");
         } else {
             try {
-                currentUser = logicManager.getUser(username, password);
+                this.currentUser = bllFacade.getUser(username, password);    // this                                       d ddd dd
             } catch (LogicException ex) {
                 throw new ModelException(ex.getMessage());
             }
@@ -58,14 +56,16 @@ public class UserModel {
         return currentUser;
     }
 
-    private boolean usernameCheck(String username) {
+    @Override
+    public boolean usernameCheck(String username) {
         if (username.length() != 8) {
             return false;
         }
         return username.matches(".*([a-zA-Z].*[0-9]|[0-9].*[a-zA-Z]).*");
     }
 
-    private boolean passwordCheck(String username) {
+    @Override
+    public boolean passwordCheck(String username) {
         if (username.length() < 8 || username.length() > 20) {
             return false;
         }

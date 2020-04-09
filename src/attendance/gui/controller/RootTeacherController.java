@@ -6,12 +6,11 @@
 package attendance.gui.controller;
 
 import attendance.be.User;
-import attendance.gui.model.LessonModel;
-import attendance.gui.model.ModelException;
-import attendance.gui.model.StudentModel;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.ModelCreator;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,19 +20,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Sammy Guergachi <sguergachi at gmail.com>
- */
 public class RootTeacherController implements Initializable {
 
     @FXML
@@ -44,48 +37,60 @@ public class RootTeacherController implements Initializable {
     //   private JFXButton btmStudentAttendance;
     @FXML
     private JFXButton btnLogout;
-    @FXML
-    private AnchorPane attachable;
 
     private final String DashboardModule = "/attendance/gui/view/TeacherDashboard.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
-    private UserModel model;
-    private LessonModel lessonModel;
-    private StudentModel studentModel;
+
     @FXML
     private Label lblName;
     @FXML
     private JFXButton btnRequests;
+    private ICourseModel courseModel;
+    private ILessonModel lessonModel;
+    private IStudentModel studentModel;
+    @FXML
+    private BorderPane borderPane;
 
     /**
      * Initializes the controller class.Jep
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.model = UserModel.getInstance();
-        this.lessonModel = LessonModel.getInstance();
-        this.studentModel = StudentModel.getInstance();
-        setUser();
 
     }
 
-    private void showModule(String urlToShow) {
+    public void injectModel(ICourseModel courseModel, ILessonModel lessonModel, IStudentModel studentModel) {
+        this.courseModel = courseModel;
+        this.lessonModel = lessonModel;
+        this.studentModel = studentModel;
+    }
+
+    void setUser(User currentUser) {
+        this.user = currentUser;
+        lblName.setText(user.getName());
+
+    }
+
+    void initializeView() {
+        showModule(DashboardModule);
+    }
+
+    private void showModule(String MODULE) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(MODULE));
+            Parent moduleRoot = fxmlLoader.load();
 
-            URL url = getClass().getResource(urlToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
+            TeacherDashboardController controller = fxmlLoader.getController();
+            controller.setUser(user);
+            controller.injectModels(this.courseModel, studentModel, lessonModel);
+            controller.initializeView();
 
-            attachable.getChildren().clear();
-            attachable.getChildren().add(page);
+            borderPane.setCenter(moduleRoot);
             ///name of pane where you want to put the fxml.
-
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (IOException ex) {
+            Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -97,11 +102,11 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        if (!lessonModel.getObsStudentLessons().isEmpty()) {
+        if (!lessonModel.getObservableLessonList().isEmpty()) {
             lessonModel.stopObserving();
         };
 
-        if (!studentModel.getObsStudents().isEmpty()) {
+        if (!studentModel.getObservableStudentList().isEmpty()) {
             studentModel.stopObserving();
         };
 
@@ -109,25 +114,13 @@ public class RootTeacherController implements Initializable {
         logOutStage = (Stage) btnLogout.getScene().getWindow();
         logOutStage.close();
 
-        URL url = getClass().getResource(LoginPage);
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(url);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(LoginPage));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    void setUser() {
-        try {
-            user = model.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        showModule(DashboardModule);
-        lblName.setText(user.getName());
     }
 
     @FXML

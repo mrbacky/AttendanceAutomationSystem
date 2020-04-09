@@ -3,18 +3,18 @@ package attendance.bll;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.User;
+import attendance.bll.util.LogicException;
 import attendance.dal.DalException;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
+import attendance.dal.IDALFacade;
 import java.time.LocalDate;
 import java.util.List;
 
-public class LogicManager implements LogicFacade {
+public class BLLManager implements IBLLFacade {
 
-    private final DalFacade dalFacade;
+    private final IDALFacade dalFacade;
 
-    public LogicManager() {
-        dalFacade = new DalManager();
+    public BLLManager(IDALFacade dalFacade) {
+        this.dalFacade = dalFacade;
     }
 
     @Override

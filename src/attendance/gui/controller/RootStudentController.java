@@ -7,8 +7,12 @@ package attendance.gui.controller;
 
 import attendance.Attendance;
 import attendance.be.User;
+import attendance.gui.model.ModelCreator;
 import attendance.gui.model.ModelException;
-import attendance.gui.model.UserModel;
+import attendance.gui.model.concrete.UserModel;
+import attendance.gui.model.interfaces.ICourseModel;
+import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IUserModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +30,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -43,66 +48,71 @@ public class RootStudentController implements Initializable {
     @FXML
     private AnchorPane attachable;
 
-    private final String TodayModule = "/attendance/gui/view/Today.fxml";
-    private final String DashboardModule = "/attendance/gui/view/StudentDashboard.fxml";
-    private final String StudentModule = "/attendance/gui/view/StudentAttendance.fxml";
-    private final String LoginPage = "/attendance/gui/view/Login.fxml";
+    private final String TODAY_MODULE = "/attendance/gui/view/Today.fxml";
+//    private final String STUDENT_DASHBOARD_MODULE = "/attendance/gui/view/StudentDashboard.fxml";
+    private final String STUDENT_ATTENDANCE_MODULE = "/attendance/gui/view/StudentAttendance.fxml";
+    private final String LOGIN_VIEW = "/attendance/gui/view/Login.fxml";
 
-    private LoginController loginController;
-
-    private User currentUser;
+    private User user;
     @FXML
     private Label lblHello;
-    private UserModel model;
+    private ICourseModel courseModel;
+    private ILessonModel lessonModel;
+    @FXML
+    private BorderPane borderPane;
+
+    public RootStudentController() {
+        this.lessonModel = ModelCreator.getInstance().getLessonModel();
+    }
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        model = UserModel.getInstance();
-        setUser();
-        //  set     and show
-        //
     }
 
-//    void setContr(LoginController loginController) {
-//        this.loginController = loginController;
-//    }
-    private void showModule(String urlToShow) {
+    public void injectModel(ICourseModel courseModel) {
+        this.courseModel = courseModel;
+
+    }
+
+    public void setUser(User currentUser) {
+        this.user = currentUser;
+        lblHello.setText(user.getName());
+        showModule(TODAY_MODULE);
+    }
+
+    private void showModule(String MODULE) {
         try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(MODULE));
+            Parent moduleRoot = fxmlLoader.load();
 
-            URL url = getClass().getResource(urlToShow);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(url);
-            fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
-            AnchorPane page = (AnchorPane) fxmlLoader.load(url.openStream());
-
-            attachable.getChildren().clear();
-            attachable.getChildren().add(page);
-            ///name of pane where you want to put the fxml.
-
-        } catch (Exception e) {
-            System.out.println(e);
+            if (MODULE.equals(TODAY_MODULE)) {
+                TodayController controller = fxmlLoader.getController();
+                controller.setUser(user);
+                controller.injectModel(lessonModel);
+                controller.initializeTodayModule();
+            }
+            if (MODULE.equals(STUDENT_ATTENDANCE_MODULE)) {
+                StudentAttendanceController controller = fxmlLoader.getController();
+                controller.setUser(user);
+                controller.injectModels(courseModel, lessonModel);
+                controller.initializeOverviewModule();
+            }
+            borderPane.setCenter(moduleRoot);
+        } catch (IOException ex) {
+            Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @FXML
     private void showToday(ActionEvent event) {
-        showModule(TodayModule);
+        showModule(TODAY_MODULE);
 
     }
 
     private void showDashboard(ActionEvent event) {
-        showModule(DashboardModule);
-    }
-
-    @FXML
-    private void showStudentAttendance(ActionEvent event) {
-        showModule(StudentModule);
-
     }
 
     @FXML
@@ -112,7 +122,7 @@ public class RootStudentController implements Initializable {
         logOutStage = (Stage) btnLogout.getScene().getWindow();
         logOutStage.close();
 
-        URL url = getClass().getResource(LoginPage);
+        URL url = getClass().getResource(LOGIN_VIEW);
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load();
@@ -123,15 +133,9 @@ public class RootStudentController implements Initializable {
 
     }
 
-    private void setUser() {
-        try {
-            this.currentUser = model.getCurrentUser();
-        } catch (ModelException ex) {
-            Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        showModule(TodayModule);
-        lblHello.setText(currentUser.getName());
-
+    @FXML
+    private void showStudentAttendance(ActionEvent event) {
+        showModule(STUDENT_ATTENDANCE_MODULE);
     }
 
 }
