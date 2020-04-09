@@ -5,8 +5,7 @@ import attendance.be.Student;
 import attendance.bll.ConcreteObservable;
 import attendance.bll.ConcreteObservable2;
 import attendance.bll.DataObserver;
-import attendance.bll.LogicFacade;
-import attendance.bll.LogicManager;
+import attendance.bll.ObserverEvent;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -22,9 +21,7 @@ import javafx.collections.ObservableList;
 public class StudentModel {
 
     private static StudentModel studentModel;
-    private final LogicFacade logicManager;
-    private final ObservableList<Student> studentList = FXCollections.observableArrayList();  
-    private final ObservableList<Integer> absencePerWeekday = FXCollections.observableArrayList();
+    private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
     private final IntegerProperty enrolledStudentsLabel;
     private final IntegerProperty attendanceCountProperty;
@@ -39,9 +36,8 @@ public class StudentModel {
     }
 
     private StudentModel() {
-        logicManager = new LogicManager();
         enrolledStudentsLabel = new SimpleIntegerProperty();
-        attendanceCountProperty = new SimpleIntegerProperty();        
+        attendanceCountProperty = new SimpleIntegerProperty();
     }
 
     public ObservableList<Student> getObsStudents() {
@@ -53,11 +49,12 @@ public class StudentModel {
     }
 
     public void startObserving(Course c) {
-        bllComponent = new ConcreteObservable(c);
-        bllComponent2 = new ConcreteObservable2(c);
+        ObserverEvent e = new ObserverEvent(c);
+        bllComponent = new ConcreteObservable(e);
+        bllComponent2 = new ConcreteObservable2(e);
         DataObserver observer = new DataObserver() {
             @Override
-            public void update(Course c) {
+            public void update(ObserverEvent e) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -66,13 +63,18 @@ public class StudentModel {
                         if (s != null) {
                             studentList.setAll(s);
                             enrolledStudentsLabel.setValue(s.size());
-                        }                    
+                        }
                     }
                 });
             }
         };
         bllComponent.attach(observer);
         bllComponent2.attach(observer);
+    }
+
+    public void stopObserving() {
+        bllComponent.setIsRunning(false);
+        bllComponent2.setIsRunning(false);
     }
 
     public int getEnrolledStudentsLabel() {
@@ -86,14 +88,5 @@ public class StudentModel {
     public IntegerProperty enrolledStudentsLabelProperty() {
         return enrolledStudentsLabel;
     }
-    
-    public void loadAllWeekdayAbsenceCount(int userId, int courseId){
-        List <Integer> lst = logicManager.getWeekdayAbsenceForCourse(userId, courseId);
-        absencePerWeekday.clear();
-        absencePerWeekday.addAll(lst);
-    }
-            
-    public ObservableList<Integer> getObsWeekdayAbsenceCount(){
-        return absencePerWeekday;
-    }
+
 }

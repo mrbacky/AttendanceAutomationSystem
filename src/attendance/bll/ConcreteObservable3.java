@@ -1,11 +1,6 @@
 package attendance.bll;
 
-import attendance.be.Student;
-import attendance.bll.util.AbsencePercentageCalculator;
-import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DAO.IStudentDAO;
-import attendance.dal.DAO.StudentDAO;
+import attendance.be.Lesson;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDateTime;
@@ -18,18 +13,16 @@ import java.util.logging.Logger;
  *
  * @author annem
  */
-public class ConcreteObservable2 implements DataObservable {
+public class ConcreteObservable3 implements DataObservable {
 
-    private final DalFacade dalFacade;
-    private final AbsencePercentageCalculator calculator;
+    private final DalFacade dalfacade;
     private boolean isRunning = true;
-    private final List<DataObserver> observers;
+    private List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
-    private List<Student> state;
+    private List<Lesson> state;
 
-    public ConcreteObservable2(ObserverEvent e) {
-        dalFacade = new DalManager();
-        calculator = new AbsencePercentageCalculator();
+    public ConcreteObservable3(ObserverEvent e) {
+        dalfacade = new DalManager();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(e);
@@ -49,15 +42,11 @@ public class ConcreteObservable2 implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    int conductedLessons = dalFacade.getNumberOfConductedLessons(e.getCourse(), LocalDateTime.now());
-
-                    List<Student> students = dalFacade.getNumberOfAbsentLessons(e.getCourse());
-
-                    for (Student s : students) {
-                        s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));
-                    }
-                    setState(students);
+                if (dalfacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
+                    int userId = e.getStudent().getId();
+                    int courseId = e.getCourse().getId();
+                    List<Lesson> lessons = dalfacade.getAttendanceRecordsForACourse(userId, courseId);
+                    setState(lessons);
                     for (DataObserver o : observers) {
                         o.update(e);
                     }
@@ -66,7 +55,7 @@ public class ConcreteObservable2 implements DataObservable {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ConcreteObservable2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ConcreteObservable3.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -74,15 +63,19 @@ public class ConcreteObservable2 implements DataObservable {
         t.start();
     }
 
+    public boolean isIsRunning() {
+        return isRunning;
+    }
+
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
-    public List<Student> getState() {
+    public List<Lesson> getState() {
         return state;
     }
 
-    public void setState(List<Student> state) {
+    public void setState(List<Lesson> state) {
         this.state = state;
     }
 

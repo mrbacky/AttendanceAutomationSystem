@@ -31,4 +31,8 @@ public interface DalFacade {
     List<Lesson> getAttendanceRecordsForAllCourses(int userId);
     
     List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
+    
+    LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current);
+    
+    int getAttendanceForLesson(int courseId, LocalDateTime current);
 }

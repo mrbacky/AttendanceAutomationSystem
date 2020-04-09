@@ -1,11 +1,7 @@
 package attendance.bll;
 
-import attendance.be.Student;
-import attendance.bll.util.AbsencePercentageCalculator;
-import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DAO.IStudentDAO;
-import attendance.dal.DAO.StudentDAO;
+import attendance.be.Lesson;
+import attendance.bll.util.DailyAbsenceCounter;
 import attendance.dal.DalFacade;
 import attendance.dal.DalManager;
 import java.time.LocalDateTime;
@@ -13,23 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.chart.XYChart;
 
 /**
  *
  * @author annem
  */
-public class ConcreteObservable2 implements DataObservable {
+public class ConcreteObservable4 implements DataObservable {
 
     private final DalFacade dalFacade;
-    private final AbsencePercentageCalculator calculator;
+    private final DailyAbsenceCounter dailyAbsenceCounter;
     private boolean isRunning = true;
-    private final List<DataObserver> observers;
+    private List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
-    private List<Student> state;
+    private List<XYChart.Data<String, Integer>> state;
 
-    public ConcreteObservable2(ObserverEvent e) {
+    public ConcreteObservable4(ObserverEvent e) {
         dalFacade = new DalManager();
-        calculator = new AbsencePercentageCalculator();
+        dailyAbsenceCounter = new DailyAbsenceCounter();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(e);
@@ -50,14 +47,11 @@ public class ConcreteObservable2 implements DataObservable {
         Thread t = new Thread(() -> {
             while (isRunning) {
                 if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    int conductedLessons = dalFacade.getNumberOfConductedLessons(e.getCourse(), LocalDateTime.now());
-
-                    List<Student> students = dalFacade.getNumberOfAbsentLessons(e.getCourse());
-
-                    for (Student s : students) {
-                        s.setAbsencePercentage(calculator.calculatePercentage(s.getAbsenceCount(), conductedLessons));
-                    }
-                    setState(students);
+                    int userId = e.getStudent().getId();
+                    int courseId = e.getCourse().getId();
+                    List<Lesson> lessons = dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+                    List<XYChart.Data<String, Integer>> weekdayAbsenceForCourse = dailyAbsenceCounter.getWeekdayAbsence(lessons);
+                    setState(weekdayAbsenceForCourse);
                     for (DataObserver o : observers) {
                         o.update(e);
                     }
@@ -66,7 +60,7 @@ public class ConcreteObservable2 implements DataObservable {
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ConcreteObservable2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ConcreteObservable4.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -74,15 +68,19 @@ public class ConcreteObservable2 implements DataObservable {
         t.start();
     }
 
+    public boolean isIsRunning() {
+        return isRunning;
+    }
+
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
     }
 
-    public List<Student> getState() {
+    public List<XYChart.Data<String, Integer>> getState() {
         return state;
     }
 
-    public void setState(List<Student> state) {
+    public void setState(List<XYChart.Data<String, Integer>> state) {
         this.state = state;
     }
 

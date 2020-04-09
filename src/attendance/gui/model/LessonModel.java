@@ -1,16 +1,24 @@
 package attendance.gui.model;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
+import attendance.bll.ConcreteObservable3;
+import attendance.bll.ConcreteObservable4;
+import attendance.bll.DataObserver;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
+import attendance.bll.ObserverEvent;
 import attendance.bll.util.AbsenceCounter;
 import attendance.bll.util.AbsencePercentageCalculator;
 import java.time.LocalDate;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 
 /**
  *
@@ -25,6 +33,11 @@ public class LessonModel {
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
     private final AbsenceCounter aCounter;
     private final AbsencePercentageCalculator aCalc;
+
+    private final ObservableList<Lesson> studentLessonList = FXCollections.observableArrayList();
+    private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
+    private ConcreteObservable3 bllComponent3;
+    private ConcreteObservable4 bllComponent4;
 
     public static LessonModel getInstance() {
         if (lessonModel == null) {
@@ -42,19 +55,51 @@ public class LessonModel {
     public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
         List<Lesson> allLessons = logicManager.getLessonsForToday(userId, current);
         lessonList.clear();
-        
-        lessonList.addAll(allLessons);
-    }
-    
-     public void loadAllStudenLessons(int userId, int id) {// calculate absence here
-        List<Lesson> allLessons = logicManager.getAttendanceRecordsForACourse(userId, id);
-        lessonList.clear();
-        
+
         lessonList.addAll(allLessons);
     }
 
     public ObservableList<Lesson> getObsLessons() {
         return lessonList;
+    }
+
+    public ObservableList<Lesson> getObsStudentLessons() {
+        return studentLessonList;
+    }
+
+    public ObservableList<XYChart.Data<String, Integer>> getObsWeekdayAbsenceCount() {
+        return absencePerWeekday;
+    }
+
+    public void startObserving(Student s, Course c) {
+        ObserverEvent e = new ObserverEvent(c, s);
+        bllComponent3 = new ConcreteObservable3(e);
+        bllComponent4 = new ConcreteObservable4(e);
+        DataObserver observer = new DataObserver() {
+            @Override
+            public void update(ObserverEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Lesson> l = bllComponent3.getState();
+                        if (l != null) {
+                            studentLessonList.setAll(l);
+                        }
+                        List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
+                        if (i != null) {
+                            absencePerWeekday.setAll(i);
+                        }
+                    }
+                });
+            }
+        };
+        bllComponent3.attach(observer);
+        bllComponent4.attach(observer);
+    }
+
+    public void stopObserving() {
+        bllComponent3.setIsRunning(false);
+        bllComponent4.setIsRunning(false);
     }
 
     public void createRecord(int userId, Lesson lessonToInsert) {
@@ -73,7 +118,6 @@ public class LessonModel {
         recordsList.clear();
         recordsList.addAll(allRecords);
         absencePercentageLabel.setValue(calculateAbsenceLabel(allRecords));
-        System.out.println("loadAllRecords: " + absencePercentageLabel.getValue());
     }
 
     public ObservableList<Lesson> getObsRecords() {
@@ -90,16 +134,12 @@ public class LessonModel {
         recordsList.clear();
         recordsList.addAll(temp);
         absencePercentageLabel.setValue(calculateAbsenceLabel(temp));
-        System.out.println("filterByCourse" + absencePercentageLabel.getValue());
     }
 
     private int calculateAbsenceLabel(List<Lesson> list) {
         int absence = aCounter.count(list);
         int h = list.size();
-        System.out.println("list size: " + h);
-        int t = aCalc.calculatePercentage(absence, h);
-        System.out.println("int label: " + t);
-        return t;
+        return aCalc.calculatePercentage(absence, h);
     }
 
     public int getAbsencePercentageLabel() {
