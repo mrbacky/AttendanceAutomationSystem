@@ -1,4 +1,7 @@
-package attendance.bll.util;
+package attendance.bll.observable;
+
+import attendance.bll.observer.DataObserver;
+import attendance.bll.util.ObserverEvent;
 
 /**
  * Also known as the subject.

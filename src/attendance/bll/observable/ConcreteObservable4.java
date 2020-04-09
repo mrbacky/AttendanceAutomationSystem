@@ -1,9 +1,11 @@
-package attendance.bll;
+package attendance.bll.observable;
 
 import attendance.be.Lesson;
+import attendance.bll.util.ObserverEvent;
 import attendance.bll.util.DailyAbsenceCounter;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
+import attendance.bll.observer.DataObserver;
+import attendance.dal.IDALFacade;
+import attendance.dal.DALManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import javafx.scene.chart.XYChart;
  */
 public class ConcreteObservable4 implements DataObservable {
 
-    private final DalFacade dalFacade;
+    private final IDALFacade dalFacade;
     private final DailyAbsenceCounter dailyAbsenceCounter;
     private boolean isRunning = true;
     private List<DataObserver> observers;
@@ -25,7 +27,7 @@ public class ConcreteObservable4 implements DataObservable {
     private List<XYChart.Data<String, Integer>> state;
 
     public ConcreteObservable4(ObserverEvent e) {
-        dalFacade = new DalManager();
+        dalFacade = new DALManager();
         dailyAbsenceCounter = new DailyAbsenceCounter();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;

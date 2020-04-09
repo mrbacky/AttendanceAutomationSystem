@@ -1,7 +1,11 @@
 package attendance.gui.model.concrete;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
 import attendance.bll.BLLManager;
+import attendance.bll.observable.ConcreteObservable3;
+import attendance.bll.observable.ConcreteObservable4;
 import attendance.bll.util.AbsenceCounter;
 import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.gui.model.interfaces.ILessonModel;
@@ -12,6 +16,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import attendance.bll.IBLLFacade;
+import attendance.bll.util.ObserverEvent;
+import attendance.bll.observer.DataObserver;
+import javafx.application.Platform;
+import javafx.scene.chart.XYChart;
 
 /**
  *
@@ -25,6 +33,10 @@ public class LessonModel implements ILessonModel {
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
     private final AbsenceCounter aCounter;
     private final AbsencePercentageCalculator aCalc;
+
+    private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
+    private ConcreteObservable3 bllComponent3;
+    private ConcreteObservable4 bllComponent4;
 
     public LessonModel(IBLLFacade bllManager) {
         this.bllFacade = bllManager;
@@ -51,6 +63,16 @@ public class LessonModel implements ILessonModel {
     @Override
     public ObservableList<Lesson> getObservableLessonList() {
         return lessonList;
+    }
+
+    @Override
+    public ObservableList<Lesson> getObservableRecordList() {
+        return recordList;
+    }
+
+    @Override
+    public ObservableList<XYChart.Data<String, Integer>> getObsWeekdayAbsenceCount() {
+        return absencePerWeekday;
     }
 
     /**
@@ -98,7 +120,6 @@ public class LessonModel implements ILessonModel {
         recordList.clear();
         recordList.addAll(temp);
         absencePercentageLabel.setValue(calculateAbsenceLabel(temp));
-        System.out.println("filterByCourse" + absencePercentageLabel.getValue());
     }
 
     /**
@@ -110,10 +131,7 @@ public class LessonModel implements ILessonModel {
     public int calculateAbsenceLabel(List<Lesson> list) {
         int absence = aCounter.count(list);
         int h = list.size();
-        System.out.println("list size: " + h);
-        int t = aCalc.calculatePercentage(absence, h);
-        System.out.println("int label: " + t);
-        return t;
+        return aCalc.calculatePercentage(absence, h);
     }
 
     /**
@@ -144,7 +162,39 @@ public class LessonModel implements ILessonModel {
     }
 
     @Override
-    public ObservableList<Lesson> getObservableRecordList() {
-        return recordList;
+    public void startObserving(Student s, Course c) {
+        ObserverEvent e = new ObserverEvent(c, s);
+        bllComponent3 = new ConcreteObservable3(e);
+        bllComponent4 = new ConcreteObservable4(e);
+        DataObserver observer = new DataObserver() {
+            @Override
+            public void update(ObserverEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Lesson> l = bllComponent3.getState();
+                        if (l != null) {
+                            recordList.setAll(l);
+                        }
+                        List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
+                        if (i != null) {
+                            absencePerWeekday.setAll(i);
+                        }
+                    }
+                });
+            }
+        };
+        bllComponent3.attach(observer);
+        bllComponent4.attach(observer);
     }
+
+    /**
+     *
+     */
+    @Override
+    public void stopObserving() {
+        bllComponent3.setIsRunning(false);
+        bllComponent4.setIsRunning(false);
+    }
+
 }

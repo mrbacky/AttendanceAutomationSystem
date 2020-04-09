@@ -1,13 +1,11 @@
-package attendance.bll;
+package attendance.bll.observable;
 
 import attendance.be.Student;
+import attendance.bll.util.ObserverEvent;
 import attendance.bll.util.AbsencePercentageCalculator;
-import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DAO.IStudentDAO;
-import attendance.dal.DAO.StudentDAO;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
+import attendance.bll.observer.DataObserver;
+import attendance.dal.IDALFacade;
+import attendance.dal.DALManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class ConcreteObservable2 implements DataObservable {
 
-    private final DalFacade dalFacade;
+    private final IDALFacade dalFacade;
     private final AbsencePercentageCalculator calculator;
     private boolean isRunning = true;
     private final List<DataObserver> observers;
@@ -28,7 +26,7 @@ public class ConcreteObservable2 implements DataObservable {
     private List<Student> state;
 
     public ConcreteObservable2(ObserverEvent e) {
-        dalFacade = new DalManager();
+        dalFacade = new DALManager();
         calculator = new AbsencePercentageCalculator();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;

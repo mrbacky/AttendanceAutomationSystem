@@ -1,8 +1,10 @@
-package attendance.bll;
+package attendance.bll.observable;
 
 import attendance.be.Lesson;
-import attendance.dal.DalFacade;
-import attendance.dal.DalManager;
+import attendance.bll.util.ObserverEvent;
+import attendance.bll.observer.DataObserver;
+import attendance.dal.IDALFacade;
+import attendance.dal.DALManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +17,14 @@ import java.util.logging.Logger;
  */
 public class ConcreteObservable3 implements DataObservable {
 
-    private final DalFacade dalfacade;
+    private final IDALFacade dalfacade;
     private boolean isRunning = true;
     private List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
     private List<Lesson> state;
 
     public ConcreteObservable3(ObserverEvent e) {
-        dalfacade = new DalManager();
+        dalfacade = new DALManager();
         observers = new ArrayList<>();
         lastReceivedUpdate = LocalDateTime.MIN;
         notifyObserver(e);

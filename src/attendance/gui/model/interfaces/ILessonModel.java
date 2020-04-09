@@ -5,11 +5,14 @@
  */
 package attendance.gui.model.interfaces;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 
 /**
  *
@@ -20,6 +23,7 @@ public interface ILessonModel {
     void loadAllLessons(int userId, LocalDate current);
 
     ObservableList<Lesson> getObservableLessonList();
+    
 
     void createRecord(int userId, Lesson lessonToInsert);
 
@@ -36,5 +40,13 @@ public interface ILessonModel {
     void setAbsencePercentageLabel(int value);
 
     IntegerProperty absencePercentageLabelProperty();
+
+    void startObserving(Student s, Course c);
+
+    void stopObserving();
+    
+    ObservableList<XYChart.Data<String, Integer>> getObsWeekdayAbsenceCount();
+    
+    
 
 }

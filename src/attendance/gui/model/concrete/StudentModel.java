@@ -2,12 +2,10 @@ package attendance.gui.model.concrete;
 
 import attendance.be.Course;
 import attendance.be.Student;
-import attendance.bll.util.ConcreteObservable;
-import attendance.bll.util.DataObserver;
-import attendance.bll.BLLManager;
-import attendance.dal.Mock.MockStudentDAO;
+import attendance.bll.observer.DataObserver;
+import attendance.bll.observable.ConcreteObservable;
+import attendance.bll.observable.ConcreteObservable2;
 import attendance.gui.model.interfaces.IStudentModel;
-import java.time.LocalDateTime;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -16,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import attendance.bll.IBLLFacade;
+import attendance.bll.util.ObserverEvent;
 
 /**
  *
@@ -23,65 +22,58 @@ import attendance.bll.IBLLFacade;
  */
 public class StudentModel implements IStudentModel {
 
-    private static StudentModel studentModel;
-    private final IBLLFacade bllManager;
-    private final ObservableList<Student> studentList = FXCollections.observableArrayList();    //              move to controller
+    private final ObservableList<Student> studentList = FXCollections.observableArrayList();
 
-    private final IntegerProperty enrolledStudentsLabel = new SimpleIntegerProperty();
+    private final IntegerProperty enrolledStudentsLabel;
     private final IntegerProperty attendanceCountProperty;
     private ConcreteObservable bllComponent;
+    private ConcreteObservable2 bllComponent2;
 
     public StudentModel(IBLLFacade bllManager) {
-        this.bllManager = bllManager;
+
         attendanceCountProperty = new SimpleIntegerProperty();
+        enrolledStudentsLabel = new SimpleIntegerProperty();
     }
 
-    /**
-     *
-     * @param course
-     * @param current
-     */
     @Override
-    public void loadAllStudents(Course course, LocalDateTime current) {// calculate absence here
-        List<Student> allStudents = bllManager.calculateAbsencePercentage(course, current);
-        studentList.clear();
-        studentList.addAll(allStudents);
-        enrolledStudentsLabel.setValue(allStudents.size());
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public ObservableList<Student> getObsStudents() {
+    public ObservableList<Student> getObservableStudentList() {
         return studentList;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
-
     public ObservableValue<Number> getAttendanceCountProperty() {
         return attendanceCountProperty;
     }
 
-    /**
-     *
-     * @param c
-     */
     @Override
     public void startObserving(Course c) {
-        bllComponent = new ConcreteObservable(c);
-        System.out.println("startObserving");
-        DataObserver observer = (Course c1) -> {
-            Platform.runLater(() -> {
-                attendanceCountProperty.setValue(bllComponent.getState());
-            });
+        ObserverEvent e = new ObserverEvent(c);
+        bllComponent = new ConcreteObservable(e);
+        bllComponent2 = new ConcreteObservable2(e);
+        DataObserver observer = new DataObserver() {
+            @Override
+            public void update(ObserverEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        attendanceCountProperty.setValue(bllComponent.getState());
+                        List<Student> s = bllComponent2.getState();
+                        if (s != null) {
+                            studentList.setAll(s);
+                            enrolledStudentsLabel.setValue(s.size());
+                        }
+                    }
+                });
+            }
         };
         bllComponent.attach(observer);
+        bllComponent2.attach(observer);
+    }
+
+    @Override
+    public void stopObserving() {
+        bllComponent.setIsRunning(false);
+        bllComponent2.setIsRunning(false);
     }
 
     @Override
@@ -98,4 +90,5 @@ public class StudentModel implements IStudentModel {
     public IntegerProperty enrolledStudentsLabelProperty() {
         return enrolledStudentsLabel;
     }
+
 }

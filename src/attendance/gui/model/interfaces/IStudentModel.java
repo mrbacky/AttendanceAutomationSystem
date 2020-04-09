@@ -18,9 +18,9 @@ import javafx.collections.ObservableList;
  */
 public interface IStudentModel {
 
-    void loadAllStudents(Course course, LocalDateTime current);
+    
 
-    ObservableList<Student> getObsStudents();
+    ObservableList<Student> getObservableStudentList();
 
     ObservableValue<Number> getAttendanceCountProperty();
 
@@ -31,5 +31,7 @@ public interface IStudentModel {
     void setEnrolledStudentsLabel(int value);
 
     IntegerProperty enrolledStudentsLabelProperty();
+    
+    void stopObserving();
 
 }

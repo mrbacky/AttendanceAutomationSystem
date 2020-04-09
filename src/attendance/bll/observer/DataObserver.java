@@ -1,4 +1,6 @@
-package attendance.bll.util;
+package attendance.bll.observer;
+
+import attendance.bll.util.ObserverEvent;
 
 /**
  *
