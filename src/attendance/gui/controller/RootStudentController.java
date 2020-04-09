@@ -37,8 +37,6 @@ public class RootStudentController implements Initializable {
     @FXML
     private JFXButton btnToday;
     @FXML
-    private JFXButton btnDashboard;
-    @FXML
     private JFXButton btmStudentAttendance;
     @FXML
     private JFXButton btnLogout;
@@ -97,7 +95,6 @@ public class RootStudentController implements Initializable {
 
     }
 
-    @FXML
     private void showDashboard(ActionEvent event) {
         showModule(DashboardModule);
     }

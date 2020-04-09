@@ -50,7 +50,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     private CourseModel courseModel;
     private User user;
     @FXML
-    private Label Warninglbl;
+    private Label Wronglbl;
 
     /**
      * Initializes the controller class.
@@ -67,7 +67,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
         courseModel.loadAllCourses(user.getId());
         loadCoursesInCombobox();
-        
+        Wronglbl.setId("Wronglbl");
         
     }
 
@@ -90,6 +90,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
 
         } catch (Exception e) {
@@ -113,8 +114,13 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     @FXML
     private void btnTeacherLogin(ActionEvent event) {   
+        if(comboboxS!=null){
         showRoot(ROOT_TEACHER);
         closeLogin();
+        }else{
+         Wronglbl.setText("Please select a course");
+        }
+        loginButton.pressedProperty();
     }
     
     @FXML
