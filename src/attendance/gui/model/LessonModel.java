@@ -4,6 +4,7 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.bll.ConcreteObservable3;
+import attendance.bll.ConcreteObservable4;
 import attendance.bll.DataObserver;
 import attendance.bll.LogicFacade;
 import attendance.bll.LogicManager;
@@ -17,6 +18,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 
 /**
  *
@@ -33,7 +35,9 @@ public class LessonModel {
     private final AbsencePercentageCalculator aCalc;
 
     private final ObservableList<Lesson> studentLessonList = FXCollections.observableArrayList();
+    private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
     private ConcreteObservable3 bllComponent3;
+    private ConcreteObservable4 bllComponent4;
 
     public static LessonModel getInstance() {
         if (lessonModel == null) {
@@ -69,12 +73,17 @@ public class LessonModel {
         return studentLessonList;
     }
 
+    public ObservableList<XYChart.Data<String, Integer>> getObsWeekdayAbsenceCount() {
+        return absencePerWeekday;
+    }
+
     public void startObserving(Student s, Course c) {
         System.out.println("stud: " + s.getName());
         System.out.println("cour: " + c.getName());
         ObserverEvent e = new ObserverEvent(c, s);
         System.out.println("startObserving" + e.getCourse().getName() + e.getStudent().getName());
         bllComponent3 = new ConcreteObservable3(e);
+        bllComponent4 = new ConcreteObservable4(e);
         DataObserver observer = new DataObserver() {
             @Override
             public void update(ObserverEvent e) {
@@ -82,19 +91,33 @@ public class LessonModel {
                     @Override
                     public void run() {
                         System.out.println("HEREEEEEEEEEEEe");
-                        List<Lesson> l = bllComponent3.getState();                       
+                        List<Lesson> l = bllComponent3.getState();
                         if (l != null) {
                             studentLessonList.setAll(l);
+                        }
+                        List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
+                        if (i != null) {
+                            absencePerWeekday.setAll(i);
+                            for (XYChart.Data<String, Integer> data : i) {                                                           
+                                System.out.println("Concrete4: startObserving " + data.getXValue() +" "+ data.getYValue());                    
+                            }
+                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(0));
+                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(1));
+                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(2));
+                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(3));
+                            System.out.println("absencePerWeekday: " + absencePerWeekday.get(4));
                         }
                     }
                 });
             }
         };
         bllComponent3.attach(observer);
+        bllComponent4.attach(observer);
     }
 
     public void stopObserving() {
         bllComponent3.setIsRunning(false);
+        bllComponent4.setIsRunning(false);
     }
 
     public void createRecord(int userId, Lesson lessonToInsert) {

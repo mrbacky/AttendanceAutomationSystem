@@ -84,9 +84,11 @@ public class LogicManager implements LogicFacade {
     }    
 
     @Override
+    //TODO: Delete method.
     public List<Integer> getWeekdayAbsenceForCourse(int userId, int courseId) {
         List<Lesson> cc = dalFacade.getAttendanceRecordsForACourse(userId, courseId);
-        return dailyAbsenceCounter.getWeekdayAbsence(cc);
+        //return dailyAbsenceCounter.getWeekdayAbsence(cc);
+        return null;        
     }
 
 }

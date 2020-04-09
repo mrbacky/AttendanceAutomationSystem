@@ -88,6 +88,7 @@ public class TeacherDashboardController implements Initializable {
     private BarChart<String, Integer> barChartWeekdayAbsence;
 
     boolean courseStart;
+    boolean first;
 
     /**
      * Initializes the controller class.
@@ -105,6 +106,7 @@ public class TeacherDashboardController implements Initializable {
         //  courseModel.loadAllCourses(user.getId());
         //
         courseStart = true;
+        first = true;
         setUser();
         courseModel.loadAllCourses(user.getId());
         setCoursesIntoComboBox();
@@ -115,6 +117,7 @@ public class TeacherDashboardController implements Initializable {
 
         listenToCourseSelection();
         setSecondTableView();
+        setBarChart();
         listenToOverviewTableViewSelection();
         listenToCourseSelectionForSelectedStudent();
 
@@ -156,6 +159,12 @@ public class TeacherDashboardController implements Initializable {
         System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
         comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal)
                 -> {
+            if (first) {
+                studentModel.startObserving(newVal);
+                first = false;
+            }
+            comboBoxCourses1.getItems().clear();
+
             studentModel.stopObserving();
             studentModel.startObserving(newVal);
             System.out.println("THREAD COUNTTTTTT: " + Thread.activeCount());
@@ -170,19 +179,43 @@ public class TeacherDashboardController implements Initializable {
 
     private void listenToOverviewTableViewSelection() {
         tbvStudentAbsence.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (tbvStudentAbsence.getSelectionModel().isEmpty()) {
+                lblstudentname.setText("");                
+                comboBoxCourses1.valueProperty().set(null);
+                courseModel.getObsCourses().clear();
+                lessonModel.getObsStudentLessons().clear();
+                lessonModel.getObsWeekdayAbsenceCount().clear();
+            }
             if (newVal != null) {
                 lblstudentname.setText(newVal.getName());
-                selectFirstCourse(newVal.getId());
+                selectFirstCourse(newVal);
+                setBarChart();
+                Course c = comboBoxCourses1.getSelectionModel().getSelectedItem();
+                if (c != null) {
+                    if (courseStart) {
+                        setBarChart();
+                        lessonModel.startObserving(newVal, c);
+                        courseStart = false;
+                        System.out.println("listenToCourseSelectionForSelectedStudent#1 THREAD COUNTTTTTT: " + Thread.activeCount());
+                    }
+                    setBarChart();
+                    lessonModel.stopObserving();
+                    lessonModel.startObserving(newVal, c);
+
+                    System.out.println("listenToCourseSelectionForSelectedStudent#2 THREAD COUNTTTTTT: " + Thread.activeCount());
+                }
                 System.out.println("listenToOverviewTableViewSelection THREAD COUNTTTTTT: " + Thread.activeCount());
             }
         });
     }
 
-    private void selectFirstCourse(int userId) {
-        comboBoxCourses1.getItems().clear();
-        courseModel.loadAllCourses(userId);
-        comboBoxCourses1.getItems().addAll(courseModel.getObsCourses());
-        comboBoxCourses1.getSelectionModel().select(0);
+    private void selectFirstCourse(Student student) {
+        if (student != null) {
+            comboBoxCourses1.getItems().clear();
+            courseModel.loadAllCourses(student.getId());
+            comboBoxCourses1.getItems().addAll(courseModel.getObsCourses());
+            comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
+        }
     }
 
     private void setUser() {
@@ -196,16 +229,22 @@ public class TeacherDashboardController implements Initializable {
     private void listenToCourseSelectionForSelectedStudent() {
         comboBoxCourses1.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
+            if (comboBoxCourses1.getSelectionModel().isEmpty()) {
+                lessonModel.getObsStudentLessons().clear();
+                lessonModel.getObsWeekdayAbsenceCount().clear();
+            }
             Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();
             if (s != null && newVal != null) {
                 if (courseStart) {
+                    setBarChart();
                     lessonModel.startObserving(s, newVal);
                     courseStart = false;
                     System.out.println("listenToCourseSelectionForSelectedStudent#1 THREAD COUNTTTTTT: " + Thread.activeCount());
                 }
+                setBarChart();
                 lessonModel.stopObserving();
                 lessonModel.startObserving(s, newVal);
-                setBarChart(s);
+
                 System.out.println("listenToCourseSelectionForSelectedStudent#2 THREAD COUNTTTTTT: " + Thread.activeCount());
             }
             System.out.println("listenToCourseSelectionForSelectedStudent#3 THREAD COUNTTTTTT: " + Thread.activeCount());
@@ -213,20 +252,21 @@ public class TeacherDashboardController implements Initializable {
         );
     }
 
-    private void setBarChart(Student selectedStudent) {
+    private void setBarChart() {
         barChartWeekdayAbsence.setAnimated(false);
         barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
-        List<Integer> lst = studentModel.getObsWeekdayAbsenceCount();
-        studentModel.loadAllWeekdayAbsenceCount(selectedStudent.getId(), comboBoxCourses1.getSelectionModel().getSelectedItem().getId());
-        barChartWeekdayAbsence.getData().clear();
-        XYChart.Series dataQuery1 = new XYChart.Series();
-        dataQuery1.setName("Absence");
-        dataQuery1.getData().add(new XYChart.Data("Monday", lst.get(0)));
-        dataQuery1.getData().add(new XYChart.Data("Tuesday", lst.get(1)));
-        dataQuery1.getData().add(new XYChart.Data("Wednesday", lst.get(2)));
-        dataQuery1.getData().add(new XYChart.Data("Thursday", lst.get(3)));
-        dataQuery1.getData().add(new XYChart.Data("Friday", lst.get(4)));
-        barChartWeekdayAbsence.getData().add(dataQuery1);
+        ObservableList<BarChart.Data<String, Integer>> data = lessonModel.getObsWeekdayAbsenceCount();
+        //studentModel.loadAllWeekdayAbsenceCount(selectedStudent.getId(), comboBoxCourses1.getSelectionModel().getSelectedItem().getId());
+        if (!data.isEmpty()) {
+            barChartWeekdayAbsence.getData().clear();
+            XYChart.Series<String, Integer> dataQuery1 = new XYChart.Series<>("Absence", data);
+//        dataQuery1.getData().add(new XYChart.Data("Monday", lst.get(0)));
+//        dataQuery1.getData().add(new XYChart.Data("Tuesday", lst.get(1)));
+//        dataQuery1.getData().add(new XYChart.Data("Wednesday", lst.get(2)));
+//        dataQuery1.getData().add(new XYChart.Data("Thursday", lst.get(3)));
+//        dataQuery1.getData().add(new XYChart.Data("Friday", lst.get(4)));
+            barChartWeekdayAbsence.getData().setAll(dataQuery1);
+        }
 
     }
 

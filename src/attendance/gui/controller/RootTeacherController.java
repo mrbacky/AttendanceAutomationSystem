@@ -97,8 +97,14 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        lessonModel.stopObserving();
-        studentModel.stopObserving();
+        if (!lessonModel.getObsStudentLessons().isEmpty()) {
+            lessonModel.stopObserving();
+        };
+
+        if (!studentModel.getObsStudents().isEmpty()) {
+            studentModel.stopObserving();
+        };
+
         Stage logOutStage;
         logOutStage = (Stage) btnLogout.getScene().getWindow();
         logOutStage.close();
