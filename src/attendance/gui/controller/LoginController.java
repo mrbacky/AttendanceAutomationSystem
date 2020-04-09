@@ -76,8 +76,6 @@ public class LoginController implements Initializable {
 
     public LoginController() {
         userModel = ModelCreator.getInstance().getUserModel();
-        System.out.println("user model from Login contr. " + userModel);
-
         //  getting new course model from ModelCreator
 //        System.out.println("course model from Login contr. " + courseModel);
     }

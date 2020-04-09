@@ -62,8 +62,6 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        System.out.println("courseModel model:" + this.courseModel);
-
     }
 
     public void initializeComboBox() {

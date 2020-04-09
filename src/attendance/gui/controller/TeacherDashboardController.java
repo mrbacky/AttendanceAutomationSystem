@@ -77,29 +77,12 @@ public class TeacherDashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        comboBoxCourses1.valueProperty().bind(comboBoxCourses.valueProperty());
-
-//        courseModel.loadAllCourses(user.getId());
-//        setCoursesIntoComboBox();
-//        setTableViewsForCourseOverview();
-//        setTotalStudentLabel();
-//        setPresentStudentLabel();
-//        listenToCourseSelection();
-
-//        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Course>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Course> observable, Course oldValue, Course newValue) {
-//                comboBoxCourses1.setValue(newValue);
-//
-//            }
-//        });
     }
 
     void injectModels(ICourseModel courseModel, IStudentModel studentModel, ILessonModel lessonModel) {
         this.courseModel = courseModel;
         this.studentModel = studentModel;
         this.lessonModel = lessonModel;
-        System.out.println("courseModel in TeacherDashboard: "+this.courseModel);
     }
 
     void setUser(User currentUser) {

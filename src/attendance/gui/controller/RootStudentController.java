@@ -72,14 +72,10 @@ public class RootStudentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        showModule(TODAY_MODULE);
-//        System.out.println("im in root student contr.");
     }
 
     public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        System.out.println("courseModel model injected to root student:" + this.courseModel);
-        System.out.println("courseModel model injected to root student *para*:" + courseModel);
 
     }
 
@@ -95,23 +91,18 @@ public class RootStudentController implements Initializable {
             Parent moduleRoot = fxmlLoader.load();
 
             if (MODULE.equals(TODAY_MODULE)) {
-                System.out.println("in TODAY module if");
                 TodayController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModel(lessonModel);
                 controller.initializeTodayModule();
             }
             if (MODULE.equals(STUDENT_ATTENDANCE_MODULE)) {
-                System.out.println("in OVERVIEW module if");
                 StudentAttendanceController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModels(courseModel, lessonModel);
                 controller.initializeOverviewModule();
             }
             borderPane.setCenter(moduleRoot);
-//            attachable.getChildren().clear();
-//            attachable.getChildren().setAll(moduleRoot);
-///name of pane where you want to put the fxml.
         } catch (IOException ex) {
             Logger.getLogger(RootStudentController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -125,7 +116,6 @@ public class RootStudentController implements Initializable {
 
     @FXML
     private void showDashboard(ActionEvent event) {
-//        showModule(STUDENT_DASHBOARD_MODULE);
     }
 
     @FXML

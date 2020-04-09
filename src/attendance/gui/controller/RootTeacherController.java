@@ -67,7 +67,6 @@ public class RootTeacherController implements Initializable {
 
     public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        System.out.println("course model in root teacher: " + this.courseModel);
     }
 
     void setUser(User currentUser) {
