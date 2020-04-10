@@ -35,7 +35,7 @@ public class CourseModel implements ICourseModel {
     }
 
     @Override
-    public ObservableList<Course> getObservableCourseList() {
+    public ObservableList<Course> getCourseList() {
         return courseList;
     }
 

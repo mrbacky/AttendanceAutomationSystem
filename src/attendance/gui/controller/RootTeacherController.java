@@ -9,6 +9,7 @@ import attendance.be.User;
 import attendance.gui.model.ModelCreator;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
@@ -33,12 +34,11 @@ public class RootTeacherController implements Initializable {
     private HBox buttonBar;
     @FXML
     private JFXButton btnDashboard;
-    //   @FXML
-    //   private JFXButton btmStudentAttendance;
+
     @FXML
     private JFXButton btnLogout;
 
-    private final String DashboardModule = "/attendance/gui/view/TeacherDashboard.fxml";
+    private final String DashboardModule = "/attendance/gui/view/TeacherDashboardModule.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
@@ -48,10 +48,15 @@ public class RootTeacherController implements Initializable {
     @FXML
     private JFXButton btnRequests;
     private ICourseModel courseModel;
-    private ILessonModel lessonModel;
+    private IRecordModel recordModel;
     private IStudentModel studentModel;
     @FXML
     private BorderPane borderPane;
+
+    public RootTeacherController() {
+        recordModel = ModelCreator.getInstance().getRecordModel();
+        studentModel = ModelCreator.getInstance().getStudentModel();
+    }
 
     /**
      * Initializes the controller class.Jep
@@ -61,10 +66,8 @@ public class RootTeacherController implements Initializable {
 
     }
 
-    public void injectModel(ICourseModel courseModel, ILessonModel lessonModel, IStudentModel studentModel) {
+    public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-        this.lessonModel = lessonModel;
-        this.studentModel = studentModel;
     }
 
     void setUser(User currentUser) {
@@ -84,7 +87,7 @@ public class RootTeacherController implements Initializable {
 
             TeacherDashboardController controller = fxmlLoader.getController();
             controller.setUser(user);
-            controller.injectModels(this.courseModel, studentModel, lessonModel);
+            controller.injectModels(courseModel, studentModel, recordModel);
             controller.initializeView();
 
             borderPane.setCenter(moduleRoot);
@@ -102,11 +105,11 @@ public class RootTeacherController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        if (!lessonModel.getObservableLessonList().isEmpty()) {
-            lessonModel.stopObserving();
+        if (!recordModel.getRecordList().isEmpty()) {
+            recordModel.stopObserving();
         };
 
-        if (!studentModel.getObservableStudentList().isEmpty()) {
+        if (!studentModel.getStudentList().isEmpty()) {
             studentModel.stopObserving();
         };
 

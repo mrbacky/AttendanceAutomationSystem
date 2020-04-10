@@ -17,7 +17,7 @@ public interface ICourseModel {
 
     void loadAllCourses(int userId);
     
-    ObservableList<Course> getObservableCourseList();
+    ObservableList<Course> getCourseList();
     
 
 }

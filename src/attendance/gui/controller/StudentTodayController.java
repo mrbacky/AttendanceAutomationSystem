@@ -44,7 +44,7 @@ import javafx.application.Platform;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 
-public class TodayController implements Initializable {
+public class StudentTodayController implements Initializable {
 
     @FXML
     private Label lblUsername;
@@ -77,18 +77,18 @@ public class TodayController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    void setUser(User currentUser) {
+    public void setUser(User currentUser) {
         this.user = currentUser;
         lblUsername.setText("Hello " + user.getName());
     }
 
-    void injectModel(ILessonModel lessonModel) {
+    public void injectModel(ILessonModel lessonModel) {
         this.lessonModel = lessonModel;
 
     }
 
-    void initializeTodayModule() {
-        lessonModel.loadAllLessons(user.getId(), LocalDate.now());
+    public void initializeTodayModule() {
+        lessonModel.loadLessonsForToday(user.getId(), LocalDate.now());
         setLessonsToCB();
         selectInitialLesson();
         tbStatusSet();
@@ -97,11 +97,11 @@ public class TodayController implements Initializable {
     }
 
     public void checker() {
-        for (Lesson lesson : lessonModel.getObservableLessonList()) {
+        for (Lesson lesson : lessonModel.getLessonsForToday()) {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                     lesson.setStatusType(Lesson.StatusType.ABSENT);
-                    lessonModel.createRecord(user.getId(), lesson);
+                    lessonModel.registerAttendance(user.getId(), lesson);
                 }
             }
         }
@@ -140,7 +140,7 @@ public class TodayController implements Initializable {
             tbRegister.setText("Present");
             tbRegister.setDisable(true);
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
-            lessonModel.createRecord(user.getId(), lessonToUpdate);
+            lessonModel.registerAttendance(user.getId(), lessonToUpdate);
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
         }
@@ -190,14 +190,14 @@ public class TodayController implements Initializable {
     }
 
     private void setLessonsToCB() {
-        if (lessonModel.getObservableLessonList() != null) {
+        if (lessonModel.getLessonsForToday() != null) {
             comboBoxCal.getItems().clear();
-            comboBoxCal.getItems().setAll(lessonModel.getObservableLessonList());
+            comboBoxCal.getItems().setAll(lessonModel.getLessonsForToday());
         }
     }
 
     private void selectInitialLesson() {
-        List<Lesson> lessonList = lessonModel.getObservableLessonList();
+        List<Lesson> lessonList = lessonModel.getLessonsForToday();
         tbRegister.setDisable(true);
         for (Lesson lesson : lessonList) {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
@@ -218,7 +218,7 @@ public class TodayController implements Initializable {
                 thread.run();
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(TodayController.class
+            Logger.getLogger(StudentTodayController.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -21,6 +21,11 @@ public class UserModel implements IUserModel {
         this.bllFacade = bllFacade;
     }
 
+    /**
+     *
+     * @return
+     * @throws ModelException
+     */
     @Override
     public User getCurrentUser() throws ModelException {    // not used
         //check parameter example

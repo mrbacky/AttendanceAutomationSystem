@@ -36,7 +36,7 @@ public class StudentModel implements IStudentModel {
     }
 
     @Override
-    public ObservableList<Student> getObservableStudentList() {
+    public ObservableList<Student> getStudentList() {
         return studentList;
     }
 

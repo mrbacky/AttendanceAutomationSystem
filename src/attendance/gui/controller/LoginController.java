@@ -70,14 +70,12 @@ public class LoginController implements Initializable {
     private JFXPasswordField passwordField;
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
-    private final String SUBJECT_CHOOSER = "/attendance/gui/view/ChooseSubjectAfterLogin.fxml";
+    private final String SUBJECT_CHOOSER = "/attendance/gui/view/CourseSelectionForTeacher.fxml";
 
     private User user;
 
     public LoginController() {
         userModel = ModelCreator.getInstance().getUserModel();
-        //  getting new course model from ModelCreator
-//        System.out.println("course model from Login contr. " + courseModel);
     }
 
     /**
@@ -99,9 +97,10 @@ public class LoginController implements Initializable {
                 RootStudentController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModel(courseModel);
+                
             }
             if (ROOT_TO_SHOW.equals(SUBJECT_CHOOSER)) {
-                ChooseSubjectAfterLoginController controller = fxmlLoader.getController();
+                CourseSelectionForTeacherController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModel(courseModel);
                 controller.initializeComboBox();

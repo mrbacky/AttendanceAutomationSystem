@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  *
  * @author mega_
  */
-public class ChooseSubjectAfterLoginController implements Initializable {
+public class CourseSelectionForTeacherController implements Initializable {
 
     @FXML
     private JFXButton loginButton;
@@ -81,11 +81,9 @@ public class ChooseSubjectAfterLoginController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rootToShow));
             Parent root = fxmlLoader.load();
-            ILessonModel lessonModel = ModelCreator.getInstance().getLessonModel();
-            IStudentModel studentModel = ModelCreator.getInstance().getStudentModel();
             RootTeacherController controller = fxmlLoader.getController();
             controller.setUser(user);
-            controller.injectModel(courseModel, lessonModel, studentModel);
+            controller.injectModel(courseModel);
             controller.initializeView();
 
             Stage stage = new Stage();
@@ -94,7 +92,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
             stage.setResizable(false);
             stage.show();
         } catch (IOException ex) {
-            Logger.getLogger(ChooseSubjectAfterLoginController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CourseSelectionForTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -109,7 +107,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
 
     private void loadCoursesInCombobox() {
         comboboxS.getItems().clear();
-        comboboxS.getItems().addAll(courseModel.getObservableCourseList());
+        comboboxS.getItems().addAll(courseModel.getCourseList());
     }
 
     @FXML

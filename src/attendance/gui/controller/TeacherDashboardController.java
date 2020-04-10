@@ -6,6 +6,7 @@ import attendance.be.Student;
 import attendance.be.User;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,7 +35,7 @@ public class TeacherDashboardController implements Initializable {
 
     private IStudentModel studentModel;
     private ICourseModel courseModel;
-    private ILessonModel lessonModel;
+    private IRecordModel recordModel;
     @FXML
     private ComboBox<Course> comboBoxCourses;
     @FXML
@@ -68,10 +69,10 @@ public class TeacherDashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    void injectModels(ICourseModel courseModel, IStudentModel studentModel, ILessonModel lessonModel) {
+    void injectModels(ICourseModel courseModel, IStudentModel studentModel, IRecordModel recordModel) {
         this.courseModel = courseModel;
         this.studentModel = studentModel;
-        this.lessonModel = lessonModel;
+        this.recordModel = recordModel;
     }
 
     void setUser(User currentUser) {
@@ -106,7 +107,7 @@ public class TeacherDashboardController implements Initializable {
         absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        tbvStudentAbsence.setItems(studentModel.getObservableStudentList());
+        tbvStudentAbsence.setItems(studentModel.getStudentList());
     }
 
     private void setSecondTableView() {
@@ -114,7 +115,7 @@ public class TeacherDashboardController implements Initializable {
         dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
         attendanceColumn.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        secondTableView.setItems(lessonModel.getObservableRecordList());
+        secondTableView.setItems(recordModel.getRecordList());
     }
 
     private void listenToCourseSelection() {
@@ -129,7 +130,7 @@ public class TeacherDashboardController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(courseModel.getObservableCourseList());
+        comboBoxCourses.getItems().addAll(courseModel.getCourseList());
         comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
     }
 
@@ -138,9 +139,9 @@ public class TeacherDashboardController implements Initializable {
             if (tbvStudentAbsence.getSelectionModel().isEmpty()) {
                 lblstudentname.setText("");
                 comboBoxCourses1.valueProperty().set(null);
-                courseModel.getObservableCourseList().clear();
-                lessonModel.getObservableRecordList().clear();
-                lessonModel.getObsWeekdayAbsenceCount().clear();
+                courseModel.getCourseList().clear();
+                recordModel.getRecordList().clear();
+                recordModel.getWeekdayAbsenceCount().clear();
             }
             if (newVal != null) {
                 lblstudentname.setText(newVal.getName());
@@ -150,12 +151,12 @@ public class TeacherDashboardController implements Initializable {
                 if (c != null) {
                     if (firstTableViewSelection) {
                         setBarChart();
-                        lessonModel.startObserving(newVal, c);
+                        recordModel.startObserving(newVal, c);
                         firstTableViewSelection = false;
                     }
                     setBarChart();
-                    lessonModel.stopObserving();
-                    lessonModel.startObserving(newVal, c);
+                    recordModel.stopObserving();
+                    recordModel.startObserving(newVal, c);
                 }
             }
         });
@@ -165,29 +166,28 @@ public class TeacherDashboardController implements Initializable {
         if (student != null) {
             comboBoxCourses1.getItems().clear();
             courseModel.loadAllCourses(student.getId());
-            comboBoxCourses1.getItems().addAll(courseModel.getObservableCourseList());
+            comboBoxCourses1.getItems().addAll(courseModel.getCourseList());
             comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
         }
     }
-
 
     private void listenToCourseSelectionForSelectedStudent() {
         comboBoxCourses1.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
             if (comboBoxCourses1.getSelectionModel().isEmpty()) {
-                lessonModel.getObservableRecordList().clear();
-                lessonModel.getObsWeekdayAbsenceCount().clear();
+                recordModel.getRecordList().clear();
+                recordModel.getWeekdayAbsenceCount().clear();
             }
             Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();
             if (s != null && newVal != null) {
                 if (firstTableViewSelection) {
                     setBarChart();
-                    lessonModel.startObserving(s, newVal);
+                    recordModel.startObserving(s, newVal);
                     firstTableViewSelection = false;
                 }
                 setBarChart();
-                lessonModel.stopObserving();
-                lessonModel.startObserving(s, newVal);
+                recordModel.stopObserving();
+                recordModel.startObserving(s, newVal);
             }
         }
         );
@@ -196,7 +196,7 @@ public class TeacherDashboardController implements Initializable {
     private void setBarChart() {
         barChartWeekdayAbsence.setAnimated(false);
         barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
-        ObservableList<BarChart.Data<String, Integer>> data = lessonModel.getObsWeekdayAbsenceCount();
+        ObservableList<BarChart.Data<String, Integer>> data = recordModel.getWeekdayAbsenceCount();
         if (!data.isEmpty()) {
             barChartWeekdayAbsence.getData().clear();
             XYChart.Series<String, Integer> dataQuery1 = new XYChart.Series<>("Absence", data);

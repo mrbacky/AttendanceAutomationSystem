@@ -20,7 +20,7 @@ public interface IStudentModel {
 
     
 
-    ObservableList<Student> getObservableStudentList();
+    ObservableList<Student> getStudentList();
 
     ObservableValue<Number> getAttendanceCountProperty();
 

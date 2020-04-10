@@ -9,6 +9,7 @@ import attendance.gui.model.ModelException;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IRecordModel;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
 import java.time.LocalDate;
@@ -33,7 +34,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author annem
  */
-public class StudentAttendanceController implements Initializable {
+public class StudentOverviewController implements Initializable {
 
     @FXML
     private TableView<Lesson> tblAttendance;
@@ -54,7 +55,7 @@ public class StudentAttendanceController implements Initializable {
 
     private User user;
     private ICourseModel courseModel;
-    private ILessonModel lessonModel;
+    private IRecordModel recordModel;
     @FXML
     private Rectangle rectangle;
     @FXML
@@ -74,29 +75,27 @@ public class StudentAttendanceController implements Initializable {
 //        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
     }
 
-    public void injectModels(ICourseModel courseModel, ILessonModel lessonModel) {
+    public void injectModels(ICourseModel courseModel, IRecordModel recordModel) {
         this.courseModel = courseModel;
-        this.lessonModel = lessonModel;
-        System.out.println("lessonModel in Overview: " + this.lessonModel);
-        System.out.println("courseModel in OverView: " + this.courseModel);
+        this.recordModel = recordModel;
     }
 
     public void setUser(User currentUser) {
         this.user = currentUser;
     }
 
-    void initializeOverviewModule() {
+    public void initializeOverviewModule() {
         setCoursesIntoComboBox();
         setTableView();
         selectCourse();
-        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
+        lblAbsence.textProperty().bind(Bindings.convert(recordModel.absencePercentageLabelProperty()));
     }
 
     private void setCoursesIntoComboBox() {
-        if (courseModel.getObservableCourseList() != null) {
+        if (courseModel.getCourseList() != null) {
             courseModel.loadAllCourses(user.getId());
             cboCourses.getItems().clear();
-            cboCourses.getItems().addAll(courseModel.getObservableCourseList());
+            cboCourses.getItems().addAll(courseModel.getCourseList());
         }
 
     }
@@ -110,9 +109,8 @@ public class StudentAttendanceController implements Initializable {
         colCourse.setCellValueFactory(new PropertyValueFactory<>("courseName"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        tblAttendance.setItems(lessonModel.getObservableRecordList());
-        lessonModel.loadAllRecords(user.getId());
-        System.out.println("setTableView");
+        tblAttendance.setItems(recordModel.getRecordList());
+        recordModel.loadAllRecords(user.getId());
     }
 
     private void setColumnWidth() {
@@ -127,7 +125,7 @@ public class StudentAttendanceController implements Initializable {
     private void selectCourse() {
         cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
             if (newVal != null) {
-                lessonModel.filterByCourse(user.getId(), newVal.getId());
+                recordModel.filterRecordsByCourse(user.getId(), newVal.getId());
             }
         });
     }
@@ -137,7 +135,6 @@ public class StudentAttendanceController implements Initializable {
         if (!cboCourses.getSelectionModel().isEmpty()) {
             cboCourses.getSelectionModel().clearSelection();
             setTableView();
-            System.out.println("clearSelection");
         }
     }
 

@@ -6,10 +6,12 @@ import attendance.bll.IBLLFacade;
 import attendance.dal.DALFacadeFactory;
 import attendance.gui.model.concrete.CourseModel;
 import attendance.gui.model.concrete.LessonModel;
+import attendance.gui.model.concrete.RecordModel;
 import attendance.gui.model.concrete.StudentModel;
 import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.ILessonModel;
+import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;
 
 /**
@@ -47,4 +49,9 @@ public class ModelCreator {
     public ICourseModel getCourseModel() {
         return new CourseModel(bllFacade);
     }
+
+    public IRecordModel getRecordModel() {
+        return new RecordModel(bllFacade);
+    }
+
 }

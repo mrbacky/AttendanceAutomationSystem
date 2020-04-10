@@ -20,33 +20,11 @@ import javafx.scene.chart.XYChart;
  */
 public interface ILessonModel {
 
-    void loadAllLessons(int userId, LocalDate current);
+    void loadLessonsForToday(int userId, LocalDate current);
 
-    ObservableList<Lesson> getObservableLessonList();
-    
+    ObservableList<Lesson> getLessonsForToday();
 
-    void createRecord(int userId, Lesson lessonToInsert);
+    void registerAttendance(int userId, Lesson lessonToInsert);
 
-    void loadAllRecords(int userId);
-
-    ObservableList<Lesson> getObservableRecordList();
-
-    void filterByCourse(int userId, int courseId);
-
-    int calculateAbsenceLabel(List<Lesson> list);
-
-    int getAbsencePercentageLabel();
-
-    void setAbsencePercentageLabel(int value);
-
-    IntegerProperty absencePercentageLabelProperty();
-
-    void startObserving(Student s, Course c);
-
-    void stopObserving();
-    
-    ObservableList<XYChart.Data<String, Integer>> getObsWeekdayAbsenceCount();
-    
-    
 
 }
