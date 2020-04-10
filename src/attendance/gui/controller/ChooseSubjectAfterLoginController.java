@@ -70,7 +70,7 @@ public class ChooseSubjectAfterLoginController implements Initializable {
     }
 
     public void initializeComboBox() {
-        courseModel.loadAllCourses(user.getId());
+        courseModel.loadAllCourses(user);
         loadCoursesInCombobox();
         Wronglbl.setId("Wronglbl");
 

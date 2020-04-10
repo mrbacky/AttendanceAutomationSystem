@@ -3,6 +3,7 @@ package attendance.gui.model.concrete;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
+import attendance.be.User;
 import attendance.bll.BLLManager;
 import attendance.bll.observable.ConcreteObservable3;
 import attendance.bll.observable.ConcreteObservable4;
@@ -46,12 +47,12 @@ public class LessonModel implements ILessonModel {
 
     /**
      *
-     * @param userId
+     * @param student
      * @param current
      */
     @Override
-    public void loadAllLessons(int userId, LocalDate current) {// calculate absence here
-        List<Lesson> allLessons = bllFacade.getLessonsForToday(userId, current);
+    public void loadAllLessons(User student, LocalDate current) {// calculate absence here
+        List<Lesson> allLessons = bllFacade.getLessonsForToday(student, current);
         lessonList.clear();
         lessonList.addAll(allLessons);
     }
@@ -77,23 +78,23 @@ public class LessonModel implements ILessonModel {
 
     /**
      *
-     * @param userId
-     * @param lessonToInsert
+     * @param student
+     * @param lesson
      */
     @Override
-    public void createRecord(int userId, Lesson lessonToInsert) {
-        bllFacade.createRecord(userId, lessonToInsert);
-        int index = lessonList.indexOf(lessonToInsert);
-        lessonList.set(index, lessonToInsert);
+    public void createRecord(User student, Lesson lesson) {
+        bllFacade.createRecord(student, lesson);
+        int index = lessonList.indexOf(lesson);
+        lessonList.set(index, lesson);
     }
 
     /**
      *
-     * @param userId
+     * @param student
      */
     @Override
-    public void loadAllRecords(int userId) {
-        List<Lesson> allRecords = bllFacade.getAttendanceRecordsForAllCourses(userId);
+    public void loadAllRecords(User student) {
+        List<Lesson> allRecords = bllFacade.getAttendanceRecordsForAllCourses(student);
         for (Lesson record : allRecords) {
             record.setDay();
             record.setDate();
@@ -106,12 +107,12 @@ public class LessonModel implements ILessonModel {
 
     /**
      *
-     * @param userId
-     * @param courseId
+     * @param student
+     * @param course
      */
     @Override
-    public void filterByCourse(int userId, int courseId) {
-        List<Lesson> temp = bllFacade.getAttendanceRecordsForACourse(userId, courseId);
+    public void filterByCourse(User student, Course course) {
+        List<Lesson> temp = bllFacade.getAttendanceRecordsForACourse(student, course);
         for (Lesson record : temp) {
             record.setDay();
             record.setDate();
@@ -172,7 +173,7 @@ public class LessonModel implements ILessonModel {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        List<Lesson> l = bllComponent3.getState();
+                        List<Lesson> l = bllComponent3.getRecordListState();
                         if (l != null) {
                             recordList.setAll(l);
                         }

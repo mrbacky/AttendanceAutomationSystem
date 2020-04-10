@@ -1,9 +1,7 @@
 package attendance.gui.model.concrete;
 
 import attendance.be.Course;
-import attendance.be.Lesson;
-import attendance.bll.BLLManager;
-import attendance.dal.Mock.MockCourseDAO;
+import attendance.be.User;
 import attendance.gui.model.interfaces.ICourseModel;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -25,11 +23,11 @@ public class CourseModel implements ICourseModel {
 
     /**
      *
-     * @param userId
+     * @param user
      */
     @Override
-    public void loadAllCourses(int userId) {
-        List<Course> allCourses = bllManager.getCourses(userId);
+    public void loadAllCourses(User user) {
+        List<Course> allCourses = bllManager.getCourses(user);
         courseList.clear();
         courseList.addAll(allCourses);
     }

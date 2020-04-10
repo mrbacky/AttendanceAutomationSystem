@@ -6,7 +6,6 @@
 package attendance.gui.controller;
 
 import attendance.Attendance;
-import attendance.dal.Mock.MockAttendanceRecord;
 import attendance.dal.Mock.MockSubjectAttendance;
 import attendance.be.User;
 import java.net.URL;

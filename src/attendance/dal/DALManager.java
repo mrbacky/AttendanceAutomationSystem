@@ -4,15 +4,15 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
+import attendance.dal.DAO.AttendanceRecordDAO;
 import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.IUserDAO;
-import attendance.dal.DAO.UserDAO;
-import attendance.dal.Mock.MockAttendanceDAO;
-import attendance.dal.Mock.MockUserDAO;
-import java.util.List;
+import attendance.dal.DAO.IAttendanceRecordDAO;
 import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DAO.IStudentDAO;
-import attendance.dal.DAO.StudentDAO;
+import attendance.dal.DAO.ILessonDAO;
+import attendance.dal.DAO.IUserDAO;
+import attendance.dal.DAO.LessonDAO;
+import attendance.dal.DAO.UserDAO;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,15 +22,16 @@ import java.time.LocalDateTime;
  */
 public class DALManager implements IDALFacade {
 
-    private final IUserDAO userDAO;
+    private final IAttendanceRecordDAO attendanceDAO;
     private final ICourseDAO courseDAO;
-    private final IStudentDAO studentDAO;
+    private final ILessonDAO lessonDAO;
+    private final IUserDAO userDAO;
 
     public DALManager() {
-
-        studentDAO = new StudentDAO();
-        userDAO = new UserDAO();
+        attendanceDAO = new AttendanceRecordDAO();
+        lessonDAO = new LessonDAO();
         courseDAO = new CourseDAO();
+        userDAO = new UserDAO();
     }
 
     @Override
@@ -43,58 +44,58 @@ public class DALManager implements IDALFacade {
     }
 
     @Override
-    public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
-        return courseDAO.getLessonsForToday(userId, current);
+    public List<Course> getCourses(User user) {
+        return courseDAO.getCourses(user);
     }
 
     @Override
-    public void createRecord(int userId, Lesson lessonToUpdate) {
-        studentDAO.createRecord(userId, lessonToUpdate);
+    public List<Lesson> getLessonsForToday(User student, LocalDate current) {
+        return lessonDAO.getLessonsForToday(student, current);
     }
 
     @Override
-    public List<Course> getCourses(int userId) {
-        return courseDAO.getCourses(userId);
+    public void createRecord(User student, Lesson lesson) {
+        attendanceDAO.createRecord(student, lesson);
+    }
+
+    @Override
+    public List<Lesson> getAttendanceRecordsForAllCourses(User student) {
+        return attendanceDAO.getAttendanceRecordsForAllCourses(student);
+    }
+
+    @Override
+    public List<Lesson> getAttendanceRecordsForACourse(User student, Course course) {
+        return attendanceDAO.getAttendanceRecordsForACourse(student, course);
     }
 
     @Override
     public int getNumberOfConductedLessons(Course course, LocalDateTime current) {
-        return courseDAO.getNumberOfConductedLessons(course, current);
+        return lessonDAO.getNumberOfConductedLessons(course, current);
     }
 
     @Override
     public List<Student> getNumberOfAbsentLessons(Course course) {
-        return studentDAO.getNumberOfAbsentLessons(course);
+        return attendanceDAO.getNumberOfAbsentLessons(course);
     }
 
     @Override
-    public boolean hasUpdate(int courseId, LocalDateTime lastReceivedUpdate) {
-        if (courseId != 0 && lastReceivedUpdate != null) {
-            LocalDateTime ld = courseDAO.getTimeOfLastUpdate(courseId, LocalDate.now());
+    public int getAttendanceForLesson(Course course, LocalDateTime current) {
+        return attendanceDAO.getAttendanceForLesson(course, current);
+    }
+
+    @Override
+    public LocalDateTime getTimeOfLastUpdate(Course course, LocalDate current) {
+        return attendanceDAO.getTimeOfLastUpdate(course, current);
+    }
+
+    @Override
+    public boolean hasUpdate(Course course, LocalDateTime lastReceivedUpdate) {
+        if (course.getId() != 0 && lastReceivedUpdate != null) {
+            LocalDateTime ld = attendanceDAO.getTimeOfLastUpdate(course, LocalDate.now());
             boolean hasUpdate = lastReceivedUpdate.isBefore(ld);
             return hasUpdate;
         }
         return false;
-    }
-
-    @Override
-    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
-        return studentDAO.getAttendanceRecordsForAllCourses(userId);
-    }
-
-    @Override
-    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
-        return studentDAO.getAttendanceRecordsForACourse(userId, courseId);
-    }
-
-    @Override
-    public LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current) {
-        return courseDAO.getTimeOfLastUpdate(courseId, current);
-    }
-
-    @Override
-    public int getAttendanceForLesson(int courseId, LocalDateTime current) {
-        return courseDAO.getAttendanceForLesson(courseId, current);
     }
 
 }

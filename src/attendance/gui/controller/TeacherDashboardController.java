@@ -79,8 +79,9 @@ public class TeacherDashboardController implements Initializable {
     }
 
     void initializeView() {
+        System.out.println("initialize THREAD" + Thread.activeCount());
         firstTableViewSelection = true;
-        courseModel.loadAllCourses(user.getId());
+        courseModel.loadAllCourses(user);
         setCoursesIntoComboBox();
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
@@ -164,7 +165,7 @@ public class TeacherDashboardController implements Initializable {
     private void selectFirstCourse(Student student) {
         if (student != null) {
             comboBoxCourses1.getItems().clear();
-            courseModel.loadAllCourses(student.getId());
+            courseModel.loadAllCourses(student);
             comboBoxCourses1.getItems().addAll(courseModel.getObservableCourseList());
             comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
         }

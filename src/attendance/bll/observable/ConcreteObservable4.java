@@ -1,6 +1,9 @@
 package attendance.bll.observable;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
+import attendance.be.User;
 import attendance.bll.util.ObserverEvent;
 import attendance.bll.util.DailyAbsenceCounter;
 import attendance.bll.observer.DataObserver;
@@ -48,10 +51,10 @@ public class ConcreteObservable4 implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                if (dalFacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    int userId = e.getStudent().getId();
-                    int courseId = e.getCourse().getId();
-                    List<Lesson> lessons = dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+                if (dalFacade.hasUpdate(e.getCourse(), lastReceivedUpdate)) {
+                    User student = e.getStudent();
+                    Course course = e.getCourse();
+                    List<Lesson> lessons = dalFacade.getAttendanceRecordsForACourse(student, course);
                     List<XYChart.Data<String, Integer>> weekdayAbsenceForCourse = dailyAbsenceCounter.getWeekdayAbsence(lessons);
                     setState(weekdayAbsenceForCourse);
                     for (DataObserver o : observers) {

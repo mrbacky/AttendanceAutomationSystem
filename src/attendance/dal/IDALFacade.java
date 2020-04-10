@@ -16,23 +16,24 @@ public interface IDALFacade {
 
     User getUser(String username, String password) throws DalException;
 
-    List<Lesson> getLessonsForToday(int userId, LocalDate current);
+    List<Course> getCourses(User user);
 
-    void createRecord(int userId, Lesson lesson);
+    List<Lesson> getLessonsForToday(User student, LocalDate current);
 
-    List<Course> getCourses(int userId);
+    void createRecord(User student, Lesson lesson);
+
+    List<Lesson> getAttendanceRecordsForAllCourses(User student);
+
+    List<Lesson> getAttendanceRecordsForACourse(User student, Course course);
 
     int getNumberOfConductedLessons(Course course, LocalDateTime current);
 
     List<Student> getNumberOfAbsentLessons(Course course);
-    
-    boolean hasUpdate(int courseId, LocalDateTime last);
 
-    List<Lesson> getAttendanceRecordsForAllCourses(int userId);
-    
-    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
-    
-    LocalDateTime getTimeOfLastUpdate(int courseId, LocalDate current);
-    
-    int getAttendanceForLesson(int courseId, LocalDateTime current);
+    int getAttendanceForLesson(Course course, LocalDateTime current);
+
+    LocalDateTime getTimeOfLastUpdate(Course course, LocalDate current);
+
+    boolean hasUpdate(Course course, LocalDateTime last);
+
 }

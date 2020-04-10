@@ -3,24 +3,22 @@ package attendance.bll;
 import attendance.bll.util.LogicException;
 import attendance.be.Course;
 import attendance.be.Lesson;
-import attendance.be.Student;
 import attendance.be.User;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IBLLFacade {
 
     User getUser(String username, String password) throws LogicException;
 
-    List<Course> getCourses(int userId);
+    List<Course> getCourses(User user);
 
-    List<Lesson> getLessonsForToday(int userId, LocalDate current);
+    List<Lesson> getLessonsForToday(User student, LocalDate current);
 
-    void createRecord(int userId, Lesson lessonToUpdate);
+    void createRecord(User student, Lesson lesson);
 
-    List<Lesson> getAttendanceRecordsForAllCourses(int userId);
+    List<Lesson> getAttendanceRecordsForAllCourses(User student);
 
-    List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId);
+    List<Lesson> getAttendanceRecordsForACourse(User student, Course course);
 
 }

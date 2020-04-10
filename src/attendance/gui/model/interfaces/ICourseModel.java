@@ -6,7 +6,7 @@
 package attendance.gui.model.interfaces;
 
 import attendance.be.Course;
-import java.util.List;
+import attendance.be.User;
 import javafx.collections.ObservableList;
 
 /**
@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
  */
 public interface ICourseModel {
 
-    void loadAllCourses(int userId);
+    void loadAllCourses(User user);
     
     ObservableList<Course> getObservableCourseList();
     

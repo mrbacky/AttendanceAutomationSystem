@@ -94,7 +94,7 @@ public class StudentAttendanceController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         if (courseModel.getObservableCourseList() != null) {
-            courseModel.loadAllCourses(user.getId());
+            courseModel.loadAllCourses(user);
             cboCourses.getItems().clear();
             cboCourses.getItems().addAll(courseModel.getObservableCourseList());
         }
@@ -111,7 +111,7 @@ public class StudentAttendanceController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
         tblAttendance.setItems(lessonModel.getObservableRecordList());
-        lessonModel.loadAllRecords(user.getId());
+        lessonModel.loadAllRecords(user);
         System.out.println("setTableView");
     }
 
@@ -127,7 +127,7 @@ public class StudentAttendanceController implements Initializable {
     private void selectCourse() {
         cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
             if (newVal != null) {
-                lessonModel.filterByCourse(user.getId(), newVal.getId());
+                lessonModel.filterByCourse(user, newVal);
             }
         });
     }

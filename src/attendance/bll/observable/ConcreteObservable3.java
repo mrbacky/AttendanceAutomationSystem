@@ -1,6 +1,9 @@
 package attendance.bll.observable;
 
+import attendance.be.Course;
 import attendance.be.Lesson;
+import attendance.be.Student;
+import attendance.be.User;
 import attendance.bll.util.ObserverEvent;
 import attendance.bll.observer.DataObserver;
 import attendance.dal.IDALFacade;
@@ -21,7 +24,7 @@ public class ConcreteObservable3 implements DataObservable {
     private boolean isRunning = true;
     private List<DataObserver> observers;
     private LocalDateTime lastReceivedUpdate;
-    private List<Lesson> state;
+    private List<Lesson> recordListState;
 
     public ConcreteObservable3(ObserverEvent e) {
         dalfacade = new DALManager();
@@ -44,11 +47,11 @@ public class ConcreteObservable3 implements DataObservable {
     public void notifyObserver(ObserverEvent e) {
         Thread t = new Thread(() -> {
             while (isRunning) {
-                if (dalfacade.hasUpdate(e.getCourse().getId(), lastReceivedUpdate)) {
-                    int userId = e.getStudent().getId();
-                    int courseId = e.getCourse().getId();
-                    List<Lesson> lessons = dalfacade.getAttendanceRecordsForACourse(userId, courseId);
-                    setState(lessons);
+                if (dalfacade.hasUpdate(e.getCourse(), lastReceivedUpdate)) {
+                    User student = e.getStudent();
+                    Course course = e.getCourse();
+                    List<Lesson> lessons = dalfacade.getAttendanceRecordsForACourse(student, course);
+                    setRecordListState(lessons);
                     for (DataObserver o : observers) {
                         o.update(e);
                     }
@@ -73,12 +76,12 @@ public class ConcreteObservable3 implements DataObservable {
         this.isRunning = isRunning;
     }
 
-    public List<Lesson> getState() {
-        return state;
+    public List<Lesson> getRecordListState() {
+        return recordListState;
     }
 
-    public void setState(List<Lesson> state) {
-        this.state = state;
+    public void setRecordListState(List<Lesson> state) {
+        this.recordListState = state;
     }
 
 }

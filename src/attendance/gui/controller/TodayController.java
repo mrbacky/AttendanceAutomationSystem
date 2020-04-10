@@ -88,7 +88,7 @@ public class TodayController implements Initializable {
     }
 
     void initializeTodayModule() {
-        lessonModel.loadAllLessons(user.getId(), LocalDate.now());
+        lessonModel.loadAllLessons(user, LocalDate.now());
         setLessonsToCB();
         selectInitialLesson();
         tbStatusSet();
@@ -101,7 +101,7 @@ public class TodayController implements Initializable {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                     lesson.setStatusType(Lesson.StatusType.ABSENT);
-                    lessonModel.createRecord(user.getId(), lesson);
+                    lessonModel.createRecord(user, lesson);
                 }
             }
         }
@@ -140,7 +140,7 @@ public class TodayController implements Initializable {
             tbRegister.setText("Present");
             tbRegister.setDisable(true);
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
-            lessonModel.createRecord(user.getId(), lessonToUpdate);
+            lessonModel.createRecord(user, lessonToUpdate);
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
         }
