@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
 import attendance.be.User;
 import attendance.gui.model.ModelCreator;
 import attendance.gui.model.interfaces.ICourseModel;
-import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
@@ -31,39 +25,31 @@ import javafx.stage.Stage;
 public class RootTeacherController implements Initializable {
 
     @FXML
-    private HBox buttonBar;
+    private BorderPane borderPane;
+    @FXML
+    private HBox hBoxNavigationBar;
     @FXML
     private JFXButton btnDashboard;
-
     @FXML
-    private JFXButton btnLogout;
+    private Label lblName;
+    @FXML
+    private JFXButton btnLogOut;
 
     private final String DashboardModule = "/attendance/gui/view/TeacherDashboardModule.fxml";
     private final String LoginPage = "/attendance/gui/view/Login.fxml";
 
     private User user;
-
-    @FXML
-    private Label lblName;
-    @FXML
-    private JFXButton btnRequests;
     private ICourseModel courseModel;
     private IRecordModel recordModel;
     private IStudentModel studentModel;
-    @FXML
-    private BorderPane borderPane;
 
     public RootTeacherController() {
         recordModel = ModelCreator.getInstance().getRecordModel();
         studentModel = ModelCreator.getInstance().getStudentModel();
     }
 
-    /**
-     * Initializes the controller class.Jep
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
     }
 
     public void injectModel(ICourseModel courseModel) {
@@ -73,7 +59,6 @@ public class RootTeacherController implements Initializable {
     void setUser(User currentUser) {
         this.user = currentUser;
         lblName.setText(user.getName());
-
     }
 
     void initializeView() {
@@ -95,7 +80,6 @@ public class RootTeacherController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @FXML
@@ -114,7 +98,7 @@ public class RootTeacherController implements Initializable {
         };
 
         Stage logOutStage;
-        logOutStage = (Stage) btnLogout.getScene().getWindow();
+        logOutStage = (Stage) btnLogOut.getScene().getWindow();
         logOutStage.close();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(LoginPage));
@@ -123,11 +107,6 @@ public class RootTeacherController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-
-    }
-
-    @FXML
-    private void showRequests(ActionEvent event) {
     }
 
 }

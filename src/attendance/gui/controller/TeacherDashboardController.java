@@ -24,41 +24,39 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class TeacherDashboardController implements Initializable {
 
     @FXML
-    private TableView<Student> tbvStudentAbsence;
+    private ComboBox<Course> cboTeacherCourses;
     @FXML
-    private TableColumn<Student, String> studentName;
+    private Label lblPresentStudentsCount;
     @FXML
-    private TableColumn<Student, Integer> absence;
+    private Label lblEnrolledStudentCount;
     @FXML
-    private TableColumn<Student, Integer> lessonCount;
+    private TableView<Student> tblCourseAbsenceOverview;
+    @FXML
+    private TableColumn<Student, String> colStudentName;
+    @FXML
+    private TableColumn<Student, Integer> colAbsencePercentage;
+    @FXML
+    private TableColumn<Student, Integer> colAbsentLessons;
 
-    private IStudentModel studentModel;
-    private ICourseModel courseModel;
-    private IRecordModel recordModel;
     @FXML
-    private ComboBox<Course> comboBoxCourses;
+    private Label lblStudentName;
     @FXML
-    private Label lblstudentname;
+    private ComboBox<Course> cboStudentCourses;
     @FXML
-    private Label lblStudentsPresent;
+    private TableView<Lesson> tblStudentAbsenceOverview;
     @FXML
-    private Label lblTotalOfStudents;
-
-    private User user;
+    private TableColumn<Lesson, String> colDate;
     @FXML
-    private ComboBox<Course> comboBoxCourses1;
+    private TableColumn<Lesson, String> colDay;
     @FXML
-    private TableView<Lesson> secondTableView;
-    @FXML
-    private TableColumn<Lesson, String> dateColumn;
-    @FXML
-    private TableColumn<Lesson, String> dayColumn;
-    @FXML
-    private TableColumn<Lesson, String> attendanceColumn;
-
+    private TableColumn<Lesson, String> colStatus;
     @FXML
     private BarChart<String, Integer> barChartWeekdayAbsence;
 
+    private User user;
+    private IStudentModel studentModel;
+    private ICourseModel courseModel;
+    private IRecordModel recordModel;
     boolean firstTableViewSelection;
 
     /**
@@ -90,37 +88,36 @@ public class TeacherDashboardController implements Initializable {
         setBarChart();
         listenToOverviewTableViewSelection();
         listenToCourseSelectionForSelectedStudent();
-
     }
 
     private void setTotalStudentLabel() {
-        lblTotalOfStudents.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));
+        lblEnrolledStudentCount.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));
     }
 
     private void setPresentStudentLabel() {
-        lblStudentsPresent.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
+        lblPresentStudentsCount.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
     }
 
     private void setTableViewsForCourseOverview() {
-        studentName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        absence.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
-        lessonCount.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
+        colStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colAbsencePercentage.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
+        colAbsentLessons.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
 
-        tbvStudentAbsence.setItems(studentModel.getStudentList());
+        tblCourseAbsenceOverview.setItems(studentModel.getStudentList());
     }
 
     private void setSecondTableView() {
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dayColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
-        attendanceColumn.setCellValueFactory(new PropertyValueFactory<>("statusType"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
-        secondTableView.setItems(recordModel.getRecordList());
+        tblStudentAbsenceOverview.setItems(recordModel.getRecordList());
     }
 
     private void listenToCourseSelection() {
-        studentModel.startObserving(comboBoxCourses.getSelectionModel().getSelectedItem());
+        studentModel.startObserving(cboTeacherCourses.getSelectionModel().getSelectedItem());
 
-        comboBoxCourses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
+        cboTeacherCourses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
             studentModel.stopObserving();
             studentModel.startObserving(newVal);
@@ -128,25 +125,25 @@ public class TeacherDashboardController implements Initializable {
     }
 
     private void setCoursesIntoComboBox() {
-        comboBoxCourses.getItems().clear();
-        comboBoxCourses.getItems().addAll(courseModel.getCourseList());
-        comboBoxCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
+        cboTeacherCourses.getItems().clear();
+        cboTeacherCourses.getItems().addAll(courseModel.getCourseList());
+        cboTeacherCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
     }
 
     private void listenToOverviewTableViewSelection() {
-        tbvStudentAbsence.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-            if (tbvStudentAbsence.getSelectionModel().isEmpty()) {
-                lblstudentname.setText("");
-                comboBoxCourses1.valueProperty().set(null);
+        tblCourseAbsenceOverview.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (tblCourseAbsenceOverview.getSelectionModel().isEmpty()) {
+                lblStudentName.setText("No selected student.");
+                cboStudentCourses.valueProperty().set(null);
                 courseModel.getCourseList().clear();
                 recordModel.getRecordList().clear();
                 recordModel.getWeekdayAbsenceCount().clear();
             }
             if (newVal != null) {
-                lblstudentname.setText(newVal.getName());
+                lblStudentName.setText(newVal.getName());
                 selectFirstCourse(newVal);
                 setBarChart();
-                Course c = comboBoxCourses1.getSelectionModel().getSelectedItem();
+                Course c = cboStudentCourses.getSelectionModel().getSelectedItem();
                 if (c != null) {
                     if (firstTableViewSelection) {
                         setBarChart();
@@ -163,21 +160,21 @@ public class TeacherDashboardController implements Initializable {
 
     private void selectFirstCourse(Student student) {
         if (student != null) {
-            comboBoxCourses1.getItems().clear();
+            cboStudentCourses.getItems().clear();
             courseModel.loadAllCourses(student);
-            comboBoxCourses1.getItems().addAll(courseModel.getCourseList());
-            comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
+            cboStudentCourses.getItems().addAll(courseModel.getCourseList());
+            cboStudentCourses.getSelectionModel().select(cboTeacherCourses.getValue());
         }
     }
 
     private void listenToCourseSelectionForSelectedStudent() {
-        comboBoxCourses1.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
+        cboStudentCourses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
-            if (comboBoxCourses1.getSelectionModel().isEmpty()) {
+            if (cboStudentCourses.getSelectionModel().isEmpty()) {
                 recordModel.getRecordList().clear();
                 recordModel.getWeekdayAbsenceCount().clear();
             }
-            Student s = tbvStudentAbsence.getSelectionModel().getSelectedItem();
+            Student s = tblCourseAbsenceOverview.getSelectionModel().getSelectedItem();
             if (s != null && newVal != null) {
                 if (firstTableViewSelection) {
                     setBarChart();

@@ -3,21 +3,19 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.LoginController">
    <children>
       <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="181.0" AnchorPane.topAnchor="31.0">
          <image>
             <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
-      <Label id="lblWrongPassword" fx:id="wrongPassword" layoutX="217.0" layoutY="286.0" text="Username or Password incorrect" textFill="RED" visible="false" AnchorPane.topAnchor="310.0" />
-      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="235.0" layoutY="340.0" onAction="#BtnPressed" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" text="Log in" AnchorPane.topAnchor="340.0" />
-      <JFXTextField fx:id="usernameField" focusColor="#009ee3" labelFloat="true" layoutX="235.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.topAnchor="200.0" />
-      <JFXPasswordField fx:id="passwordField" focusColor="#009ee3" labelFloat="true" layoutX="235.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.topAnchor="254.0" />
+      <JFXButton id="loginBtn" fx:id="btnLogIn" buttonType="RAISED" layoutX="235.0" layoutY="340.0" onAction="#BtnPressed" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" text="Log in" AnchorPane.topAnchor="340.0" />
+      <JFXTextField fx:id="txtUsername" focusColor="#009ee3" labelFloat="true" layoutX="235.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Username" AnchorPane.topAnchor="200.0" />
+      <JFXPasswordField fx:id="pwPassword" focusColor="#009ee3" labelFloat="true" layoutX="235.0" layoutY="254.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#EnterPressed" prefHeight="25.0" prefWidth="150.0" promptText="Password" AnchorPane.topAnchor="254.0" />
    </children>
 </AnchorPane>

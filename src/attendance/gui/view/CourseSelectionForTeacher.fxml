@@ -14,8 +14,8 @@
             <Image url="@../assets/EASV%20RGB%20invert.png" />
          </image>
       </ImageView>
-      <JFXButton id="loginBtn" fx:id="loginButton" buttonType="RAISED" layoutX="225.0" layoutY="337.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Continue" />
-      <JFXComboBox fx:id="comboboxS" layoutX="215.0" layoutY="210.0" onAction="#setSelectedCourse" prefHeight="31.0" prefWidth="170.0" />
-      <Label fx:id="Wronglbl" layoutX="228.0" layoutY="302.0" prefHeight="21.0" prefWidth="157.0" text="Please select a course" textFill="#b52222" />
+      <JFXButton id="loginBtn" fx:id="btnContinue" buttonType="RAISED" layoutX="226.0" layoutY="334.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Continue" />
+      <JFXComboBox fx:id="cboCourses" layoutX="216.0" layoutY="209.0" onAction="#setSelectedCourse" prefHeight="31.0" prefWidth="170.0" />
+      <Label fx:id="lblWarning" layoutX="241.0" layoutY="248.0" prefHeight="21.0" prefWidth="117.0" text="Please select a course." textFill="#b52222" />
    </children>
 </AnchorPane>

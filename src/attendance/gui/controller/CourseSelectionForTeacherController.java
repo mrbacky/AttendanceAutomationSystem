@@ -3,7 +3,6 @@ package attendance.gui.controller;
 import attendance.be.Course;
 import attendance.be.User;
 import attendance.gui.model.interfaces.ICourseModel;
-import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
@@ -28,19 +27,17 @@ import javafx.stage.Stage;
 public class CourseSelectionForTeacherController implements Initializable {
 
     @FXML
-    private JFXButton loginButton;
+    private JFXButton btnContinue;
+    @FXML
+    private JFXComboBox<Course> cboCourses;
+    @FXML
+    private Label lblWarning;
 
     private final String ROOT_TEACHER = "/attendance/gui/view/RootTeacher.fxml";
 
     public LoginController loginController;
-    @FXML
-    private JFXComboBox<Course> comboboxS;
-
-    private ICourseModel courseModel;
-    private IStudentModel studentModel;
     private User user;
-    @FXML
-    private Label Wronglbl;
+    private ICourseModel courseModel;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,12 +54,10 @@ public class CourseSelectionForTeacherController implements Initializable {
     public void initializeComboBox() {
         courseModel.loadAllCourses(user);
         loadCoursesInCombobox();
-        Wronglbl.setId("Wronglbl");
-
+        lblWarning.setId("lblWarning");
     }
 
     private void showRoot(String rootToShow) {
-
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(rootToShow));
             Parent root = fxmlLoader.load();
@@ -79,37 +74,33 @@ public class CourseSelectionForTeacherController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(CourseSelectionForTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     private void closeLogin() {
-
         Stage chooseStage;
-        chooseStage = (Stage) loginButton.getScene().getWindow();
+        chooseStage = (Stage) btnContinue.getScene().getWindow();
         chooseStage.close();
-
     }
 
     private void loadCoursesInCombobox() {
-        comboboxS.getItems().clear();
-        comboboxS.getItems().addAll(courseModel.getCourseList());
+        cboCourses.getItems().clear();
+        cboCourses.getItems().addAll(courseModel.getCourseList());
     }
 
     @FXML
     private void btnTeacherLogin(ActionEvent event) {
-        if (comboboxS != null) {
+        if (cboCourses != null) {
             showRoot(ROOT_TEACHER);
             closeLogin();
         } else {
-            Wronglbl.setText("Please select a course");
+            lblWarning.setText("Please select a course");
         }
-        loginButton.pressedProperty();
+        btnContinue.pressedProperty();
     }
 
     @FXML
     private void setSelectedCourse(ActionEvent event) {
-        //comboboxS.setSelectionModel(value);
-        user.setCurrentSelectedCourse(comboboxS.getSelectionModel().getSelectedIndex());
+        user.setCurrentSelectedCourse(cboCourses.getSelectionModel().getSelectedIndex());
     }
 
 }

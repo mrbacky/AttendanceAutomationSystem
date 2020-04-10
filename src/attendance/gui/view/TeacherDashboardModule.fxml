@@ -20,37 +20,37 @@
             <Image url="@../assets/icons8-male-user-96.png" />
          </image>
       </ImageView>
-      <TableView id="PaneColorsTeacherView" fx:id="tbvStudentAbsence" layoutX="253.0" layoutY="80.0" prefHeight="191.0" prefWidth="506.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="tblCourseAbsenceOverview" layoutX="253.0" layoutY="80.0" prefHeight="191.0" prefWidth="506.0" stylesheets="@../css/style.css">
         <columns>
-          <TableColumn fx:id="studentName" prefWidth="215.0" sortType="DESCENDING" text="Student Name" />
-          <TableColumn fx:id="absence" prefWidth="149.0" text="Absence %" />
-            <TableColumn fx:id="lessonCount" prefWidth="118.0" text="Absent Lessons" />
+          <TableColumn fx:id="colStudentName" prefWidth="215.0" sortType="DESCENDING" text="Student Name" />
+          <TableColumn fx:id="colAbsencePercentage" prefWidth="149.0" text="Absence %" />
+            <TableColumn fx:id="colAbsentLessons" prefWidth="118.0" text="Absent Lessons" />
         </columns>
       </TableView>
       <Label id="Dashboard" layoutX="62.0" layoutY="10.0" prefHeight="22.0" prefWidth="128.0" stylesheets="@../css/style.css" text="Dashboard">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <Label fx:id="lblstudentname" layoutX="122.0" layoutY="317.0" text="No selected student">
+      <Label fx:id="lblStudentName" layoutX="122.0" layoutY="317.0" text="No selected student.">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <TableView id="PaneColorsTeacherView" fx:id="secondTableView" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="tblStudentAbsenceOverview" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
         <columns>
-          <TableColumn fx:id="dateColumn" prefWidth="122.0" text="Date" />
-            <TableColumn fx:id="dayColumn" prefWidth="109.0" text="Day" />
-            <TableColumn fx:id="attendanceColumn" prefWidth="97.0" text="Attendance" />
+          <TableColumn fx:id="colDate" prefWidth="122.0" text="Date" />
+            <TableColumn fx:id="colDay" prefWidth="109.0" text="Day" />
+            <TableColumn fx:id="colStatus" prefWidth="97.0" text="Status" />
         </columns>
       </TableView>
       <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="185.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
          <children>
-            <Label id="StudentCount" fx:id="lblStudentsPresent" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
+            <Label id="StudentCount" fx:id="lblPresentStudentsCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
             <Label layoutX="17.0" layoutY="53.0" text="Present today" />
          </children>
       </Pane>
       <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="82.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
          <children>
-            <Label id="StudentCount" fx:id="lblTotalOfStudents" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="30" />
+            <Label id="StudentCount" fx:id="lblEnrolledStudentCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="30" />
             <Label layoutX="39.0" layoutY="62.0" text="Students" />
             <ImageView fitHeight="31.0" fitWidth="27.0" layoutX="5.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -59,7 +59,7 @@
             </ImageView>
          </children>
       </Pane>
-      <ComboBox id="PaneColorsTeacherView" fx:id="comboBoxCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
+      <ComboBox id="PaneColorsTeacherView" fx:id="cboTeacherCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
       <BarChart id="PaneColorsTeacherView" fx:id="barChartWeekdayAbsence" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
@@ -68,8 +68,8 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <ComboBox id="PaneColorsTeacherView" fx:id="comboBoxCourses1" layoutX="62.0" layoutY="355.0" prefHeight="25.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <Label layoutX="289.0" layoutY="49.0" text="For more information, please select student">
+      <ComboBox id="PaneColorsTeacherView" fx:id="cboStudentCourses" layoutX="62.0" layoutY="355.0" prefHeight="25.0" prefWidth="128.0" stylesheets="@../css/style.css" />
+      <Label layoutX="289.0" layoutY="49.0" text="For more information, please select a student.">
          <font>
             <Font size="14.0" />
          </font>

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootStudentController">
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootStudentController">
    <top>
-      <HBox fx:id="buttonBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
+      <HBox fx:id="hBoxNavigationBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
          <children>
             <JFXButton fx:id="btnToday" buttonType="RAISED" onAction="#showToday" ripplerFill="WHITE" text="Today" textFill="WHITE">
                <HBox.margin>
@@ -19,7 +19,7 @@
                </HBox.margin>
             </JFXButton>
             <Label prefHeight="21.0" prefWidth="82.0" />
-            <JFXButton fx:id="btmStudentAttendance" buttonType="RAISED" onAction="#showStudentAttendance" text="Overview" textFill="WHITE">
+            <JFXButton fx:id="btnOverview" buttonType="RAISED" onAction="#showOverview" text="Overview" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="5.0" />
                </HBox.margin>
@@ -38,7 +38,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </ImageView>
-            <JFXButton fx:id="btnLogout" buttonType="RAISED" onAction="#handleLogout" text="Log out" textFill="WHITE" />
+            <JFXButton fx:id="btnLogOut" buttonType="RAISED" onAction="#handleLogout" text="Log out" textFill="WHITE" />
          </children>
       </HBox>
    </top>

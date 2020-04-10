@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
 import attendance.be.User;
-import attendance.gui.controller.StudentOverviewController;
-import attendance.gui.controller.StudentTodayController;
 import attendance.gui.model.ModelCreator;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.ILessonModel;
@@ -33,44 +26,40 @@ import javafx.stage.Stage;
 public class RootStudentController implements Initializable {
 
     @FXML
-    private HBox buttonBar;
+    private BorderPane borderPane;
+    @FXML
+    private HBox hBoxNavigationBar;
     @FXML
     private JFXButton btnToday;
     @FXML
-    private JFXButton btmStudentAttendance;
+    private JFXButton btnOverview;
     @FXML
-    private JFXButton btnLogout;
+    private Label lblHello;
+    @FXML
+    private JFXButton btnLogOut;
     @FXML
     private AnchorPane attachable;
+
     private final String TODAY_MODULE = "/attendance/gui/view/StudentTodayModule.fxml";
-    private final String STUDENT_ATTENDANCE_MODULE = "/attendance/gui/view/StudentOverviewModule.fxml";
+    private final String OVERVIEW_MODULE = "/attendance/gui/view/StudentOverviewModule.fxml";
     private final String LOGIN_VIEW = "/attendance/gui/view/Login.fxml";
 
     private User user;
-    @FXML
-    private Label lblHello;
     private ICourseModel courseModel;
     private final ILessonModel lessonModel;
     private final IRecordModel recordModel;
-
-    @FXML
-    private BorderPane borderPane;
 
     public RootStudentController() {
         lessonModel = ModelCreator.getInstance().getLessonModel();
         recordModel = ModelCreator.getInstance().getRecordModel();
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
 
     public void injectModel(ICourseModel courseModel) {
         this.courseModel = courseModel;
-
     }
 
     public void setUser(User currentUser) {
@@ -90,7 +79,7 @@ public class RootStudentController implements Initializable {
                 controller.injectModel(lessonModel);
                 controller.initializeTodayModule();
             }
-            if (MODULE.equals(STUDENT_ATTENDANCE_MODULE)) {
+            if (MODULE.equals(OVERVIEW_MODULE)) {
                 StudentOverviewController controller = fxmlLoader.getController();
                 controller.setUser(user);
                 controller.injectModels(courseModel, recordModel);
@@ -105,17 +94,17 @@ public class RootStudentController implements Initializable {
     @FXML
     private void showToday(ActionEvent event) {
         showModule(TODAY_MODULE);
-
     }
 
-    private void showDashboard(ActionEvent event) {
+    @FXML
+    private void showOverview(ActionEvent event) {
+        showModule(OVERVIEW_MODULE);
     }
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-
         Stage logOutStage;
-        logOutStage = (Stage) btnLogout.getScene().getWindow();
+        logOutStage = (Stage) btnLogOut.getScene().getWindow();
         logOutStage.close();
 
         URL url = getClass().getResource(LOGIN_VIEW);
@@ -126,12 +115,6 @@ public class RootStudentController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-
-    }
-
-    @FXML
-    private void showStudentAttendance(ActionEvent event) {
-        showModule(STUDENT_ATTENDANCE_MODULE);
     }
 
 }

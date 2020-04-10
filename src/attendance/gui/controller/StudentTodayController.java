@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,32 +32,22 @@ import javafx.scene.paint.Paint;
 public class StudentTodayController implements Initializable {
 
     @FXML
+    private AnchorPane anchorPane;
+    @FXML
     private Label lblUsername;
     @FXML
     private ImageView imgUser;
     @FXML
-    private Label lblTodayDate;
-    private Label lblSubject1;
-    private JFXToggleButton tglBtn1;
-    private JFXToggleButton tglBtn2;
+    private Label lblCurrentDate;
+    @FXML
+    private JFXComboBox<Lesson> cboLessons;
+    @FXML
+    private JFXToggleButton togglebtnRegistration;
 
     private User user;
-
-    private String UsernameLabel;
     private ILessonModel lessonModel;
-    @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
-    private JFXComboBox<Lesson> comboBoxCal;
-    @FXML
-    private JFXToggleButton tbRegister;
-
     private boolean threadRun = true;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
@@ -68,7 +59,6 @@ public class StudentTodayController implements Initializable {
 
     public void injectModel(ILessonModel lessonModel) {
         this.lessonModel = lessonModel;
-
     }
 
     public void initializeTodayModule() {
@@ -89,7 +79,6 @@ public class StudentTodayController implements Initializable {
                 }
             }
         }
-
     }
 
     private void setupCheckerThread() {
@@ -106,96 +95,92 @@ public class StudentTodayController implements Initializable {
                 });
             }
         }, 2, 4, TimeUnit.SECONDS);
-
     }
 
     private void showCurrentDate() {
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar cal = Calendar.getInstance();
-        lblTodayDate.setText(dateFormat.format(cal.getTime()));
+        Date today = new Date(System.currentTimeMillis());
+        DateFormat date = DateFormat.getDateInstance(DateFormat.FULL);
+        lblCurrentDate.setText(date.format(today));
     }
 
     @FXML
     private void handle_registerAttendance(ActionEvent event) {
-        Lesson lessonToUpdate = comboBoxCal.getSelectionModel().getSelectedItem();
+        Lesson lessonToUpdate = cboLessons.getSelectionModel().getSelectedItem();
 
-        if (tbRegister.isSelected()) {
-            tbRegister.setText("Present");
-            tbRegister.setDisable(true);
+        if (togglebtnRegistration.isSelected()) {
+            togglebtnRegistration.setText("Present");
+            togglebtnRegistration.setDisable(true);
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
             lessonModel.registerAttendance(user, lessonToUpdate);
-        } else if (!tbRegister.isSelected()) {
-            tbRegister.setText("Unregistered");
+        } else if (!togglebtnRegistration.isSelected()) {
+            togglebtnRegistration.setText("Unregistered");
         }
     }
 
     private void tbStatusSet() {
-        Lesson lessonItem = comboBoxCal.getSelectionModel().getSelectedItem();
-        tbRegister.setDisable(true);
-        tbRegister.getStyleClass().removeAll("redTB", "greenTB");
+        Lesson lessonItem = cboLessons.getSelectionModel().getSelectedItem();
+        togglebtnRegistration.setDisable(true);
+        togglebtnRegistration.getStyleClass().removeAll("redTB", "greenTB");
 
         if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
-            tbRegister.setText("Absent");
-            tbRegister.setSelected(true);
+            togglebtnRegistration.setText("Absent");
+            togglebtnRegistration.setSelected(true);
             setTBColors("Absent");
         } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
-            tbRegister.setText("Present");
-            tbRegister.setSelected(true);
+            togglebtnRegistration.setText("Present");
+            togglebtnRegistration.setSelected(true);
             setTBColors("Present");
         } else {
-            tbRegister.setText("Unregistered");
-            tbRegister.setSelected(false);
-            tbRegister.setDisable(false);
+            togglebtnRegistration.setText("Unregistered");
+            togglebtnRegistration.setSelected(false);
+            togglebtnRegistration.setDisable(false);
         }
     }
 
     private void setTBColors(String type) {
         if (type.equals("Absent")) {
-            tbRegister.setToggleColor(Paint.valueOf("#E5162F"));
-            tbRegister.setToggleLineColor(Paint.valueOf("#FFB2BB"));
+            togglebtnRegistration.setToggleColor(Paint.valueOf("#E5162F"));
+            togglebtnRegistration.setToggleLineColor(Paint.valueOf("#FFB2BB"));
 
         } else if (type.equals("Present")) {
-            tbRegister.setToggleColor(Paint.valueOf("#16b130"));
-            tbRegister.setToggleLineColor(Paint.valueOf("#98f2a7"));
+            togglebtnRegistration.setToggleColor(Paint.valueOf("#16b130"));
+            togglebtnRegistration.setToggleLineColor(Paint.valueOf("#98f2a7"));
         }
     }
 
     @FXML
     private void subjectStatusCheck(ActionEvent event) {
         tbStatusSet();
-
     }
 
     private void refreshCombobox() {
-        int lessonItem = comboBoxCal.getSelectionModel().getSelectedIndex();
-        comboBoxCal.getSelectionModel().select(lessonItem);
+        int lessonItem = cboLessons.getSelectionModel().getSelectedIndex();
+        cboLessons.getSelectionModel().select(lessonItem);
         tbStatusSet();
     }
 
     private void setLessonsToCB() {
         if (lessonModel.getLessonsForToday() != null) {
-            comboBoxCal.getItems().clear();
-            comboBoxCal.getItems().setAll(lessonModel.getLessonsForToday());
+            cboLessons.getItems().clear();
+            cboLessons.getItems().setAll(lessonModel.getLessonsForToday());
         }
     }
 
     private void selectInitialLesson() {
         List<Lesson> lessonList = lessonModel.getLessonsForToday();
-        tbRegister.setDisable(true);
+        togglebtnRegistration.setDisable(true);
         for (Lesson lesson : lessonList) {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
                 //  select current
-                comboBoxCal.getSelectionModel().select(lesson);
+                cboLessons.getSelectionModel().select(lesson);
             } else {
                 //  select first one
-                comboBoxCal.getSelectionModel().select(0);
+                cboLessons.getSelectionModel().select(0);
             }
         }
     }
 
     public void onFinish(Thread thread) {
-
         try {
             if (threadRun) {
                 thread.wait(1000, 0);// This is wrong. Check correct usage.
@@ -206,4 +191,5 @@ public class StudentTodayController implements Initializable {
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }

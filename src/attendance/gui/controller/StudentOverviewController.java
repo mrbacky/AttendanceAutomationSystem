@@ -52,17 +52,9 @@ public class StudentOverviewController implements Initializable {
     private ICourseModel courseModel;
     private IRecordModel recordModel;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-//        setCoursesIntoComboBox();
-//        setTableView();
-//        selectCourse();
-//        lblAbsence.textProperty().bind(Bindings.convert(lessonModel.absencePercentageLabelProperty()));
-    }
+   }
 
     public void injectModels(ICourseModel courseModel, IRecordModel recordModel) {
         this.courseModel = courseModel;

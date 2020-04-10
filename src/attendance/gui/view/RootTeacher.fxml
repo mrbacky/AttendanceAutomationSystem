@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootTeacherController">
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootTeacherController">
    <top>
-      <HBox fx:id="buttonBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
+      <HBox fx:id="hBoxNavigationBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
          <children>
             <Label prefHeight="21.0" prefWidth="67.0" />
             <Label prefHeight="21.0" prefWidth="242.0" />
@@ -37,7 +37,7 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </ImageView>
-            <JFXButton fx:id="btnLogout" buttonType="RAISED" onAction="#handleLogout" prefHeight="31.0" prefWidth="116.0" text="Log out" textFill="WHITE" />
+            <JFXButton fx:id="btnLogOut" buttonType="RAISED" onAction="#handleLogout" prefHeight="31.0" prefWidth="116.0" text="Log out" textFill="WHITE" />
          </children>
       </HBox>
    </top>
