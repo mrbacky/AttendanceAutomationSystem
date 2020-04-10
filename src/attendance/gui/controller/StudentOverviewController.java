@@ -3,24 +3,13 @@ package attendance.gui.controller;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.gui.model.concrete.CourseModel;
-import attendance.gui.model.concrete.LessonModel;
-import attendance.gui.model.ModelException;
-import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
-import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IRecordModel;
 import com.jfoenix.controls.JFXComboBox;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -37,6 +26,8 @@ import javafx.scene.shape.Rectangle;
 public class StudentOverviewController implements Initializable {
 
     @FXML
+    private JFXComboBox<Course> cboCourses;
+    @FXML
     private TableView<Lesson> tblAttendance;
     @FXML
     private TableColumn<Lesson, String> colDay;
@@ -49,19 +40,17 @@ public class StudentOverviewController implements Initializable {
     @FXML
     private TableColumn<Lesson, Lesson.StatusType> colStatus;
     @FXML
-    private Label lblAbsence;
-    @FXML
-    private JFXComboBox<Course> cboCourses;
-
-    private User user;
-    private ICourseModel courseModel;
-    private IRecordModel recordModel;
-    @FXML
     private Rectangle rectangle;
+    @FXML
+    private Label lblAbsence;
     @FXML
     private Label lblAbsence1;
     @FXML
     private Label lblAbsence2;
+
+    private User user;
+    private ICourseModel courseModel;
+    private IRecordModel recordModel;
 
     /**
      * Initializes the controller class.
@@ -93,11 +82,10 @@ public class StudentOverviewController implements Initializable {
 
     private void setCoursesIntoComboBox() {
         if (courseModel.getCourseList() != null) {
-            courseModel.loadAllCourses(user.getId());
+            courseModel.loadAllCourses(user);
             cboCourses.getItems().clear();
             cboCourses.getItems().addAll(courseModel.getCourseList());
         }
-
     }
 
     private void setTableView() {
@@ -110,7 +98,7 @@ public class StudentOverviewController implements Initializable {
         colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
 
         tblAttendance.setItems(recordModel.getRecordList());
-        recordModel.loadAllRecords(user.getId());
+        recordModel.loadAllRecords(user);
     }
 
     private void setColumnWidth() {
@@ -125,7 +113,7 @@ public class StudentOverviewController implements Initializable {
     private void selectCourse() {
         cboCourses.getSelectionModel().selectedItemProperty().addListener((options, oldVal, newVal) -> {
             if (newVal != null) {
-                recordModel.filterRecordsByCourse(user.getId(), newVal.getId());
+                recordModel.filterRecordsByCourse(user, newVal);
             }
         });
     }

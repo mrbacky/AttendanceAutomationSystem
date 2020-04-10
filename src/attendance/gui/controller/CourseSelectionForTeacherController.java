@@ -1,26 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
 import attendance.be.Course;
-import attendance.be.Teacher;
 import attendance.be.User;
-import attendance.gui.controller.LoginController;
-import attendance.gui.model.ModelCreator;
-import attendance.gui.model.concrete.CourseModel;
-import attendance.gui.model.ModelException;
-import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ICourseModel;
-import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,8 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -70,7 +55,7 @@ public class CourseSelectionForTeacherController implements Initializable {
     }
 
     public void initializeComboBox() {
-        courseModel.loadAllCourses(user.getId());
+        courseModel.loadAllCourses(user);
         loadCoursesInCombobox();
         Wronglbl.setId("Wronglbl");
 

@@ -3,8 +3,8 @@ package attendance.gui.model.interfaces;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
+import attendance.be.User;
 import java.util.List;
-import java.util.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -15,7 +15,7 @@ import javafx.scene.chart.XYChart;
  */
 public interface IRecordModel {
 
-    void loadAllRecords(int userId);
+    void loadAllRecords(User student);
 
     ObservableList<Lesson> getRecordList();
 
@@ -23,7 +23,7 @@ public interface IRecordModel {
 
     ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount();
 
-    void filterRecordsByCourse(int userId, int courseId);
+    void filterRecordsByCourse(User student, Course course);
 
     int calculateAbsenceLabel(List<Lesson> list);
 

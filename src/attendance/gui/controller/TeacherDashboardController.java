@@ -5,7 +5,6 @@ import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
 import attendance.gui.model.interfaces.ICourseModel;
-import attendance.gui.model.interfaces.ILessonModel;
 import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;
 import java.net.URL;
@@ -81,7 +80,7 @@ public class TeacherDashboardController implements Initializable {
 
     void initializeView() {
         firstTableViewSelection = true;
-        courseModel.loadAllCourses(user.getId());
+        courseModel.loadAllCourses(user);
         setCoursesIntoComboBox();
         setTableViewsForCourseOverview();
         setTotalStudentLabel();
@@ -165,7 +164,7 @@ public class TeacherDashboardController implements Initializable {
     private void selectFirstCourse(Student student) {
         if (student != null) {
             comboBoxCourses1.getItems().clear();
-            courseModel.loadAllCourses(student.getId());
+            courseModel.loadAllCourses(student);
             comboBoxCourses1.getItems().addAll(courseModel.getCourseList());
             comboBoxCourses1.getSelectionModel().select(comboBoxCourses.getValue());
         }

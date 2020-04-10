@@ -1,25 +1,13 @@
 package attendance.gui.model.concrete;
 
-import attendance.be.Course;
 import attendance.be.Lesson;
-import attendance.be.Student;
-import attendance.bll.BLLManager;
-import attendance.bll.observable.ConcreteObservable3;
-import attendance.bll.observable.ConcreteObservable4;
-import attendance.bll.util.AbsenceCounter;
-import attendance.bll.util.AbsencePercentageCalculator;
+import attendance.be.User;
 import attendance.gui.model.interfaces.ILessonModel;
 import java.time.LocalDate;
 import java.util.List;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import attendance.bll.IBLLFacade;
-import attendance.bll.util.ObserverEvent;
-import attendance.bll.observer.DataObserver;
-import javafx.application.Platform;
-import javafx.scene.chart.XYChart;
 
 /**
  *
@@ -32,17 +20,16 @@ public class LessonModel implements ILessonModel {
 
     public LessonModel(IBLLFacade bllManager) {
         this.bllManager = bllManager;
-
     }
 
     /**
      *
-     * @param userId
+     * @param student
      * @param current
      */
     @Override
-    public void loadLessonsForToday(int userId, LocalDate current) {// calculate absence here
-        List<Lesson> allLessons = bllManager.getLessonsForToday(userId, current);
+    public void loadLessonsForToday(User student, LocalDate current) {
+        List<Lesson> allLessons = bllManager.getLessonsForToday(student, current);
         lessonList.clear();
         lessonList.addAll(allLessons);
     }
@@ -58,14 +45,14 @@ public class LessonModel implements ILessonModel {
 
     /**
      *
-     * @param userId
-     * @param lessonToInsert
+     * @param student
+     * @param lesson
      */
     @Override
-    public void registerAttendance(int userId, Lesson lessonToInsert) {
-        bllManager.createRecord(userId, lessonToInsert);
-        int index = lessonList.indexOf(lessonToInsert);
-        lessonList.set(index, lessonToInsert);
+    public void registerAttendance(User student, Lesson lesson) {
+        bllManager.createRecord(student, lesson);
+        int index = lessonList.indexOf(lesson);
+        lessonList.set(index, lesson);
     }
 
 }

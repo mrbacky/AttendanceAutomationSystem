@@ -3,7 +3,6 @@ package attendance.gui.model.concrete;
 import attendance.gui.model.ModelException;
 import attendance.be.User;
 import attendance.bll.util.LogicException;
-import attendance.bll.BLLManager;
 import attendance.gui.model.interfaces.IUserModel;
 import attendance.bll.IBLLFacade;
 

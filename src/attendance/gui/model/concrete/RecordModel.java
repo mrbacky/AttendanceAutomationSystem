@@ -3,9 +3,9 @@ package attendance.gui.model.concrete;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
+import attendance.be.User;
 import attendance.bll.IBLLFacade;
-import attendance.bll.observable.ConcreteObservable3;
-import attendance.bll.observable.ConcreteObservable4;
+import attendance.bll.observable.ConcreteObservable2;
 import attendance.bll.observer.DataObserver;
 import attendance.bll.util.AbsenceCounter;
 import attendance.bll.util.AbsencePercentageCalculator;
@@ -33,8 +33,7 @@ public class RecordModel implements IRecordModel {
     private final AbsencePercentageCalculator aCalc;
 
     private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
-    private ConcreteObservable3 bllComponent3;
-    private ConcreteObservable4 bllComponent4;
+    private ConcreteObservable2 bllComponent2;
 
     public RecordModel(IBLLFacade bllManager) {
         this.bllManager = bllManager;
@@ -43,8 +42,8 @@ public class RecordModel implements IRecordModel {
     }
 
     @Override
-    public void loadAllRecords(int userId) {
-        List<Lesson> allRecords = bllManager.getAttendanceRecordsForAllCourses(userId);
+    public void loadAllRecords(User student) {
+        List<Lesson> allRecords = bllManager.getAttendanceRecordsForAllCourses(student);
         for (Lesson record : allRecords) {
             record.setDay();
             record.setDate();
@@ -64,23 +63,26 @@ public class RecordModel implements IRecordModel {
     @Override
     public void startObserving(Student s, Course c) {
         ObserverEvent e = new ObserverEvent(c, s);
-        bllComponent3 = new ConcreteObservable3(e);
-        bllComponent4 = new ConcreteObservable4(e);
-        DataObserver observer = (ObserverEvent e1) -> {
-            Platform.runLater(() -> {
-                List<Lesson> records = bllComponent3.getState();
-                if (records != null) {
-                    recordList.setAll(records);
-                }
-                List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
-                if (i != null) {
-                    absencePerWeekday.setAll(i);
-                }
-            });
+        bllComponent2 = new ConcreteObservable2(e);
+        DataObserver observer = new DataObserver() {
+            @Override
+            public void update(ObserverEvent e) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Lesson> records = bllComponent2.getRecordListState();
+                        if (records != null) {
+                            recordList.setAll(records);
+                        }
+                        List<XYChart.Data<String, Integer>> i = bllComponent2.getWeekdayAbsenceState();
+                        if (i != null) {
+                            absencePerWeekday.setAll(i);
+                        }
+                    }
+                });
+            }
         };
-        bllComponent3.attach(observer);
-        bllComponent4.attach(observer);
-
+        bllComponent2.attach(observer);
     }
 
     @Override
@@ -89,8 +91,8 @@ public class RecordModel implements IRecordModel {
     }
 
     @Override
-    public void filterRecordsByCourse(int userId, int courseId) {
-        List<Lesson> temp = bllManager.getAttendanceRecordsForACourse(userId, courseId);
+    public void filterRecordsByCourse(User student, Course course) {
+        List<Lesson> temp = bllManager.getAttendanceRecordsForACourse(student, course);
         for (Lesson record : temp) {
             record.setDay();
             record.setDate();
@@ -125,8 +127,7 @@ public class RecordModel implements IRecordModel {
 
     @Override
     public void stopObserving() {
-        bllComponent3.setIsRunning(false);
-        bllComponent4.setIsRunning(false);
+        bllComponent2.setIsRunning(false);
     }
 
 }

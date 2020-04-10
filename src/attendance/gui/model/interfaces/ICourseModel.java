@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.model.interfaces;
 
 import attendance.be.Course;
-import java.util.List;
+import attendance.be.User;
 import javafx.collections.ObservableList;
 
 /**
@@ -15,9 +10,8 @@ import javafx.collections.ObservableList;
  */
 public interface ICourseModel {
 
-    void loadAllCourses(int userId);
-    
+    void loadAllCourses(User user);
+
     ObservableList<Course> getCourseList();
-    
 
 }

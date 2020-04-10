@@ -1,47 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package attendance.gui.controller;
 
-import attendance.Attendance;
 import attendance.be.Lesson;
 import attendance.be.User;
-import attendance.gui.model.ModelException;
-import attendance.gui.model.concrete.LessonModel;
-import attendance.gui.model.concrete.UserModel;
 import attendance.gui.model.interfaces.ILessonModel;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXToggleButton;
-import java.awt.Color;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import java.lang.String;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Paint;
 
 public class StudentTodayController implements Initializable {
@@ -88,7 +72,7 @@ public class StudentTodayController implements Initializable {
     }
 
     public void initializeTodayModule() {
-        lessonModel.loadLessonsForToday(user.getId(), LocalDate.now());
+        lessonModel.loadLessonsForToday(user, LocalDate.now());
         setLessonsToCB();
         selectInitialLesson();
         tbStatusSet();
@@ -101,7 +85,7 @@ public class StudentTodayController implements Initializable {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
                     lesson.setStatusType(Lesson.StatusType.ABSENT);
-                    lessonModel.registerAttendance(user.getId(), lesson);
+                    lessonModel.registerAttendance(user, lesson);
                 }
             }
         }
@@ -140,7 +124,7 @@ public class StudentTodayController implements Initializable {
             tbRegister.setText("Present");
             tbRegister.setDisable(true);
             lessonToUpdate.setStatusType(Lesson.StatusType.PRESENT);
-            lessonModel.registerAttendance(user.getId(), lessonToUpdate);
+            lessonModel.registerAttendance(user, lessonToUpdate);
         } else if (!tbRegister.isSelected()) {
             tbRegister.setText("Unregistered");
         }

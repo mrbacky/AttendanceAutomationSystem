@@ -28,28 +28,28 @@ public class BLLManager implements IBLLFacade {
     }
 
     @Override
-    public List<Course> getCourses(int userId) {
-        return dalFacade.getCourses(userId);
+    public List<Course> getCourses(User user) {
+        return dalFacade.getCourses(user);
     }
 
     @Override
-    public List<Lesson> getLessonsForToday(int userId, LocalDate current) {
-        return dalFacade.getLessonsForToday(userId, current);
+    public List<Lesson> getLessonsForToday(User student, LocalDate current) {
+        return dalFacade.getLessonsForToday(student, current);
     }
 
     @Override
-    public void createRecord(int userId, Lesson lessonToUpdate) {
-        dalFacade.createRecord(userId, lessonToUpdate);
+    public void createRecord(User student, Lesson lessonToUpdate) {
+        dalFacade.createRecord(student, lessonToUpdate);
     }
 
     @Override
-    public List<Lesson> getAttendanceRecordsForAllCourses(int userId) {
-        return dalFacade.getAttendanceRecordsForAllCourses(userId);
+    public List<Lesson> getAttendanceRecordsForAllCourses(User student) {
+        return dalFacade.getAttendanceRecordsForAllCourses(student);
     }
 
     @Override
-    public List<Lesson> getAttendanceRecordsForACourse(int userId, int courseId) {
-        return dalFacade.getAttendanceRecordsForACourse(userId, courseId);
+    public List<Lesson> getAttendanceRecordsForACourse(User student, Course course) {
+        return dalFacade.getAttendanceRecordsForACourse(student, course);
     }
 
 }

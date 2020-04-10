@@ -4,7 +4,6 @@ import attendance.be.Course;
 import attendance.be.Student;
 import attendance.bll.observer.DataObserver;
 import attendance.bll.observable.ConcreteObservable;
-import attendance.bll.observable.ConcreteObservable2;
 import attendance.gui.model.interfaces.IStudentModel;
 import java.util.List;
 import javafx.application.Platform;
@@ -27,10 +26,8 @@ public class StudentModel implements IStudentModel {
     private final IntegerProperty enrolledStudentsLabel;
     private final IntegerProperty attendanceCountProperty;
     private ConcreteObservable bllComponent;
-    private ConcreteObservable2 bllComponent2;
 
     public StudentModel(IBLLFacade bllManager) {
-
         attendanceCountProperty = new SimpleIntegerProperty();
         enrolledStudentsLabel = new SimpleIntegerProperty();
     }
@@ -47,17 +44,17 @@ public class StudentModel implements IStudentModel {
 
     @Override
     public void startObserving(Course c) {
+        System.out.println("startObserving THREAD" + Thread.activeCount());
         ObserverEvent e = new ObserverEvent(c);
         bllComponent = new ConcreteObservable(e);
-        bllComponent2 = new ConcreteObservable2(e);
         DataObserver observer = new DataObserver() {
             @Override
             public void update(ObserverEvent e) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        attendanceCountProperty.setValue(bllComponent.getState());
-                        List<Student> s = bllComponent2.getState();
+                        attendanceCountProperty.setValue(bllComponent.getPresentCountState());
+                        List<Student> s = bllComponent.getStudentListState();
                         if (s != null) {
                             studentList.setAll(s);
                             enrolledStudentsLabel.setValue(s.size());
@@ -67,13 +64,11 @@ public class StudentModel implements IStudentModel {
             }
         };
         bllComponent.attach(observer);
-        bllComponent2.attach(observer);
     }
 
     @Override
     public void stopObserving() {
         bllComponent.setIsRunning(false);
-        bllComponent2.setIsRunning(false);
     }
 
     @Override
