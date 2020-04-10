@@ -6,7 +6,6 @@ import attendance.be.Student;
 import attendance.be.User;
 import attendance.bll.BLLManager;
 import attendance.bll.observable.ConcreteObservable3;
-import attendance.bll.observable.ConcreteObservable4;
 import attendance.bll.util.AbsenceCounter;
 import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.gui.model.interfaces.ILessonModel;
@@ -37,7 +36,6 @@ public class LessonModel implements ILessonModel {
 
     private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
     private ConcreteObservable3 bllComponent3;
-    private ConcreteObservable4 bllComponent4;
 
     public LessonModel(IBLLFacade bllManager) {
         this.bllFacade = bllManager;
@@ -166,7 +164,6 @@ public class LessonModel implements ILessonModel {
     public void startObserving(Student s, Course c) {
         ObserverEvent e = new ObserverEvent(c, s);
         bllComponent3 = new ConcreteObservable3(e);
-        bllComponent4 = new ConcreteObservable4(e);
         DataObserver observer = new DataObserver() {
             @Override
             public void update(ObserverEvent e) {
@@ -177,7 +174,7 @@ public class LessonModel implements ILessonModel {
                         if (l != null) {
                             recordList.setAll(l);
                         }
-                        List<XYChart.Data<String, Integer>> i = bllComponent4.getState();
+                        List<XYChart.Data<String, Integer>> i = bllComponent3.getWeekdayAbsenceState();
                         if (i != null) {
                             absencePerWeekday.setAll(i);
                         }
@@ -186,7 +183,6 @@ public class LessonModel implements ILessonModel {
             }
         };
         bllComponent3.attach(observer);
-        bllComponent4.attach(observer);
     }
 
     /**
@@ -195,7 +191,6 @@ public class LessonModel implements ILessonModel {
     @Override
     public void stopObserving() {
         bllComponent3.setIsRunning(false);
-        bllComponent4.setIsRunning(false);
     }
 
 }
