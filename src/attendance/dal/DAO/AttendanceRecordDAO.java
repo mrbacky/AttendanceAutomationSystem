@@ -46,7 +46,7 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
 
     @Override
     public List<Lesson> getAttendanceRecordsForAllCourses(User student) {
-        List<Lesson> cc = new ArrayList<>();
+        List<Lesson> records = new ArrayList<>();
         String sql
                 = "SELECT AR.courseCalendarId, C.name, CC.startTime, CC.endTime, AR.status "
                 + "FROM AttendanceRecord AR "
@@ -68,12 +68,12 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
                 String type = rs.getString("status");
 
                 if (type.contains("PRESENT")) {
-                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
+                    records.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
                 } else if (type.contains("ABSENT")) {
-                    cc.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
+                    records.add(new Lesson(id, courseName, start, end, Lesson.StatusType.ABSENT));
                 }
             }
-            return cc;
+            return records;
         } catch (SQLServerException ex) {
             Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

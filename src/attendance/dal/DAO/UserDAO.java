@@ -44,4 +44,5 @@ public class UserDAO implements IUserDAO {
             throw new DalException(ex.getMessage());
         }
     }
+
 }

@@ -41,14 +41,14 @@ public class LessonDAO implements ILessonDAO {
                 + "ON CC.courseId = C.id "
                 + "WHERE ";
 
-        List<Course> cs = courseDAO.getCourses(student);
+        List<Course> courses = courseDAO.getCourses(student);
 
-        String sqlFinal = preparedStatement(sql, cs);
+        String sqlFinal = preparedStatement(sql, courses);
 
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sqlFinal);
             int i = 0;
-            for (Course c : cs) {
+            for (Course c : courses) {
                 pstmt.setInt(i + 1, c.getId());
                 i++;
             }
@@ -61,7 +61,7 @@ public class LessonDAO implements ILessonDAO {
                 String courseName = rs.getString("name");
                 LocalDateTime start = rs.getTimestamp("startTime").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("endTime").toLocalDateTime();
-                String status = checkStatus(student.getId(), id);
+                String status = checkStatus(student, id);
                 if (status.contains("PRESENT")) {
                     lessons.add(new Lesson(id, courseName, start, end, Lesson.StatusType.PRESENT));
                 } else if (status.contains("ABSENT")) {
@@ -80,11 +80,12 @@ public class LessonDAO implements ILessonDAO {
     }
 
     /**
-     * The conditions of the SQL PreparedStatement for getLessonsForToday().
+     * Builds the conditions of the SQL PreparedStatement for
+     * getLessonsForToday().
      *
      * @param sql The SQL PreparedStatement.
-     * @param courses
-     * @return
+     * @param courses The list of courses.
+     * @return The conditions for the SQL.
      */
     private String preparedStatement(String sql, List<Course> courses) {
         boolean firstItem = true;
@@ -100,14 +101,21 @@ public class LessonDAO implements ILessonDAO {
         return sql;
     }
 
-    private String checkStatus(int userId, int calId) {
+    /**
+     * Checks the status of the lessons for the current day.
+     *
+     * @param user The user.
+     * @param lessonId The id of the lesson.
+     * @return
+     */
+    private String checkStatus(User user, int lessonId) {
         String sql = "SELECT status "
                 + "FROM AttendanceRecord "
                 + "WHERE userId = ? AND courseCalendarId = ?;";
         try (Connection con = connection.getConnection()) {
             PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, calId);
+            pstmt.setInt(1, user.getId());
+            pstmt.setInt(2, lessonId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -119,8 +127,8 @@ public class LessonDAO implements ILessonDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CourseDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String s = "UNREGISTERED";
-        return s;
+        String status = "UNREGISTERED";
+        return status;
     }
 
     @Override

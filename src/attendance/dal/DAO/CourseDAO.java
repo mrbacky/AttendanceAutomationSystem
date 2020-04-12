@@ -46,7 +46,6 @@ public class CourseDAO implements ICourseDAO {
                 String courseName = rs.getString("name");
                 courses.add(new Course(courseId, courseName));
             }
-            System.out.println("print in CourseDAO > courses for student: " + courses);
             return courses;
         } catch (SQLServerException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);

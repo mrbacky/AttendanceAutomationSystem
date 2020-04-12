@@ -4,7 +4,6 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,7 +42,8 @@ public interface IAttendanceRecordDAO {
      * Gets the number of absent lessons for each student for a course.
      *
      * @param course The selected course.
-     * @return The list of students with absent lesson count.
+     * @return The list of students with an absent lesson count for each
+     * student.
      */
     List<Student> getNumberOfAbsentLessons(Course course);
 
@@ -56,6 +56,13 @@ public interface IAttendanceRecordDAO {
      */
     int getAttendanceForLesson(Course course, LocalDateTime current);
 
+    /**
+     * Gets the last recorded time for all attendance records of a course in the
+     * database.
+     *
+     * @param course The course.
+     * @return The time of the last update.
+     */
     LocalDateTime getTimeOfLastUpdate(Course course);
 
 }

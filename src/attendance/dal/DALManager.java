@@ -91,8 +91,8 @@ public class DALManager implements IDALFacade {
     @Override
     public boolean hasUpdate(Course course, LocalDateTime lastReceivedUpdate) {
         if (course.getId() != 0 && lastReceivedUpdate != null) {
-            LocalDateTime ld = attendanceDAO.getTimeOfLastUpdate(course);
-            boolean hasUpdate = lastReceivedUpdate.isBefore(ld);
+            LocalDateTime databaseUpdate = attendanceDAO.getTimeOfLastUpdate(course);
+            boolean hasUpdate = lastReceivedUpdate.isBefore(databaseUpdate);
             return hasUpdate;
         }
         return false;
