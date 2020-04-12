@@ -10,6 +10,4 @@ public class Teacher extends User {
         super(id, name, UserType.TEACHER);
     }
 
-    
-
 }

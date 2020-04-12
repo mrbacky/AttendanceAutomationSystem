@@ -19,7 +19,7 @@ public interface IDALFacade {
      *
      * @param username The username of the user.
      * @param password The password of the user.
-     * @return
+     * @return The user.
      * @throws DalException
      */
     User getUser(String username, String password) throws DalException;

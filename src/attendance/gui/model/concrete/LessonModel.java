@@ -22,11 +22,6 @@ public class LessonModel implements ILessonModel {
         this.bllManager = bllManager;
     }
 
-    /**
-     *
-     * @param student
-     * @param current
-     */
     @Override
     public void loadLessonsForToday(User student, LocalDate current) {
         List<Lesson> allLessons = bllManager.getLessonsForToday(student, current);
@@ -34,20 +29,11 @@ public class LessonModel implements ILessonModel {
         lessonList.addAll(allLessons);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public ObservableList<Lesson> getLessonsForToday() {
         return lessonList;
     }
 
-    /**
-     *
-     * @param student
-     * @param lesson
-     */
     @Override
     public void registerAttendance(User student, Lesson lesson) {
         bllManager.createRecord(student, lesson);

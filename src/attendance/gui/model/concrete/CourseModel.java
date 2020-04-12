@@ -21,10 +21,6 @@ public class CourseModel implements ICourseModel {
         this.bllManager = bllManager;
     }
 
-    /**
-     *
-     * @param user
-     */
     @Override
     public void loadAllCourses(User user) {
         List<Course> allCourses = bllManager.getCourses(user);

@@ -19,9 +19,11 @@ public interface IRecordModel {
 
     ObservableList<Lesson> getRecordList();
 
+    ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount();
+
     void startObserving(Student s, Course c);
 
-    ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount();
+    void stopObserving();
 
     void filterRecordsByCourse(User student, Course course);
 
@@ -32,7 +34,5 @@ public interface IRecordModel {
     void setAbsencePercentageLabel(int value);
 
     IntegerProperty absencePercentageLabelProperty();
-
-    void stopObserving();
 
 }

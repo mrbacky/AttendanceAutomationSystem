@@ -28,82 +28,11 @@ public class Lesson {
     private final StringProperty timeFrame = new SimpleStringProperty();
 
     public Lesson(int id, String courseName, LocalDateTime startTime, LocalDateTime endTime, StatusType statusType) {
-        // courseID?
         this.id.set(id);
         this.courseName.set(courseName);
         this.startTime.set(startTime);
         this.endTime.set(endTime);
         this.statusType = statusType;
-        setDay();
-        setDate();
-
-    }
-
-    @Override
-    public String toString() {
-//        return "CourseCal{" + "courseName=" + courseName + ", startTime=" + startTime + ", endTime=" + endTime + '}';
-        String output = formatTime(startTime.get()) + "-" + formatTime(endTime.get()) + " " + courseName.get();
-        return output;
-    }
-
-    private String formatTime(LocalDateTime timeToProcess) {
-        return "" + timeToProcess.getHour() + ":" + checkIfNot10(timeToProcess.getMinute());
-    }
-
-    private String checkIfNot10(int time) {
-        String timeStringas = "" + time;
-        if (time < 10) {
-            timeStringas = "0" + timeStringas;
-        }
-        return timeStringas;
-    }
-
-    public enum StatusType {
-        PRESENT, ABSENT, UNREGISTERED
-    }
-
-    public StatusType getStatusType() {
-        return statusType;
-    }
-
-    public void setStatusType(StatusType statusType) {
-        this.statusType = statusType;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime.get();
-    }
-
-    public void setEndTime(LocalDateTime value) {
-        endTime.set(value);
-    }
-
-    public ObjectProperty endTimeProperty() {
-        return endTime;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime.get();
-    }
-
-    public void setStartTime(LocalDateTime value) {
-        startTime.set(value);
-    }
-
-    public ObjectProperty startTimeProperty() {
-        return startTime;
-    }
-
-    public String getCourseName() {
-        return courseName.get();
-    }
-
-    public void setCourseName(String value) {
-        courseName.set(value);
-    }
-
-    public StringProperty courseNameProperty() {
-        return courseName;
     }
 
     public int getId() {
@@ -117,7 +46,43 @@ public class Lesson {
     public IntegerProperty idProperty() {
         return id;
     }
+    
+    public String getCourseName() {
+        return courseName.get();
+    }
 
+    public void setCourseName(String value) {
+        courseName.set(value);
+    }
+
+    public StringProperty courseNameProperty() {
+        return courseName;
+    }
+    
+    public LocalDateTime getStartTime() {
+        return startTime.get();
+    }
+
+    public void setStartTime(LocalDateTime value) {
+        startTime.set(value);
+    }
+
+    public ObjectProperty startTimeProperty() {
+        return startTime;
+    }
+    
+    public LocalDateTime getEndTime() {
+        return endTime.get();
+    }
+
+    public void setEndTime(LocalDateTime value) {
+        endTime.set(value);
+    }
+
+    public ObjectProperty endTimeProperty() {
+        return endTime;
+    }
+    
     public String getDay() {
         return day.get();
     }
@@ -168,4 +133,36 @@ public class Lesson {
     public StringProperty timeFrameProperty() {
         return timeFrame;
     }
+    
+    public enum StatusType {
+        PRESENT, ABSENT, UNREGISTERED
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+    }
+   
+    @Override
+    public String toString() {
+    //return "CourseCal{" + "courseName=" + courseName + ", startTime=" + startTime + ", endTime=" + endTime + '}';
+        String output = formatTime(startTime.get()) + "-" + formatTime(endTime.get()) + " " + courseName.get();
+        return output;
+    }
+
+    private String formatTime(LocalDateTime timeToProcess) {
+        return "" + timeToProcess.getHour() + ":" + checkIfNot10(timeToProcess.getMinute());
+    }
+
+    private String checkIfNot10(int time) {
+        String timeStringas = "" + time;
+        if (time < 10) {
+            timeStringas = "0" + timeStringas;
+        }
+        return timeStringas;
+    }
+    
 }

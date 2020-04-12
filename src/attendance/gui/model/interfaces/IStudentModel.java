@@ -10,20 +10,20 @@ import javafx.collections.ObservableList;
  *
  * @author rado
  */
-public interface IStudentModel {   
+public interface IStudentModel {
 
     ObservableList<Student> getStudentList();
 
     ObservableValue<Number> getAttendanceCountProperty();
-
-    void startObserving(Course c);
 
     int getEnrolledStudentsLabel();
 
     void setEnrolledStudentsLabel(int value);
 
     IntegerProperty enrolledStudentsLabelProperty();
-    
+
+    void startObserving(Course c);
+
     void stopObserving();
 
 }

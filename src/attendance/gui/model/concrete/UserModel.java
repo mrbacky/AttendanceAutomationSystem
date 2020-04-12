@@ -20,11 +20,6 @@ public class UserModel implements IUserModel {
         this.bllFacade = bllFacade;
     }
 
-    /**
-     *
-     * @return
-     * @throws ModelException
-     */
     @Override
     public User getCurrentUser() throws ModelException {    // not used
         //check parameter example
@@ -34,13 +29,6 @@ public class UserModel implements IUserModel {
         return currentUser;
     }
 
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     * @throws ModelException
-     */
     @Override
     public User login(String username, String password) throws ModelException {
         //check username, password
@@ -56,7 +44,6 @@ public class UserModel implements IUserModel {
                 throw new ModelException(ex.getMessage());
             }
         }
-
         return currentUser;
     }
 
@@ -75,4 +62,5 @@ public class UserModel implements IUserModel {
         }
         return username.matches(".*([a-zA-Z].*[0-9]|[0-9].*[a-zA-Z]).*");
     }
+
 }

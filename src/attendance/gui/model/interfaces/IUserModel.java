@@ -13,11 +13,6 @@ public interface IUserModel {
 
     User login(String username, String password) throws ModelException;
 
-    /**
-     *
-     * @param username
-     * @return
-     */
     boolean usernameCheck(String username);
 
     boolean passwordCheck(String username);

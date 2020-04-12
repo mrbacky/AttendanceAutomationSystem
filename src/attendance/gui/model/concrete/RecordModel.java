@@ -30,7 +30,7 @@ public class RecordModel implements IRecordModel {
     private final ObservableList<Lesson> recordList = FXCollections.observableArrayList();
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
     private final AbsenceCounter aCounter;
-    private final AbsencePercentageCalculator aCalc;
+    private final AbsencePercentageCalculator aCalculator;
 
     private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
     private ConcreteObservable2 bllComponent2;
@@ -38,7 +38,7 @@ public class RecordModel implements IRecordModel {
     public RecordModel(IBLLFacade bllManager) {
         this.bllManager = bllManager;
         aCounter = new AbsenceCounter();
-        aCalc = new AbsencePercentageCalculator();
+        aCalculator = new AbsencePercentageCalculator();
     }
 
     @Override
@@ -61,6 +61,11 @@ public class RecordModel implements IRecordModel {
     }
 
     @Override
+    public ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount() {
+        return absencePerWeekday;
+    }
+    
+    @Override
     public void startObserving(Student s, Course c) {
         ObserverEvent e = new ObserverEvent(c, s);
         bllComponent2 = new ConcreteObservable2(e);
@@ -71,6 +76,10 @@ public class RecordModel implements IRecordModel {
                     @Override
                     public void run() {
                         List<Lesson> records = bllComponent2.getRecordListState();
+                        for (Lesson record : records) {
+                            record.setDay();
+                            record.setDate();
+                        }
                         if (records != null) {
                             recordList.setAll(records);
                         }
@@ -86,10 +95,10 @@ public class RecordModel implements IRecordModel {
     }
 
     @Override
-    public ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount() {
-        return absencePerWeekday;
+    public void stopObserving() {
+        bllComponent2.setIsRunning(false);
     }
-
+    
     @Override
     public void filterRecordsByCourse(User student, Course course) {
         List<Lesson> temp = bllManager.getAttendanceRecordsForACourse(student, course);
@@ -107,7 +116,7 @@ public class RecordModel implements IRecordModel {
     public int calculateAbsenceLabel(List<Lesson> list) {
         int absence = aCounter.count(list);
         int h = list.size();
-        return aCalc.calculatePercentage(absence, h);
+        return aCalculator.calculatePercentage(absence, h);
     }
 
     @Override
@@ -123,11 +132,6 @@ public class RecordModel implements IRecordModel {
     @Override
     public IntegerProperty absencePercentageLabelProperty() {
         return absencePercentageLabel;
-    }
-
-    @Override
-    public void stopObserving() {
-        bllComponent2.setIsRunning(false);
     }
 
 }

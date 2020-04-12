@@ -54,7 +54,7 @@ public class StudentOverviewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-   }
+    }
 
     public void injectModels(ICourseModel courseModel, IRecordModel recordModel) {
         this.courseModel = courseModel;
@@ -69,7 +69,7 @@ public class StudentOverviewController implements Initializable {
         setCoursesIntoComboBox();
         setTableView();
         selectCourse();
-        lblAbsence.textProperty().bind(Bindings.convert(recordModel.absencePercentageLabelProperty()));
+        setLabel();
     }
 
     private void setCoursesIntoComboBox() {
@@ -108,6 +108,10 @@ public class StudentOverviewController implements Initializable {
                 recordModel.filterRecordsByCourse(user, newVal);
             }
         });
+    }
+
+    private void setLabel() {
+        lblAbsence.textProperty().bind(Bindings.convert(recordModel.absencePercentageLabelProperty()));
     }
 
     @FXML

@@ -44,7 +44,7 @@
       </TableView>
       <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="185.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
          <children>
-            <Label id="StudentCount" fx:id="lblPresentStudentsCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
+            <Label id="StudentCount" fx:id="lblPresentStudentCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
             <Label layoutX="17.0" layoutY="53.0" text="Present today" />
          </children>
       </Pane>

@@ -26,7 +26,7 @@ public class TeacherDashboardController implements Initializable {
     @FXML
     private ComboBox<Course> cboTeacherCourses;
     @FXML
-    private Label lblPresentStudentsCount;
+    private Label lblPresentStudentCount;
     @FXML
     private Label lblEnrolledStudentCount;
     @FXML
@@ -80,25 +80,23 @@ public class TeacherDashboardController implements Initializable {
         firstTableViewSelection = true;
         courseModel.loadAllCourses(user);
         setCoursesIntoComboBox();
-        setTableViewsForCourseOverview();
-        setTotalStudentLabel();
-        setPresentStudentLabel();
+        setTableViewForCourseOverview();
+        setLabelEnrolledStudentCount();
+        setLabelPresentStudentCount();
         listenToCourseSelection();
-        setSecondTableView();
-        setBarChart();
-        listenToOverviewTableViewSelection();
+        listenToCourseOverviewSelection();
+        setTableViewForSelectedStudent();
+        setBarChartForSelectedStudent();
         listenToCourseSelectionForSelectedStudent();
     }
 
-    private void setTotalStudentLabel() {
-        lblEnrolledStudentCount.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));
+    private void setCoursesIntoComboBox() {
+        cboTeacherCourses.getItems().clear();
+        cboTeacherCourses.getItems().addAll(courseModel.getCourseList());
+        cboTeacherCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
     }
 
-    private void setPresentStudentLabel() {
-        lblPresentStudentsCount.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
-    }
-
-    private void setTableViewsForCourseOverview() {
+    private void setTableViewForCourseOverview() {
         colStudentName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colAbsencePercentage.setCellValueFactory(new PropertyValueFactory<>("absencePercentage"));
         colAbsentLessons.setCellValueFactory(new PropertyValueFactory<>("absenceCount"));
@@ -106,12 +104,12 @@ public class TeacherDashboardController implements Initializable {
         tblCourseAbsenceOverview.setItems(studentModel.getStudentList());
     }
 
-    private void setSecondTableView() {
-        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
+    private void setLabelEnrolledStudentCount() {
+        lblEnrolledStudentCount.textProperty().bind(Bindings.convert(studentModel.enrolledStudentsLabelProperty()));
+    }
 
-        tblStudentAbsenceOverview.setItems(recordModel.getRecordList());
+    private void setLabelPresentStudentCount() {
+        lblPresentStudentCount.textProperty().bind(Bindings.convert(studentModel.getAttendanceCountProperty()));
     }
 
     private void listenToCourseSelection() {
@@ -124,13 +122,7 @@ public class TeacherDashboardController implements Initializable {
         });
     }
 
-    private void setCoursesIntoComboBox() {
-        cboTeacherCourses.getItems().clear();
-        cboTeacherCourses.getItems().addAll(courseModel.getCourseList());
-        cboTeacherCourses.getSelectionModel().select(user.getCurrentSelectedCourse());
-    }
-
-    private void listenToOverviewTableViewSelection() {
+    private void listenToCourseOverviewSelection() {
         tblCourseAbsenceOverview.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (tblCourseAbsenceOverview.getSelectionModel().isEmpty()) {
                 lblStudentName.setText("No selected student.");
@@ -142,15 +134,15 @@ public class TeacherDashboardController implements Initializable {
             if (newVal != null) {
                 lblStudentName.setText(newVal.getName());
                 selectFirstCourse(newVal);
-                setBarChart();
+                setBarChartForSelectedStudent();
                 Course c = cboStudentCourses.getSelectionModel().getSelectedItem();
                 if (c != null) {
                     if (firstTableViewSelection) {
-                        setBarChart();
+                        setBarChartForSelectedStudent();
                         recordModel.startObserving(newVal, c);
                         firstTableViewSelection = false;
                     }
-                    setBarChart();
+                    setBarChartForSelectedStudent();
                     recordModel.stopObserving();
                     recordModel.startObserving(newVal, c);
                 }
@@ -167,6 +159,25 @@ public class TeacherDashboardController implements Initializable {
         }
     }
 
+    private void setTableViewForSelectedStudent() {
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colDay.setCellValueFactory(new PropertyValueFactory<>("day"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("statusType"));
+
+        tblStudentAbsenceOverview.setItems(recordModel.getRecordList());
+    }
+
+    private void setBarChartForSelectedStudent() {
+        barChartWeekdayAbsence.setAnimated(false);
+        barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
+        ObservableList<BarChart.Data<String, Integer>> data = recordModel.getWeekdayAbsenceCount();
+        if (!data.isEmpty()) {
+            barChartWeekdayAbsence.getData().clear();
+            XYChart.Series<String, Integer> dataQuery1 = new XYChart.Series<>("Absence", data);
+            barChartWeekdayAbsence.getData().setAll(dataQuery1);
+        }
+    }
+
     private void listenToCourseSelectionForSelectedStudent() {
         cboStudentCourses.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal)
                 -> {
@@ -177,27 +188,16 @@ public class TeacherDashboardController implements Initializable {
             Student s = tblCourseAbsenceOverview.getSelectionModel().getSelectedItem();
             if (s != null && newVal != null) {
                 if (firstTableViewSelection) {
-                    setBarChart();
+                    setBarChartForSelectedStudent();
                     recordModel.startObserving(s, newVal);
                     firstTableViewSelection = false;
                 }
-                setBarChart();
+                setBarChartForSelectedStudent();
                 recordModel.stopObserving();
                 recordModel.startObserving(s, newVal);
             }
         }
         );
-    }
-
-    private void setBarChart() {
-        barChartWeekdayAbsence.setAnimated(false);
-        barChartWeekdayAbsence.setTitle("Absent lessons per weekday");
-        ObservableList<BarChart.Data<String, Integer>> data = recordModel.getWeekdayAbsenceCount();
-        if (!data.isEmpty()) {
-            barChartWeekdayAbsence.getData().clear();
-            XYChart.Series<String, Integer> dataQuery1 = new XYChart.Series<>("Absence", data);
-            barChartWeekdayAbsence.getData().setAll(dataQuery1);
-        }
     }
 
 }

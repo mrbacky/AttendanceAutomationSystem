@@ -43,6 +43,21 @@ public class StudentModel implements IStudentModel {
     }
 
     @Override
+    public int getEnrolledStudentsLabel() {
+        return enrolledStudentsLabel.get();
+    }
+
+    @Override
+    public void setEnrolledStudentsLabel(int value) {
+        enrolledStudentsLabel.set(value);
+    }
+
+    @Override
+    public IntegerProperty enrolledStudentsLabelProperty() {
+        return enrolledStudentsLabel;
+    }
+
+    @Override
     public void startObserving(Course c) {
         System.out.println("startObserving THREAD" + Thread.activeCount());
         ObserverEvent e = new ObserverEvent(c);
@@ -69,21 +84,6 @@ public class StudentModel implements IStudentModel {
     @Override
     public void stopObserving() {
         bllComponent.setIsRunning(false);
-    }
-
-    @Override
-    public int getEnrolledStudentsLabel() {
-        return enrolledStudentsLabel.get();
-    }
-
-    @Override
-    public void setEnrolledStudentsLabel(int value) {
-        enrolledStudentsLabel.set(value);
-    }
-
-    @Override
-    public IntegerProperty enrolledStudentsLabelProperty() {
-        return enrolledStudentsLabel;
     }
 
 }
