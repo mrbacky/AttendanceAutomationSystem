@@ -134,8 +134,6 @@ public class StudentTodayController implements Initializable {
                 togglebtnRegistration.setSelected(false);
                 togglebtnRegistration.setDisable(false);
             }
-        } else {
-            cboLessons.setPromptText("No lessons today.");
         }
 
     }
@@ -166,6 +164,8 @@ public class StudentTodayController implements Initializable {
         if (lessonModel.getLessonsForToday() != null) {
             cboLessons.getItems().clear();
             cboLessons.getItems().setAll(lessonModel.getLessonsForToday());
+        } else {
+            cboLessons.setPromptText("No lessons today");
         }
     }
 
@@ -174,12 +174,9 @@ public class StudentTodayController implements Initializable {
         togglebtnRegistration.setDisable(true);
         for (Lesson lesson : lessonList) {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
-                //  select current
+                //  select latest lesson
                 cboLessons.getSelectionModel().select(lesson);
-                System.out.println("selected lesson now");
-
             }
         }
-
     }
 }

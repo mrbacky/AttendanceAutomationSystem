@@ -32,6 +32,7 @@ public class LessonModel implements ILessonModel {
         });
         lessonList.clear();
         lessonList.addAll(allLessons);
+        System.out.println("lesson  list: " + lessonList);
     }
 
     @Override
