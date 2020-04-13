@@ -44,10 +44,11 @@ public class StudentTodayController implements Initializable {
 
     private User user;
     private ILessonModel lessonModel;
-    private boolean threadRun = true;
+    private ScheduledExecutorService exec;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
     }
 
     public void setUser(User currentUser) {
@@ -60,15 +61,15 @@ public class StudentTodayController implements Initializable {
     }
 
     public void initializeTodayModule() {
+        showCurrentDate();
         lessonModel.loadLessonsForToday(user, LocalDate.now());
         setLessonsToCB();
         selectInitialLesson();
         tbStatusSet();
         setupCheckerThread();
-        showCurrentDate();
     }
 
-    public void checker() {
+    public void absenceGuard() {
         for (Lesson lesson : lessonModel.getLessonsForToday()) {
             if (lesson.getStatusType() == Lesson.StatusType.UNREGISTERED) {
                 if (lesson.getEndTime().compareTo(LocalDateTime.now()) < 0) {
@@ -80,19 +81,19 @@ public class StudentTodayController implements Initializable {
     }
 
     private void setupCheckerThread() {
-        ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        checker();
-                        refreshCombobox();
-                    }
-                });
-            }
-        }, 2, 4, TimeUnit.SECONDS);
+        exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> {
+                absenceGuard();
+                refreshCombobox();
+                System.out.println("checker done");
+            });
+        }, 1, 1, TimeUnit.SECONDS);
+
+    }
+
+    public void stopLessonChecker() {
+        exec.shutdown();
     }
 
     private void showCurrentDate() {
@@ -104,7 +105,6 @@ public class StudentTodayController implements Initializable {
     @FXML
     private void handle_registerAttendance(ActionEvent event) {
         Lesson lessonToUpdate = cboLessons.getSelectionModel().getSelectedItem();
-
         if (togglebtnRegistration.isSelected()) {
             togglebtnRegistration.setText("Present");
             togglebtnRegistration.setDisable(true);
@@ -120,19 +120,24 @@ public class StudentTodayController implements Initializable {
         togglebtnRegistration.setDisable(true);
         togglebtnRegistration.getStyleClass().removeAll("redTB", "greenTB");
 
-        if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
-            togglebtnRegistration.setText("Absent");
-            togglebtnRegistration.setSelected(true);
-            setTBColors("Absent");
-        } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
-            togglebtnRegistration.setText("Present");
-            togglebtnRegistration.setSelected(true);
-            setTBColors("Present");
+        if (lessonItem != null) {
+            if (lessonItem.getStatusType() == Lesson.StatusType.ABSENT) {
+                togglebtnRegistration.setText("Absent");
+                togglebtnRegistration.setSelected(true);
+                setTBColors("Absent");
+            } else if (lessonItem.getStatusType() == Lesson.StatusType.PRESENT) {
+                togglebtnRegistration.setText("Present");
+                togglebtnRegistration.setSelected(true);
+                setTBColors("Present");
+            } else {
+                togglebtnRegistration.setText("Unregistered");
+                togglebtnRegistration.setSelected(false);
+                togglebtnRegistration.setDisable(false);
+            }
         } else {
-            togglebtnRegistration.setText("Unregistered");
-            togglebtnRegistration.setSelected(false);
-            togglebtnRegistration.setDisable(false);
+            cboLessons.setPromptText("No lessons today.");
         }
+
     }
 
     private void setTBColors(String type) {
@@ -171,23 +176,10 @@ public class StudentTodayController implements Initializable {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
                 //  select current
                 cboLessons.getSelectionModel().select(lesson);
-            } else {
-                //  select first one
-                cboLessons.getSelectionModel().select(0);
+                System.out.println("selected lesson now");
+
             }
         }
-    }
 
-    public void onFinish(Thread thread) {
-        try {
-            if (threadRun) {
-                thread.wait(1000, 0);// This is wrong. Check correct usage.
-                thread.run();
-            }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(StudentTodayController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
     }
-
 }

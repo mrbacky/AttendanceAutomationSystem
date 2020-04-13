@@ -43,7 +43,7 @@ public class RootStudentController implements Initializable {
     private final String TODAY_MODULE = "/attendance/gui/view/StudentTodayModule.fxml";
     private final String OVERVIEW_MODULE = "/attendance/gui/view/StudentOverviewModule.fxml";
     private final String LOGIN_VIEW = "/attendance/gui/view/Login.fxml";
-
+    StudentTodayController todayController;
     private User user;
     private ICourseModel courseModel;
     private final ILessonModel lessonModel;
@@ -74,10 +74,10 @@ public class RootStudentController implements Initializable {
             Parent moduleRoot = fxmlLoader.load();
 
             if (MODULE.equals(TODAY_MODULE)) {
-                StudentTodayController controller = fxmlLoader.getController();
-                controller.setUser(user);
-                controller.injectModel(lessonModel);
-                controller.initializeTodayModule();
+                todayController = fxmlLoader.getController();
+                todayController.setUser(user);
+                todayController.injectModel(lessonModel);
+                todayController.initializeTodayModule();
             }
             if (MODULE.equals(OVERVIEW_MODULE)) {
                 StudentOverviewController controller = fxmlLoader.getController();
@@ -103,6 +103,7 @@ public class RootStudentController implements Initializable {
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
+        todayController.stopLessonChecker();
         Stage logOutStage;
         logOutStage = (Stage) btnLogOut.getScene().getWindow();
         logOutStage.close();

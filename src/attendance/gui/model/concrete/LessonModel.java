@@ -8,6 +8,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import attendance.bll.IBLLFacade;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -25,12 +27,16 @@ public class LessonModel implements ILessonModel {
     @Override
     public void loadLessonsForToday(User student, LocalDate current) {
         List<Lesson> allLessons = bllManager.getLessonsForToday(student, current);
+        Collections.sort(allLessons, (Lesson o1, Lesson o2) -> {
+            return o1.getStartTime().compareTo(o2.getStartTime());
+        });
         lessonList.clear();
         lessonList.addAll(allLessons);
     }
 
     @Override
     public ObservableList<Lesson> getLessonsForToday() {
+
         return lessonList;
     }
 
