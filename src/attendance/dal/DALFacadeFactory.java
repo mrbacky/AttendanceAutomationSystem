@@ -23,12 +23,12 @@ public class DALFacadeFactory {
 
     }
 
-    public IDALFacade createFacade(FacadeType type) {
+    public IDALFacade createFacade(FacadeType type) throws Exception {
         switch (type) {
             case DATABASE:
                 return new DALManager();
             default:
-                return new DALManager();
+                throw new Exception("Unknown Facade type requested from DALFacadeFactory.");
         }
     }
 }

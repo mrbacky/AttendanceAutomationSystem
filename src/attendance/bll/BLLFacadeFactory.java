@@ -16,25 +16,24 @@ public class BLLFacadeFactory {
     private static BLLFacadeFactory instance;
     private static IDALFacade dalFacade;
 
-    private BLLFacadeFactory() {
+    private BLLFacadeFactory() throws Exception {
         dalFacade = DALFacadeFactory.getInstance().createFacade(DALFacadeFactory.FacadeType.DATABASE);
     }
 
-    public static synchronized BLLFacadeFactory getInstance() {
+    public static synchronized BLLFacadeFactory getInstance() throws Exception {
         if (instance == null) {
             instance = new BLLFacadeFactory();
         }
         return instance;
     }
 
-    public IBLLFacade createFacade(FacadeType type) {
+    public IBLLFacade createFacade(FacadeType type) throws Exception {
         switch (type) {
             case PRODUCTION:
                 return new BLLManager(dalFacade);
 
             default:
-                return new BLLManager(dalFacade);
-
+                throw new Exception("Unknown Facade type requested from BLLFacadeFactory.");
         }
 
     }
