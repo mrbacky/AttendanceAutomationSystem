@@ -177,6 +177,7 @@ public class StudentTodayController implements Initializable {
                 //  select latest lesson
                 cboLessons.getSelectionModel().select(lesson);
             }
+            else cboLessons.getSelectionModel().select(0);
         }
     }
 }

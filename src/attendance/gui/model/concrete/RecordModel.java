@@ -29,16 +29,12 @@ public class RecordModel implements IRecordModel {
 
     private final ObservableList<Lesson> recordList = FXCollections.observableArrayList();
     private final IntegerProperty absencePercentageLabel = new SimpleIntegerProperty();
-    private final AbsenceCounter aCounter;
-    private final AbsencePercentageCalculator aCalculator;
 
     private final ObservableList<XYChart.Data<String, Integer>> absencePerWeekday = FXCollections.observableArrayList();
     private ConcreteObservable2 bllComponent2;
 
     public RecordModel(IBLLFacade bllManager) {
         this.bllManager = bllManager;
-        aCounter = new AbsenceCounter();
-        aCalculator = new AbsencePercentageCalculator();
     }
 
     @Override
@@ -114,9 +110,9 @@ public class RecordModel implements IRecordModel {
 
     @Override
     public int calculateAbsenceLabel(List<Lesson> list) {
-        int absence = aCounter.count(list);
+        int absence = bllManager.countAbsentLessons(list);
         int h = list.size();
-        return aCalculator.calculatePercentage(absence, h);
+        return bllManager.calculatePercentage(absence, h);
     }
 
     @Override

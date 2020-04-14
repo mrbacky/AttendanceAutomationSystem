@@ -3,6 +3,8 @@ package attendance.bll;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.User;
+import attendance.bll.util.AbsenceCounter;
+import attendance.bll.util.AbsencePercentageCalculator;
 import attendance.bll.util.LogicException;
 import attendance.dal.DalException;
 import attendance.dal.IDALFacade;
@@ -12,9 +14,13 @@ import java.util.List;
 public class BLLManager implements IBLLFacade {
 
     private final IDALFacade dalFacade;
+    private final AbsenceCounter aCounter;
+    private final AbsencePercentageCalculator aCalculator;
 
     public BLLManager(IDALFacade dalFacade) {
         this.dalFacade = dalFacade;
+        aCounter = new AbsenceCounter();
+        aCalculator = new AbsencePercentageCalculator();
     }
 
     @Override
@@ -50,6 +56,16 @@ public class BLLManager implements IBLLFacade {
     @Override
     public List<Lesson> getAttendanceRecordsForACourse(User student, Course course) {
         return dalFacade.getAttendanceRecordsForACourse(student, course);
+    }
+
+    @Override
+    public int calculatePercentage(int absence, int h) {
+        return aCalculator.calculatePercentage(absence, h);
+    }
+
+    @Override
+    public int countAbsentLessons(List<Lesson> list) {
+        return aCounter.countAbsentLessons(list);
     }
 
 }

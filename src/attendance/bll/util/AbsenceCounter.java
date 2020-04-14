@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class AbsenceCounter {
 
-    public int count(List<Lesson> lessons) {
+    public int countAbsentLessons(List<Lesson> lessons) {
         int count = 0;
         for (Lesson lesson : lessons) {
             if (lesson.getStatusType() == Lesson.StatusType.ABSENT) {
@@ -18,5 +18,5 @@ public class AbsenceCounter {
         }
         return count;
     }
-    
+
 }

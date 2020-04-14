@@ -61,4 +61,8 @@ public interface IBLLFacade {
      */
     List<Lesson> getAttendanceRecordsForACourse(User student, Course course);
 
+    public int calculatePercentage(int absence, int h);
+
+    public int countAbsentLessons(List<Lesson> list);
+
 }
