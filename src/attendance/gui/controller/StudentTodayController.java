@@ -89,7 +89,6 @@ public class StudentTodayController implements Initializable {
                 tbStatusSet();
             });
         }, 1, 3, TimeUnit.SECONDS);
-
     }
 
     public void stopLessonChecker() {
