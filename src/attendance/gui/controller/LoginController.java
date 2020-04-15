@@ -49,7 +49,7 @@ public class LoginController implements Initializable {
     private IUserModel userModel;
     private ICourseModel courseModel;
 
-    public LoginController() {
+    public LoginController() throws Exception {
         userModel = ModelCreator.getInstance().getUserModel();
     }
 
@@ -61,7 +61,7 @@ public class LoginController implements Initializable {
         fieldValidator();
     }
 
-    private void showRoot(String ROOT_TO_SHOW) {
+    private void showRoot(String ROOT_TO_SHOW) throws Exception {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ROOT_TO_SHOW));
             Parent root = fxmlLoader.load();
@@ -106,7 +106,7 @@ public class LoginController implements Initializable {
         });
     }
 
-    private void authentification() {
+    private void authentification() throws Exception {
         try {
             this.user = userModel.login(txtUsername.getText(), pwPassword.getText());
         } catch (ModelException ex) {
@@ -134,12 +134,12 @@ public class LoginController implements Initializable {
     }
 
     @FXML//   could be also decoupled 
-    private void BtnPressed(ActionEvent event) throws IOException {
+    private void BtnPressed(ActionEvent event) throws IOException, Exception {
         authentification();
     }
 
     @FXML//   could be also decoupled 
-    private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException {
+    private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException, Exception {
         if (event.getCode() == KeyCode.ENTER) {
             authentification();
         }

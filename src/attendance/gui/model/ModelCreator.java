@@ -23,11 +23,11 @@ public class ModelCreator {
     private static ModelCreator instance;
     private IBLLFacade bllFacade;
 
-    private ModelCreator() {
+    private ModelCreator() throws Exception {
         bllFacade = BLLFacadeFactory.getInstance().createFacade(BLLFacadeFactory.FacadeType.PRODUCTION);
     }
 
-    public static synchronized ModelCreator getInstance() {// singleton or just static methods?
+    public static synchronized ModelCreator getInstance() throws Exception {// singleton or just static methods?
         if (instance == null) {
             instance = new ModelCreator();
         }

@@ -49,7 +49,7 @@ public class RootStudentController implements Initializable {
     private final ILessonModel lessonModel;
     private final IRecordModel recordModel;
 
-    public RootStudentController() {
+    public RootStudentController() throws Exception {
         lessonModel = ModelCreator.getInstance().getLessonModel();
         recordModel = ModelCreator.getInstance().getRecordModel();
     }
