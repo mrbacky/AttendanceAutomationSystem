@@ -44,7 +44,7 @@ public class StudentTodayController implements Initializable {
 
     private User user;
     private ILessonModel lessonModel;
-    private ScheduledExecutorService executor;
+    private ScheduledExecutorService absenceThreadExecutor;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,18 +81,19 @@ public class StudentTodayController implements Initializable {
     }
 
     private void setupCheckerThread() {
-        executor = Executors.newSingleThreadScheduledExecutor();
-        executor.scheduleAtFixedRate(() -> {
+        absenceThreadExecutor = Executors.newSingleThreadScheduledExecutor();
+        absenceThreadExecutor.scheduleAtFixedRate(() -> {
             Platform.runLater(() -> {
                 absenceGuard();
                 refreshCombobox();
                 tbStatusSet();
+                System.out.println("checker done");
             });
         }, 1, 3, TimeUnit.SECONDS);
     }
 
-    public void stopLessonChecker() {
-        executor.shutdown();
+    public void stopCheckerThread() {
+        absenceThreadExecutor.shutdown();
     }
 
     private void showCurrentDate() {

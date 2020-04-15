@@ -98,12 +98,13 @@ public class RootStudentController implements Initializable {
 
     @FXML
     private void showOverview(ActionEvent event) {
+        todayController.stopCheckerThread();
         showModule(OVERVIEW_MODULE);
     }
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException {
-        todayController.stopLessonChecker();
+        todayController.stopCheckerThread();
         Stage logOutStage;
         logOutStage = (Stage) btnLogOut.getScene().getWindow();
         logOutStage.close();
