@@ -44,7 +44,7 @@ public class StudentTodayController implements Initializable {
 
     private User user;
     private ILessonModel lessonModel;
-    private ScheduledExecutorService exec;
+    private ScheduledExecutorService executor;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,19 +81,19 @@ public class StudentTodayController implements Initializable {
     }
 
     private void setupCheckerThread() {
-        exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(() -> {
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
             Platform.runLater(() -> {
                 absenceGuard();
                 refreshCombobox();
-                System.out.println("checker done");
+                tbStatusSet();
             });
-        }, 1, 1, TimeUnit.SECONDS);
+        }, 1, 3, TimeUnit.SECONDS);
 
     }
 
     public void stopLessonChecker() {
-        exec.shutdown();
+        executor.shutdown();
     }
 
     private void showCurrentDate() {
@@ -157,7 +157,6 @@ public class StudentTodayController implements Initializable {
     private void refreshCombobox() {
         int lessonItem = cboLessons.getSelectionModel().getSelectedIndex();
         cboLessons.getSelectionModel().select(lessonItem);
-        tbStatusSet();
     }
 
     private void setLessonsToCB() {
@@ -176,8 +175,9 @@ public class StudentTodayController implements Initializable {
             if (lesson.getStartTime().compareTo(LocalDateTime.now()) < 0) {
                 //  select latest lesson
                 cboLessons.getSelectionModel().select(lesson);
+            } else {
+                cboLessons.getSelectionModel().select(0);
             }
-            else cboLessons.getSelectionModel().select(0);
         }
     }
 }
