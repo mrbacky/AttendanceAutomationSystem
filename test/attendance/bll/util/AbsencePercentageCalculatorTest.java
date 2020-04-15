@@ -5,36 +5,26 @@
  */
 package attendance.bll.util;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author rados
  */
 public class AbsencePercentageCalculatorTest {
-    
+
     public AbsencePercentageCalculatorTest() {
     }
-    
-    @BeforeAll
+
+    @BeforeClass
     public static void setUpClass() {
     }
-    
-    @AfterAll
+
+    @AfterClass
     public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
     }
 
     /**
@@ -43,14 +33,37 @@ public class AbsencePercentageCalculatorTest {
     @Test
     public void testCalculatePercentage() {
         System.out.println("calculatePercentage");
-        int absentLessons = 0;
-        int conductedLessons = 0;
+        int absentLessons = 7;
+        int conductedLessons = 10;
         AbsencePercentageCalculator instance = new AbsencePercentageCalculator();
-        int expResult = 0;
+        int expResult = 70;
         int result = instance.calculatePercentage(absentLessons, conductedLessons);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
-    
+
+    @Test
+    public void testCalculatePercentage2() {
+        System.out.println("calculatePercentage");
+        int absentLessons = 45;
+        int conductedLessons = 100;
+        AbsencePercentageCalculator instance = new AbsencePercentageCalculator();
+        int expResult = 45;
+        int result = instance.calculatePercentage(absentLessons, conductedLessons);
+        assertEquals(expResult, result);
+
+    }
+
+    @Test
+    public void testCalculatePercentage3() {
+        System.out.println("calculatePercentage");
+        int absentLessons = 4;
+        int conductedLessons = 15;
+        AbsencePercentageCalculator instance = new AbsencePercentageCalculator();
+        int expResult = 27;
+        int result = instance.calculatePercentage(absentLessons, conductedLessons);
+        assertEquals(expResult, result);
+
+    }
+
 }
