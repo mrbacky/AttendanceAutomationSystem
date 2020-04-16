@@ -2,7 +2,6 @@ package attendance.gui.controller;
 
 import attendance.be.User;
 import attendance.gui.model.ModelCreator;
-import attendance.gui.model.ModelException;
 import attendance.gui.model.interfaces.ICourseModel;
 import attendance.gui.model.interfaces.IRecordModel;
 import attendance.gui.model.interfaces.IStudentModel;

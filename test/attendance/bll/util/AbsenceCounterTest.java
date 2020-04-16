@@ -44,10 +44,10 @@ public class AbsenceCounterTest {
         lessons.add(new Lesson(7, "DBOS", LocalDateTime.parse("2020-04-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.PRESENT));
         lessons.add(new Lesson(8, "ITO", LocalDateTime.parse("2020-04-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
         lessons.add(new Lesson(32, "ITO", LocalDateTime.parse("2020-04-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
-        lessons.add(new Lesson(45, "SDE", LocalDateTime.parse("2020-15-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
+        lessons.add(new Lesson(45, "SDE", LocalDateTime.parse("2020-12-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
         lessons.add(new Lesson(783, "ITO", LocalDateTime.parse("2020-04-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
-        lessons.add(new Lesson(38, "ITO", LocalDateTime.parse("2020-22-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.PRESENT));
-        lessons.add(new Lesson(1, "ITO", LocalDateTime.parse("2020-21-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.PRESENT));
+        lessons.add(new Lesson(38, "ITO", LocalDateTime.parse("2020-02-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.PRESENT));
+        lessons.add(new Lesson(1, "ITO", LocalDateTime.parse("2020-11-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.PRESENT));
         lessons.add(new Lesson(14, "ITO", LocalDateTime.parse("2020-01-14T09:00:00"), LocalDateTime.parse("2020-04-14T11:30:00"), Lesson.StatusType.ABSENT));
 
         AbsenceCounter instance = new AbsenceCounter();

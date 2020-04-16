@@ -57,10 +57,10 @@ public class AbsencePercentageCalculatorTest {
     @Test
     public void testCalculatePercentage3() {
         System.out.println("calculatePercentage");
-        int absentLessons = 4;
-        int conductedLessons = 15;
+        int absentLessons = 3;
+        int conductedLessons = 17;
         AbsencePercentageCalculator instance = new AbsencePercentageCalculator();
-        int expResult = 27;
+        int expResult = 18;
         int result = instance.calculatePercentage(absentLessons, conductedLessons);
         assertEquals(expResult, result);
 
