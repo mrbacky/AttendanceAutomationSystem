@@ -34,8 +34,6 @@ public class StudentTodayController implements Initializable {
     @FXML
     private Label lblUsername;
     @FXML
-    private ImageView imgUser;
-    @FXML
     private Label lblCurrentDate;
     @FXML
     private JFXComboBox<Lesson> cboLessons;
@@ -87,7 +85,6 @@ public class StudentTodayController implements Initializable {
                 absenceGuard();
                 refreshCombobox();
                 tbStatusSet();
-                System.out.println("checker done");
             });
         }, 1, 3, TimeUnit.SECONDS);
     }

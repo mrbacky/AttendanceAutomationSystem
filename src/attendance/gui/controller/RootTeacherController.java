@@ -30,8 +30,6 @@ public class RootTeacherController implements Initializable {
     @FXML
     private HBox hBoxNavigationBar;
     @FXML
-    private JFXButton btnDashboard;
-    @FXML
     private Label lblName;
     @FXML
     private JFXButton btnLogOut;
@@ -81,11 +79,6 @@ public class RootTeacherController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(RootTeacherController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @FXML
-    private void showDashboard(ActionEvent event) {
-        showModule(DashboardModule);
     }
 
     @FXML

@@ -6,30 +6,22 @@
 
 @import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina+2&display=swap');
 
-.label{
+/*.label{
 
-    -fx-text-fill: black;
-
+    -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-family: 'Montserrat', sans-serif;
 
-}
+}*/
 
 .btnBarNameLabel{
     -fx-background-color: transparent;
     -fx-text-fill: white;
-    font-size: 50px;
+    -fx-font-size: 15px;
 
 }
 
 
-.button{
-
-
-
-
-
-}
 
 
 
@@ -97,7 +89,7 @@
 }
 
 .table-row-cell:selected .text {
-       -fx-fill: white;
+    -fx-fill: white;
 
 }
 
@@ -107,11 +99,11 @@
 .table-view .column-header .filler,
 .table-view .column-header-background .filler {
     -fx-background-color: #EBB140;
-    
-    
+
+
 }
 .table-view .column-header-background .label{
-     
+
     -fx-font-weight:bold;
     -fx-text-fill: black;
     -fx-font-size: 12;
@@ -121,8 +113,8 @@
 .Tableviewcells{
     -fx-background-color: whitesmoke;
     -fx-effect: dropshadow(three-pass-box, rgba(10, 0, 0, 0.8), 10, 0, 0, 0);    
-    
-     
+
+
 }
 
 
@@ -185,7 +177,7 @@
 }
 #StudentCount{
 
-    -fx-font-size: 25px;
+    -fx-font-size: 20px;
     -fx-text-fill: black;
 
 }
@@ -198,7 +190,7 @@
 #PaneColorsTeacherView{
 
     -fx-border-style: solid;
-    
+
     -fx-border-color: #5A6DA9;
     -fx-background-color: white;
 
@@ -220,4 +212,22 @@
     -fx-background-color: red;
 }
 
+#lblRootDashboard{
+    -fx-text-fill: white;
+    -fx-display:inline-block;
+    -fx-font-size: 15px;
 
+}
+
+
+
+.buttonsInRoot{
+    -fx-font-size: 15px;
+    -fx-text-fill: white;
+    
+    
+
+
+
+
+}

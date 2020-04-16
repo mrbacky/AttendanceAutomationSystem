@@ -37,8 +37,6 @@ public class RootStudentController implements Initializable {
     private Label lblHello;
     @FXML
     private JFXButton btnLogOut;
-    @FXML
-    private AnchorPane attachable;
 
     private final String TODAY_MODULE = "/attendance/gui/view/StudentTodayModule.fxml";
     private final String OVERVIEW_MODULE = "/attendance/gui/view/StudentOverviewModule.fxml";

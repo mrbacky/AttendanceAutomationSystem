@@ -13,54 +13,45 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="625.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherDashboardController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.TeacherDashboardController">
    <children>
-      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="62.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/icons8-male-user-96.png" />
-         </image>
-      </ImageView>
-      <TableView id="PaneColorsTeacherView" fx:id="tblCourseAbsenceOverview" layoutX="253.0" layoutY="80.0" prefHeight="191.0" prefWidth="506.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="tblCourseAbsenceOverview" layoutX="244.0" layoutY="70.0" prefHeight="175.0" prefWidth="506.0" stylesheets="@../css/style.css" AnchorPane.rightAnchor="50.0">
         <columns>
           <TableColumn fx:id="colStudentName" prefWidth="215.0" sortType="DESCENDING" text="Student Name" />
           <TableColumn fx:id="colAbsencePercentage" prefWidth="149.0" text="Absence %" />
             <TableColumn fx:id="colAbsentLessons" prefWidth="118.0" text="Absent Lessons" />
         </columns>
       </TableView>
-      <Label id="Dashboard" layoutX="62.0" layoutY="10.0" prefHeight="22.0" prefWidth="128.0" stylesheets="@../css/style.css" text="Dashboard">
-         <font>
-            <Font size="18.0" />
-         </font></Label>
-      <Label fx:id="lblStudentName" layoutX="122.0" layoutY="317.0" text="No selected student.">
+      <Label fx:id="lblStudentName" layoutX="207.0" layoutY="282.0" text="No selected student." AnchorPane.leftAnchor="207.0">
          <font>
             <Font size="16.0" />
          </font></Label>
-      <TableView id="PaneColorsTeacherView" fx:id="tblStudentAbsenceOverview" layoutX="62.0" layoutY="388.0" prefHeight="176.0" prefWidth="329.0" stylesheets="@../css/style.css">
+      <TableView id="PaneColorsTeacherView" fx:id="tblStudentAbsenceOverview" layoutX="50.0" layoutY="330.0" prefHeight="150.0" prefWidth="350.0" stylesheets="@../css/style.css" AnchorPane.leftAnchor="50.0">
         <columns>
-          <TableColumn fx:id="colDate" prefWidth="122.0" text="Date" />
-            <TableColumn fx:id="colDay" prefWidth="109.0" text="Day" />
-            <TableColumn fx:id="colStatus" prefWidth="97.0" text="Status" />
+          <TableColumn fx:id="colDate" prefWidth="98.0" text="Date" />
+            <TableColumn fx:id="colDay" prefWidth="133.0" text="Day" />
+            <TableColumn fx:id="colStatus" prefWidth="106.0" text="Status" />
         </columns>
       </TableView>
-      <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="185.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
+      <Pane id="PaneColorsTeacherView" layoutX="50.0" layoutY="70.0" prefHeight="75.0" prefWidth="130.0" stylesheets="@../css/style.css" AnchorPane.leftAnchor="50.0">
          <children>
-            <Label id="StudentCount" fx:id="lblPresentStudentCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="21" />
-            <Label layoutX="17.0" layoutY="53.0" text="Present today" />
+            <Label layoutX="29.0" layoutY="44.0" text="Present today" />
+            <Label id="StudentCount" fx:id="lblPresentStudentCount" layoutX="54.0" layoutY="8.0" stylesheets="@../css/style.css" text="21" />
          </children>
       </Pane>
-      <Pane id="PaneColorsTeacherView" layoutX="62.0" layoutY="82.0" prefHeight="86.0" prefWidth="124.0" stylesheets="@../css/style.css">
+      <Pane id="PaneColorsTeacherView" layoutX="50.0" layoutY="170.0" prefHeight="75.0" prefWidth="130.0" stylesheets="@../css/style.css" AnchorPane.leftAnchor="50.0">
          <children>
-            <Label id="StudentCount" fx:id="lblEnrolledStudentCount" layoutX="14.0" layoutY="14.0" stylesheets="@../css/style.css" text="30" />
-            <Label layoutX="39.0" layoutY="62.0" text="Students" />
-            <ImageView fitHeight="31.0" fitWidth="27.0" layoutX="5.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="52.0" layoutY="45.0" text="Students" />
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="14.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/Studentpic.png" />
                </image>
             </ImageView>
+            <Label id="StudentCount" fx:id="lblEnrolledStudentCount" layoutX="54.0" layoutY="8.0" stylesheets="@../css/style.css" text="30" />
          </children>
       </Pane>
-      <ComboBox id="PaneColorsTeacherView" fx:id="cboTeacherCourses" layoutX="62.0" layoutY="42.0" prefHeight="33.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <BarChart id="PaneColorsTeacherView" fx:id="barChartWeekdayAbsence" layoutX="398.0" layoutY="388.0" prefHeight="176.0" prefWidth="363.0" stylesheets="@../css/style.css">
+      <ComboBox id="PaneColorsTeacherView" fx:id="cboTeacherCourses" layoutX="62.0" layoutY="20.0" prefHeight="25.0" prefWidth="130.0" stylesheets="@../css/style.css" AnchorPane.leftAnchor="50.0" />
+      <BarChart id="PaneColorsTeacherView" fx:id="barChartWeekdayAbsence" layoutX="420.0" layoutY="330.0" prefHeight="150.0" prefWidth="330.0" stylesheets="@../css/style.css" AnchorPane.rightAnchor="50.0">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -68,13 +59,13 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <ComboBox id="PaneColorsTeacherView" fx:id="cboStudentCourses" layoutX="62.0" layoutY="355.0" prefHeight="25.0" prefWidth="128.0" stylesheets="@../css/style.css" />
-      <Label layoutX="289.0" layoutY="49.0" text="For more information, please select a student.">
+      <ComboBox id="PaneColorsTeacherView" fx:id="cboStudentCourses" layoutX="50.0" layoutY="280.0" prefHeight="25.0" prefWidth="130.0" stylesheets="@../css/style.css" AnchorPane.leftAnchor="50.0" />
+      <Label layoutX="467.0" layoutY="24.0" text="For more information, please select a student.">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <ImageView fitHeight="36.0" fitWidth="38.0" layoutX="253.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="36.0" fitWidth="38.0" layoutX="413.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/info.png" />
          </image>

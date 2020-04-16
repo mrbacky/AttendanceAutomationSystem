@@ -60,7 +60,7 @@ public class RecordModel implements IRecordModel {
     public ObservableList<XYChart.Data<String, Integer>> getWeekdayAbsenceCount() {
         return absencePerWeekday;
     }
-    
+
     @Override
     public void startObserving(Student s, Course c) {
         ObserverEvent e = new ObserverEvent(c, s);
@@ -72,11 +72,11 @@ public class RecordModel implements IRecordModel {
                     @Override
                     public void run() {
                         List<Lesson> records = bllComponent2.getRecordListState();
-                        for (Lesson record : records) {
-                            record.setDay();
-                            record.setDate();
-                        }
                         if (records != null) {
+                            for (Lesson record : records) {
+                                record.setDay();
+                                record.setDate();
+                            }
                             recordList.setAll(records);
                         }
                         List<XYChart.Data<String, Integer>> i = bllComponent2.getWeekdayAbsenceState();
@@ -94,7 +94,7 @@ public class RecordModel implements IRecordModel {
     public void stopObserving() {
         bllComponent2.setIsRunning(false);
     }
-    
+
     @Override
     public void filterRecordsByCourse(User student, Course course) {
         List<Lesson> temp = bllManager.getAttendanceRecordsForACourse(student, course);
