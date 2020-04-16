@@ -69,7 +69,10 @@ public class CourseSelectionForTeacherController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setHeight(725);
+            stage.setWidth(829);
             stage.setResizable(false);
+           
             stage.show();
         } catch (IOException ex) {
             Logger.getLogger(CourseSelectionForTeacherController.class.getName()).log(Level.SEVERE, null, ex);

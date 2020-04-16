@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.CourseSelectionForTeacherController">
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.CourseSelectionForTeacherController">
    <children>
       <ImageView fitHeight="121.0" fitWidth="249.0" layoutX="176.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -16,6 +16,6 @@
       </ImageView>
       <JFXButton id="loginBtn" fx:id="btnContinue" buttonType="RAISED" layoutX="226.0" layoutY="334.0" onAction="#btnTeacherLogin" prefHeight="25.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@../css/style.css" text="Continue" />
       <JFXComboBox fx:id="cboCourses" layoutX="216.0" layoutY="209.0" onAction="#setSelectedCourse" prefHeight="31.0" prefWidth="170.0" />
-      <Label fx:id="lblWarning" layoutX="241.0" layoutY="248.0" prefHeight="21.0" prefWidth="117.0" text="Please select a course." textFill="#b52222" />
+      <Label fx:id="lblWarning" layoutX="175.0" layoutY="248.0" prefHeight="21.0" prefWidth="249.0" text="           Please select a course." textFill="#b52222" />
    </children>
 </AnchorPane>

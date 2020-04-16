@@ -8,24 +8,31 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootStudentController">
+<BorderPane fx:id="borderPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="attendance.gui.controller.RootStudentController">
    <top>
       <HBox fx:id="hBoxNavigationBar" alignment="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="btnBar" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="btnToday" buttonType="RAISED" onAction="#showToday" ripplerFill="WHITE" text="Today" textFill="WHITE">
+            <JFXButton fx:id="btnToday" buttonType="RAISED" onAction="#showToday" prefHeight="37.0" prefWidth="93.0" ripplerFill="WHITE" text="Today" textFill="WHITE">
                <HBox.margin>
                   <Insets left="170.0" right="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </JFXButton>
             <Label prefHeight="21.0" prefWidth="82.0" />
-            <JFXButton fx:id="btnOverview" buttonType="RAISED" onAction="#showOverview" text="Overview" textFill="WHITE">
+            <JFXButton fx:id="btnOverview" buttonType="RAISED" onAction="#showOverview" prefHeight="37.0" prefWidth="117.0" text="Overview" textFill="WHITE">
                <HBox.margin>
                   <Insets left="10.0" right="5.0" />
                </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </JFXButton>
             <Label />
-            <Label fx:id="lblHello" prefHeight="21.0" prefWidth="206.0" styleClass="btnBarNameLabel">
+            <Label fx:id="lblHello" alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="227.0" styleClass="btnBarNameLabel" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
@@ -38,7 +45,10 @@
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
             </ImageView>
-            <JFXButton fx:id="btnLogOut" buttonType="RAISED" onAction="#handleLogout" text="Log out" textFill="WHITE" />
+            <JFXButton fx:id="btnLogOut" buttonType="RAISED" onAction="#handleLogout" prefHeight="37.0" prefWidth="105.0" text="Log out" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font></JFXButton>
          </children>
       </HBox>
    </top>

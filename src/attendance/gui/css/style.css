@@ -97,7 +97,7 @@
 }
 
 .table-row-cell:selected .text {
-       -fx-fill: white;
+       -fx-fill: red;
 
 }
 
