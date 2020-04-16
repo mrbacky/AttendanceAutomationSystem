@@ -43,8 +43,6 @@ public class LoginController implements Initializable {
 
     private final String ROOT_STUDENT = "/attendance/gui/view/RootStudent.fxml";
     private final String SUBJECT_CHOOSER = "/attendance/gui/view/CourseSelectionForTeacher.fxml";
-
-    private RootStudentController rootStudentController;
     private User user;
     private IUserModel userModel;
     private ICourseModel courseModel;
@@ -106,7 +104,7 @@ public class LoginController implements Initializable {
         });
     }
 
-    private void authentification() throws Exception {
+    private void authentication() throws Exception {
         try {
             this.user = userModel.login(txtUsername.getText(), pwPassword.getText());
         } catch (ModelException ex) {
@@ -120,8 +118,6 @@ public class LoginController implements Initializable {
                 showRoot(ROOT_STUDENT);
                 closeLogin();
             }
-        } else {
-            //showAlert("There is no user.");
         }
     }
 
@@ -135,13 +131,13 @@ public class LoginController implements Initializable {
 
     @FXML//   could be also decoupled 
     private void BtnPressed(ActionEvent event) throws IOException, Exception {
-        authentification();
+        authentication();
     }
 
     @FXML//   could be also decoupled 
     private void EnterPressed(javafx.scene.input.KeyEvent event) throws IOException, InterruptedException, Exception {
         if (event.getCode() == KeyCode.ENTER) {
-            authentification();
+            authentication();
         }
     }
 
