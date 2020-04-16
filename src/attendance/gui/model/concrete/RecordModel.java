@@ -72,11 +72,11 @@ public class RecordModel implements IRecordModel {
                     @Override
                     public void run() {
                         List<Lesson> records = bllComponent2.getRecordListState();
+                        for (Lesson record : records) {
+                            record.setDay();
+                            record.setDate();
+                        }
                         if (records != null) {
-                            for (Lesson record : records) {
-                                record.setDay();
-                                record.setDate();
-                            }
                             recordList.setAll(records);
                         }
                         List<XYChart.Data<String, Integer>> i = bllComponent2.getWeekdayAbsenceState();
