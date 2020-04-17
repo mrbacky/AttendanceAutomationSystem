@@ -1,8 +1,12 @@
-package attendance.dal.DAO;
+package attendance.dal.DAO.concrete;
 
+import attendance.dal.DAO.interfaces.ILessonDAO;
+import attendance.dal.DAO.interfaces.ICourseDAO;
+import attendance.dal.DAO.concrete.CourseDAO;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.User;
+import attendance.dal.DBConnectionProvider;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.Date;

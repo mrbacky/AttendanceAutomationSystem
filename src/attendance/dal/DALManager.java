@@ -4,17 +4,17 @@ import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
-import attendance.dal.DAO.AttendanceRecordDAO;
-import attendance.dal.DAO.CourseDAO;
-import attendance.dal.DAO.IAttendanceRecordDAO;
-import attendance.dal.DAO.ICourseDAO;
-import attendance.dal.DAO.ILessonDAO;
-import attendance.dal.DAO.IUserDAO;
-import attendance.dal.DAO.LessonDAO;
-import attendance.dal.DAO.UserDAO;
+import attendance.dal.DAO.concrete.RecordDAO;
+import attendance.dal.DAO.concrete.CourseDAO;
+import attendance.dal.DAO.interfaces.ICourseDAO;
+import attendance.dal.DAO.interfaces.ILessonDAO;
+import attendance.dal.DAO.interfaces.IUserDAO;
+import attendance.dal.DAO.concrete.LessonDAO;
+import attendance.dal.DAO.concrete.UserDAO;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import attendance.dal.DAO.interfaces.IRecordDAO;
 
 /**
  *
@@ -22,13 +22,13 @@ import java.time.LocalDateTime;
  */
 public class DALManager implements IDALFacade {
 
-    private final IAttendanceRecordDAO attendanceDAO;
+    private final IRecordDAO attendanceDAO;
     private final ICourseDAO courseDAO;
     private final ILessonDAO lessonDAO;
     private final IUserDAO userDAO;
 
     public DALManager() {
-        attendanceDAO = new AttendanceRecordDAO();
+        attendanceDAO = new RecordDAO();
         lessonDAO = new LessonDAO();
         courseDAO = new CourseDAO();
         userDAO = new UserDAO();

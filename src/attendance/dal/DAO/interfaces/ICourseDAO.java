@@ -1,4 +1,4 @@
-package attendance.dal.DAO;
+package attendance.dal.DAO.interfaces;
 
 import attendance.be.Course;
 import attendance.be.User;

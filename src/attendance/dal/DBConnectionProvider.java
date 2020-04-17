@@ -1,4 +1,4 @@
-package attendance.dal.DAO;
+package attendance.dal;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;

@@ -1,4 +1,4 @@
-package attendance.dal.DAO;
+package attendance.dal.DAO.interfaces;
 
 import attendance.be.Course;
 import attendance.be.Lesson;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author annem
  */
-public interface IAttendanceRecordDAO {
+public interface IRecordDAO {
 
     /**
      * Records the attendance of a lesson for a student in the database.

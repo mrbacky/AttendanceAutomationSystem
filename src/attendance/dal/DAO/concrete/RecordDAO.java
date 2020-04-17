@@ -1,9 +1,12 @@
-package attendance.dal.DAO;
+package attendance.dal.DAO.concrete;
 
+import attendance.dal.DAO.interfaces.IRecordDAO;
+import attendance.dal.DAO.concrete.CourseDAO;
 import attendance.be.Course;
 import attendance.be.Lesson;
 import attendance.be.Student;
 import attendance.be.User;
+import attendance.dal.DBConnectionProvider;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -21,11 +24,11 @@ import java.util.logging.Logger;
  *
  * @author annem
  */
-public class AttendanceRecordDAO implements IAttendanceRecordDAO {
+public class RecordDAO implements IRecordDAO {
 
     private final DBConnectionProvider connection;
 
-    public AttendanceRecordDAO() {
+    public RecordDAO() {
         connection = new DBConnectionProvider();
     }
 
@@ -75,9 +78,9 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
             }
             return records;
         } catch (SQLServerException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -115,9 +118,9 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
             }
             return records;
         } catch (SQLServerException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -158,9 +161,9 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
             }
             return students;
         } catch (SQLServerException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -190,9 +193,9 @@ public class AttendanceRecordDAO implements IAttendanceRecordDAO {
                 return count;
             }
         } catch (SQLServerException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(AttendanceRecordDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
