@@ -87,7 +87,6 @@ public class StudentTodayController implements Initializable {
                 absenceGuard();
                 refreshCombobox();
                 tbStatusSet();
-                System.out.println("checker done");
             });
         }, 1, 3, TimeUnit.SECONDS);
     }
